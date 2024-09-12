@@ -25,5 +25,5 @@ public class PDSResultCustomInfoSearchRequest extends PageForm {
     @PageQueryable
     private String userId;
 
-    private Map<String, MaindbDataSearchRequest.FieldCondition> dbTypeFields = new HashMap<>();
+    private Map<String, PDSDataSearchRequest.FieldCondition> dbTypeFields = new HashMap<>();
 }

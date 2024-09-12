@@ -1,12 +1,11 @@
 package kr.co.eicn.ippbx.front.service.api.outbound.pds;
 
+import kr.co.eicn.ippbx.model.dto.eicn.HistoryPdsGroupResponse;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
-import kr.co.eicn.ippbx.model.entity.eicn.ExecutePDSGroupEntity;
 import kr.co.eicn.ippbx.model.entity.pds.PDSResultCustomInfoEntity;
 import kr.co.eicn.ippbx.model.form.PDSResultCustomInfoFormRequest;
-import kr.co.eicn.ippbx.model.search.ExecutePDSGroupSearchRequest;
 import kr.co.eicn.ippbx.model.search.PDSResultCustomInfoSearchRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,8 +21,8 @@ public class PdsResultApiInterface extends ApiServerInterface {
     private static final Logger logger = LoggerFactory.getLogger(PdsResultApiInterface.class);
     private static final String subUrl = "/api/v1/admin/outbound/pds/resultcustominfo/";
 
-    public List<ExecutePDSGroupEntity> getExecutingPdsList(ExecutePDSGroupSearchRequest search) throws IOException, ResultFailException {
-        return getList(subUrl + "excutepds_info", search, ExecutePDSGroupEntity.class).getData();
+    public List<HistoryPdsGroupResponse> getExecutingPdsList() throws IOException, ResultFailException {
+        return getList(subUrl + "execute-pds-info", null, HistoryPdsGroupResponse.class).getData();
     }
 
     public Pagination<PDSResultCustomInfoEntity> getPagination(String executeId, PDSResultCustomInfoSearchRequest search) throws IOException, ResultFailException {
@@ -34,6 +33,8 @@ public class PdsResultApiInterface extends ApiServerInterface {
         search.getDbTypeFields().forEach((key, condition) -> {
             if (StringUtils.isNotEmpty(condition.getKeyword()))
                 param.put("dbTypeFields[" + key + "].keyword", condition.getKeyword());
+            if (StringUtils.isNotEmpty(condition.getCode()))
+                param.put("dbTypeFields[" + key + "].code", condition.getCode());
             if (condition.getStartDate() != null)
                 param.put("dbTypeFields[" + key + "].startDate", condition.getStartDate().toString());
             if (condition.getEndDate() != null)

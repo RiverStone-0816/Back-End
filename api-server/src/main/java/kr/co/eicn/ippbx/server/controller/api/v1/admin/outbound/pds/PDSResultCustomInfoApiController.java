@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
+import kr.co.eicn.ippbx.model.dto.eicn.HistoryPdsGroupResponse;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ExecutePdsGroup;
@@ -43,33 +44,16 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 public class PDSResultCustomInfoApiController extends ApiBaseController {
 
     private final PDSResultCustomInfoService service;
-    private final PDSGroupRepository pdsGroupRepository;
-    private final ExecutePDSGroupRepository executePDSGroupRepository;//데모후 찾는정보.
-    private final HistoryPDSGroupRepository historyPDSGroupRepository;
-    private final CacheService cacheService;
-    private final PBXServerInterface pbxServerInterface;
+    private final HistoryPDSGroupRepository  historyPDSGroupRepository;
 
-    @GetMapping("excutepds_info")
-    public ResponseEntity<JsonResult<List<ExecutePDSGroupEntity>>> getExecutingPdsList(ExecutePDSGroupSearchRequest search) {
-        final List<PdsGroup> pdsGroups = pdsGroupRepository.findAll();
-        final List<CompanyServerEntity> servers = cacheService.getCompanyServerList(g.getUser().getCompanyId());
-        final List<ExecutePDSGroupEntity> rows = new java.util.ArrayList<>(Collections.emptyList());
-
-        pdsGroups.forEach(group -> {
-            final Optional<CompanyServerEntity> optionalServer = servers.stream().filter(server -> server.getHost().equals(group.getRunHost())).findAny();
-            if (optionalServer.isPresent()) {
-                final DSLContext pbxDsl = pbxServerInterface.using(optionalServer.get().getHost());
-                rows.addAll(executePDSGroupRepository.findAll(pbxDsl, ExecutePdsGroup.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(group.getSeq())));
-            }
-        });
-
-        return ResponseEntity.ok(data(rows));
+    @GetMapping("execute-pds-info")
+    public ResponseEntity<JsonResult<List<HistoryPdsGroupResponse>>> getExecutingPdsList() {
+        return ResponseEntity.ok(data(historyPDSGroupRepository.getResultExecuteList()));
     }
 
     @GetMapping("{executeId}/data")
     public ResponseEntity<JsonResult<Pagination<PDSResultCustomInfoEntity>>> getPagination(@PathVariable String executeId, PDSResultCustomInfoSearchRequest search) {
         search.setExecuteId(executeId);
-        //return data(service.getRepository(executeId).pagination(search));
         return ResponseEntity.ok(data(service.getRepository(executeId).pagination(search)));
     }
 
@@ -80,7 +64,8 @@ public class PDSResultCustomInfoApiController extends ApiBaseController {
 
     @PutMapping("{executeId}/data/{seq}")
     public JsonResult<Void> put(@Valid @RequestBody PDSResultCustomInfoFormRequest form, BindingResult bindingResult,
-                                @PathVariable String executeId, @PathVariable Integer seq) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+            @PathVariable String executeId, @PathVariable Integer seq
+    ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 

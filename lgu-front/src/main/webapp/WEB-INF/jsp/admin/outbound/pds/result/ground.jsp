@@ -39,7 +39,7 @@
                         <div class="ui grid">
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                <div class="ten wide column -buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
+                                <div class="fourteen wide column -buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
                                     <div class="date-picker from-to">
                                         <div class="dp-wrap">
                                             <label for="createdStartDate" style="display:none">From</label>
@@ -60,30 +60,27 @@
                                         <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
                                     </div>
                                 </div>
-                                    <%--<div class="two wide column"><label class="control-label">상담자</label></div>
-                                    <div class="two wide column">
-                                        <div class="ui form">
-                                            <form:select path="userId">
-                                                <form:option value="" label="선택안함"/>
-                                                <form:options items="${users}"/>
-                                            </form:select>
-                                        </div>
-                                    </div>--%>
                             </div>
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">실행명</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
                                         <form:select path="executeId">
-                                            <form:option value="" label="선택안함"/>
                                             <c:forEach var="e" items="${executingPdsList}">
-                                                <form:option value="${e.executeId}" label="${e.executeName}"/>
+                                                <form:option value="${e.key}" label="${e.value}"/>
                                             </c:forEach>
                                         </form:select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
+                                <div class="two wide column"><label class="control-label">상담자</label></div>
+                                <div class="two wide column">
+                                    <div class="ui form">
+                                        <form:select path="userId">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${users}" itemValue="id" itemLabel="idName"/>
+                                        </form:select>
+                                    </div>
+                                </div>
                                 <div class="two wide column"><label class="control-label">검색항목</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
@@ -106,16 +103,18 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="five wide column -search-type-sub-input" data-type="DATE">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
+                                <div class="four wide column -search-type-sub-input" data-type="DATE">
+                                    <div class="date-picker from-to" style="width: 100%">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"
+                                                        cssStyle="width: 100%;"/>
                                         </div>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"
+                                                        cssStyle="width: 100%;"/>
                                         </div>
                                     </div>
                                 </div>
@@ -153,28 +152,20 @@
                         <tr>
                             <th rowspan="2">번호</th>
                             <th colspan="2">상담기본정보</th>
-                            <c:if test="${pdsType.fields.size() > 0}">
-                            <th colspan="${pdsType.fields.size()}">고객정보필드</th>
-                            </c:if>
-                            <c:if test="${resultType.fields.size() > 0}">
                             <th colspan="${resultType.fields.size()}">상담결과필드</th>
-                            </c:if>
-                                <%--<th colspan="3">채널정보</th>--%>
+                            <th colspan="${pdsType.fields.size()}">고객정보필드</th>
                         </tr>
                         <tr>
                             <th title="상담등록시간">상담등록시간</th>
                             <th title="상담원">상담원</th>
 
-                            <c:forEach var="field" items="${pdsType.fields}">
-                                <th title="${g.htmlQuote(field.fieldInfo)}">${g.htmlQuote(field.fieldInfo)}</th>
-                            </c:forEach>
-
                             <c:forEach var="field" items="${resultType.fields}">
                                 <th title="${g.htmlQuote(field.fieldInfo)}">${g.htmlQuote(field.fieldInfo)}</th>
                             </c:forEach>
-                                <%--<th title="">전화번호</th>
-                                <th title="">이메일</th>
-                                <th title="">상담톡아이디</th>--%>
+
+                            <c:forEach var="field" items="${pdsType.fields}">
+                                <th>${g.htmlQuote(field.fieldInfo)}</th>
+                            </c:forEach>
                         </tr>
                         </thead>
                         <tbody>
@@ -184,14 +175,52 @@
                                     <tr data-id="${g.htmlQuote(e.seq)}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td title="<fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                        <td title="${g.htmlQuote(e.userid)}">${g.htmlQuote(e.userid)}</td>
-
-                                        <c:forEach var="field" items="${pdsType.fields}">
-                                            <td title="${g.htmlQuote(customIdToFieldNameToValueMap.get(e.customId).get(field.fieldId))}"></td>
-                                        </c:forEach>
+                                        <td>${g.htmlQuote(e.userName)}</td>
 
                                         <c:forEach var="field" items="${resultType.fields}">
-                                            <td title="${g.htmlQuote(seqToFieldNameToValueMap.get(e.seq).get(field.fieldId))}">${g.htmlQuote(seqToFieldNameToValueMap.get(e.seq).get(field.fieldId))}</td>
+                                            <c:set var="value" value="${seqToFieldNameToValueMap.get(e.seq).get(field.fieldId)}"/>
+                                            <c:choose>
+                                                <c:when test="${field.fieldType == 'CODE'}">
+                                                    <td>
+                                                            ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
+                                                    </td>
+                                                </c:when>
+                                                <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                    <td>
+                                                        <c:forEach var="v" items="${value.split(',')}">
+                                                            ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
+                                                        </c:forEach>
+                                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
+                                                            ${g.htmlQuote(value)}
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+
+                                        <c:forEach var="field" items="${pdsType.fields}">
+                                            <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.customId).get(field.fieldId)}"/>
+                                            <c:choose>
+                                                <c:when test="${field.fieldType == 'CODE'}">
+                                                    <td>
+                                                            ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
+                                                    </td>
+                                                </c:when>
+                                                <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                    <td>
+                                                        <c:forEach var="v" items="${value.split(',')}">
+                                                            ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
+                                                        </c:forEach>
+                                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
+                                                            ${g.htmlQuote(value)}
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
                                     </tr>
                                 </c:forEach>

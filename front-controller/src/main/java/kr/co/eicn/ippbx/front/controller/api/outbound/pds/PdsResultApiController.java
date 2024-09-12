@@ -34,21 +34,6 @@ public class PdsResultApiController extends BaseController {
 
     private final PdsResultApiInterface apiInterface;
 
-    @GetMapping("excutepds_info")
-    public List<ExecutePDSGroupEntity> getExecutingPdsList(ExecutePDSGroupSearchRequest search) throws IOException, ResultFailException {
-        return apiInterface.getExecutingPdsList(search);
-    }
-
-    @GetMapping("{executeId}/data")
-    public Pagination<PDSResultCustomInfoEntity> getPagination(@PathVariable String executeId, PDSResultCustomInfoSearchRequest search) throws IOException, ResultFailException {
-        return apiInterface.getPagination(executeId, search);
-    }
-
-    @GetMapping("{executeId}/data/{seq}")
-    public PDSResultCustomInfoEntity get(@PathVariable String executeId, @PathVariable Integer seq) throws IOException, ResultFailException {
-        return apiInterface.get(executeId, seq);
-    }
-
     @PutMapping("{executeId}/data/{seq}")
     public void put(@Valid @RequestBody PDSResultCustomInfoFormRequest form, BindingResult bindingResult,
                     @PathVariable String executeId, @PathVariable Integer seq) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, ResultFailException {
