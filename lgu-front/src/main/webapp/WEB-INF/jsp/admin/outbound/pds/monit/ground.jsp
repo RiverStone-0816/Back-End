@@ -153,7 +153,7 @@
                                                 <th>연결구분</th>
                                                 <th>연결대상</th>
                                                 <th>RID</th>
-                                                <th>속도(대기중상담원기준)</th>
+                                                <th>속도(${g.htmlQuote(g.messageOf('PDSGroupSpeedKind', e.executeGroup.speedKind))})</th>
                                                 <th>다이얼시간(초)</th>
                                             </tr>
                                             <tr>
@@ -179,13 +179,23 @@
                                                 </td>
                                                 <td>
                                                     <div class="ui action input form fluid">
-                                                        <select class="-pds-speed-data"
-                                                                style="border-top-right-radius: 0 !important;border-bottom-right-radius: 0 !important;border-right-color: transparent !important;"
-                                                                data-group-id="${g.htmlQuote(e.executeGroup.pdsGroupId)}">
-                                                            <c:forEach var="f" items="${pdsGroupSpeedOptions}">
-                                                                <option value="${f.key / 10}" ${e.executeGroup.speedData * 10 eq f.key ? 'selected' : ''}>${f.value}</option>
-                                                            </c:forEach>
-                                                        </select>
+                                                        <c:choose>
+                                                            <c:when test="${e.executeGroup.speedKind eq 'MEMBER'}">
+                                                                <select class="-pds-speed-data"
+                                                                        style="border-top-right-radius: 0 !important;border-bottom-right-radius: 0 !important;border-right-color: transparent !important;"
+                                                                        data-group-id="${g.htmlQuote(e.executeGroup.pdsGroupId)}">
+                                                                    <c:forEach var="f" items="${pdsGroupSpeedOptions}">
+                                                                        <option value="${f.key / 10}" ${e.executeGroup.speedData * 10 eq f.key ? 'selected' : ''}>${f.value}</option>
+                                                                    </c:forEach>
+                                                                </select>
+                                                            </c:when>
+                                                            <c:when test="${e.executeGroup.speedKind eq 'CHANNEL'}">
+                                                                <input type="number" class="-pds-speed-data -input-numerical"
+                                                                       min="1" max="500" placeholder="500이하" title="1~500"
+                                                                       data-group-id="${g.htmlQuote(e.executeGroup.pdsGroupId)}"
+                                                                       value="${e.executeGroup.speedData.intValue()}">
+                                                            </c:when>
+                                                        </c:choose>
                                                         <button type="button" class="ui button"
                                                                 onclick="setSpeed('${g.htmlQuote(e.executeGroup.pdsGroupId)}', $(this).prev().val())">
                                                             수정

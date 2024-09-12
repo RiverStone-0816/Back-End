@@ -341,6 +341,19 @@
             });
         });
 
+        findAndMe('input[type="number"]', this).on("input", function () {
+            const _this = $(this)
+
+            const value = Number(_this.val() || 0);
+            const min = Number(_this.attr('min') || 0);
+            const max = Number(_this.attr('max') || 0);
+
+            if (min && value < min)
+                _this.val(min);
+            else if(max && value > max)
+                _this.val(max);
+        });
+
         return this;
     };
 
