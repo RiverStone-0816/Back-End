@@ -303,8 +303,8 @@
                 <div class="four wide column"><label class="control-label label-required">상담결과화면</label></div>
                 <div class="twelve wide column">
                     <div class="ui radio checkbox">
-                        <form:radiobutton path="resultKind" value="RSCH"/>
-                        <label>${g.htmlQuote(g.messageOf('PDSGroupResultKind', 'RSCH'))}</label>
+                        <form:radiobutton path="resultKind" value=""/>
+                        <label>${g.htmlQuote(g.messageOf('PDSGroupResultKind', ''))}</label>
                     </div>
                 </div>
                 <div class="four wide column"></div>
@@ -410,10 +410,10 @@
         const resultType = modal.find('#resultType');
         resultType.val('');
 
-        if (resultKind === 'RSCH') {
-            resultType.parent().addClass('disabled');
-        } else {
+        if (resultKind === 'RS') {
             resultType.parent().removeClass('disabled');
+        } else {
+            resultType.parent().addClass('disabled');
         }
     });
 
@@ -434,12 +434,10 @@
 
         const connectDataField = modal.find('.-connect-data-field');
         const speedField = modal.find('.-pds-connect-kind-speed-field');
-        const updateField = modal.find('.-connect-kind-update-data')
 
         if (!connectKind) {
             connectDataField.hide();
             speedField.hide();
-            updateField.hide();
             return;
         }
 
@@ -456,11 +454,6 @@
 
             return v === $(this).data('group');
         }).show();
-
-        if (connectKind === 'MEMBER')
-            updateField.show();
-        else
-            updateField.hide();
     }
 
     function changeNumberField() {

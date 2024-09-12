@@ -71,7 +71,7 @@ public class PDSGroupFormRequest extends BaseForm {
     /**
      * @see kr.co.eicn.ippbx.model.enums.PDSGroupResultKind
      */
-    private String  resultKind = PDSGroupResultKind.RSCH.getCode();      // 상담결과 구분
+    private String  resultKind = PDSGroupResultKind.NONE.getCode();      // 상담결과 구분
     private Integer resultType;     // 상담결과유형
 
     @Override

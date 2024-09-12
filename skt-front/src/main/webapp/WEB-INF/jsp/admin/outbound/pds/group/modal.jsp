@@ -245,7 +245,7 @@
                 <div class="four wide column"><label class="control-label">상담결과(상담원화면)</label></div>
                 <div class="six wide column">
                     <div class="ui radio checkbox">
-                        <form:radiobutton path="resultKind" value="RSCH"/>
+                        <form:radiobutton path="resultKind" value=""/>
                         <label>없음 또는 고객사화면</label>
                     </div>
                 </div>

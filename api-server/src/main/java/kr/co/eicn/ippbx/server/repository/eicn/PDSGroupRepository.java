@@ -124,7 +124,7 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         record.setSpeedKind(form.getSpeedKind());
         record.setSpeedData(form.getSpeedData());
         record.setResultKind(form.getResultKind());
-        record.setResultType((PDSGroupResultKind.RSCH.getCode().equals(form.getResultKind())) || (form.getResultType() == null) ? 0 : form.getResultType());
+        record.setResultType((PDSGroupResultKind.NONE.getCode().equals(form.getResultKind())) || (form.getResultType() == null) ? 0 : form.getResultType());
 
         record.setDialTimeout(form.getDialTimeout());
         record.setMachineDetect("N"); // 사용안함 default로 세팅
@@ -187,7 +187,7 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         record.setSpeedKind(form.getSpeedKind());
         record.setSpeedData(form.getSpeedData());
         record.setResultKind(form.getResultKind());
-        record.setResultType((PDSGroupResultKind.RSCH.getCode().equals(form.getResultKind())) || (form.getResultType() == null) ? 0 : form.getResultType());
+        record.setResultType((PDSGroupResultKind.NONE.getCode().equals(form.getResultKind())) || (form.getResultType() == null) ? 0 : form.getResultType());
 
         super.updateByKey(record, seq);
 
