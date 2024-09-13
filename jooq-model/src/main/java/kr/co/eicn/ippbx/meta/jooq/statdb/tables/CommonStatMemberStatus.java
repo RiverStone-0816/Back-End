@@ -93,7 +93,7 @@ public class CommonStatMemberStatus extends TableImpl<CommonStatMemberStatusReco
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_MEMBER_STATUS_COMPANY_ID, Indexes.STAT_MEMBER_STATUS_IN_OUT, Indexes.STAT_MEMBER_STATUS_STAT_DATE, Indexes.STAT_MEMBER_STATUS_STAT_HOUR, Indexes.STAT_MEMBER_STATUS_USERID);
+        return Arrays.asList();
     }
 
     @Override

@@ -83,7 +83,7 @@ public class CommonSttMessage extends TableImpl<SttMessageRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STT_MESSAGE_CALL_UNIQUEID, Indexes.STT_MESSAGE_INSERT_TIME, Indexes.STT_MESSAGE_TARGET_USERID, Indexes.STT_MESSAGE_USERID);
+        return Arrays.asList();
     }
 
     @Override

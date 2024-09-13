@@ -82,7 +82,7 @@ public class CommonProhibitedKeyword extends TableImpl<ProhibitedKeywordRecord> 
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PROHIBITED_KEYWORD_CREATOR);
+        return Arrays.asList();
     }
 
     @Override

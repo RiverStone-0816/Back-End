@@ -134,7 +134,7 @@ public class CommonWtalkMsg extends TableImpl<CommonWtalkMsgRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.WTALK_MSG_COMPANY_ID, Indexes.WTALK_MSG_INSERT_TIME, Indexes.WTALK_MSG_ROOM_ID, Indexes.WTALK_MSG_USER_KEY, Indexes.WTALK_MSG_USERID);
+        return Arrays.asList();
     }
 
     @Override

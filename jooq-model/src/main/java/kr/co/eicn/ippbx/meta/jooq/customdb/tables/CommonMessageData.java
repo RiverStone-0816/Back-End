@@ -198,7 +198,7 @@ public class CommonMessageData extends TableImpl<MessageDataRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MESSAGE_DATA_INSERT_TIME, Indexes.MESSAGE_DATA_SEND_CLI_KEY, Indexes.MESSAGE_DATA_USERID);
+        return Arrays.asList();
     }
 
     @Override

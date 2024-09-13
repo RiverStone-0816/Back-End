@@ -93,7 +93,7 @@ public class CommonMemo extends TableImpl<MemoRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MEMO_COMPANY_ID, Indexes.MEMO_USER);
+        return Arrays.asList();
     }
 
     @Override

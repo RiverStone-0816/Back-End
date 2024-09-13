@@ -82,7 +82,7 @@ public class CommonTranscribeGroup extends TableImpl<CommonTranscribeGroupRecord
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.TRANSCRIBE_GROUP_STATUS, Indexes.TRANSCRIBE_GROUP_USERID);
+        return Arrays.asList();
     }
 
     @Override

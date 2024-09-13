@@ -162,7 +162,7 @@ public class CommonExecutePDSCustomInfo extends TableImpl<ExecutePdsCustomInfoRe
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.EXECUTE_PDS_CUSTOM_INFO_CLICK_KEY, Indexes.EXECUTE_PDS_CUSTOM_INFO_COMPANY_ID, Indexes.EXECUTE_PDS_CUSTOM_INFO_CUSTOM_ID, Indexes.EXECUTE_PDS_CUSTOM_INFO_FIELD_SEQ, Indexes.EXECUTE_PDS_CUSTOM_INFO_PDS_GROUP_ID);
+        return Arrays.asList();
     }
 
     @Override

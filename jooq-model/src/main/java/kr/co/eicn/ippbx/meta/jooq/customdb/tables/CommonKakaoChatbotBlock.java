@@ -97,7 +97,7 @@ public class CommonKakaoChatbotBlock extends TableImpl<CommonKakaoChatbotBlockRe
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.KAKAO_CHATBOT_BLOCK_BLOCK_ID, Indexes.KAKAO_CHATBOT_BLOCK_BOT_ID);
+        return Arrays.asList();
     }
 
     @Override

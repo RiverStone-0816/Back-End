@@ -417,7 +417,7 @@ public class CommonPDSCustomInfo extends TableImpl<PdsCustomInfoRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PDS_CUSTOM_INFO_PDS_SYS_GROUP_ID);
+        return Arrays.asList();
     }
 
     @Override

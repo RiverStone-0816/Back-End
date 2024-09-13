@@ -120,7 +120,7 @@ public class CommonStatUserRanking extends TableImpl<CommonStatUserRankingRecord
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_USER_RANKING_COMPANY_ID, Indexes.STAT_USER_RANKING_GROUP_CODE, Indexes.STAT_USER_RANKING_GROUP_LEVEL, Indexes.STAT_USER_RANKING_GROUP_TREE_NAME, Indexes.STAT_USER_RANKING_STAT_DATE, Indexes.STAT_USER_RANKING_USERID, Indexes.STAT_USER_RANKING_WORKTIME_YN);
+        return Arrays.asList();
     }
 
     @Override

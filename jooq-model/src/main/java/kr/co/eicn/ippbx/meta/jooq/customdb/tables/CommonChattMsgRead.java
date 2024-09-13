@@ -60,7 +60,7 @@ public class CommonChattMsgRead extends TableImpl<ChattMsgReadRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.CHATT_MSG_READ_MESSAGE_ID, Indexes.CHATT_MSG_READ_ROOM_ID, Indexes.CHATT_MSG_READ_USERID);
+        return Arrays.asList();
     }
 
     @NotNull

@@ -401,7 +401,7 @@ public class CommonMaindbCustomInfo extends TableImpl<MaindbCustomInfoRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MAINDB_CUSTOM_INFO_MAINDB_SYS_DAMDANG_ID, Indexes.MAINDB_CUSTOM_INFO_MAINDB_SYS_GROUP_ID, Indexes.MAINDB_CUSTOM_INFO_MAINDB_SYS_GROUP_TYPE, Indexes.MAINDB_CUSTOM_INFO_MAINDB_SYS_UPLOAD_DATE);
+        return Arrays.asList();
     }
 
     @Override

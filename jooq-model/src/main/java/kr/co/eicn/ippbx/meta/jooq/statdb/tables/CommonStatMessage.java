@@ -102,7 +102,7 @@ public class CommonStatMessage extends TableImpl<StatMessageRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_MESSAGE_PROJECT_ID, Indexes.STAT_MESSAGE_RES_CODE, Indexes.STAT_MESSAGE_RES_DATA_CODE, Indexes.STAT_MESSAGE_SERVICE, Indexes.STAT_MESSAGE_STAT_DATE, Indexes.STAT_MESSAGE_STAT_HOUR, Indexes.STAT_MESSAGE_USERID);
+        return Arrays.asList();
     }
 
     @Override

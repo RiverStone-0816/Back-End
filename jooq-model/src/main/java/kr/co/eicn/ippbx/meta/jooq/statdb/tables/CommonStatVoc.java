@@ -114,7 +114,7 @@ public class CommonStatVoc extends TableImpl<StatVocRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_WTALK_ACTION_TYPE, Indexes.STAT_WTALK_GROUP_CODE, Indexes.STAT_WTALK_GROUP_LEVEL, Indexes.STAT_WTALK_GROUP_TREE_NAME, Indexes.STAT_WTALK_SENDER_KEY, Indexes.STAT_WTALK_STAT_DATE, Indexes.STAT_WTALK_STAT_HOUR, Indexes.STAT_WTALK_USERID, Indexes.STAT_WTALK_WORKTIME_YN);
+        return Arrays.asList();
     }
 
     @Override

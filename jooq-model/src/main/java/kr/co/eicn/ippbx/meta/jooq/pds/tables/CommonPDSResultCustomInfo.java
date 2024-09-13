@@ -468,7 +468,7 @@ public class CommonPDSResultCustomInfo extends TableImpl<ResultCustomInfoRecord>
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.RESULT_CUSTOM_INFO_CLICK_KEY, Indexes.RESULT_CUSTOM_INFO_CUSTOM_ID, Indexes.RESULT_CUSTOM_INFO_CUSTOM_NUMBER, Indexes.RESULT_CUSTOM_INFO_GROUP_ID, Indexes.RESULT_CUSTOM_INFO_GROUP_KIND, Indexes.RESULT_CUSTOM_INFO_RESULT_DATE, Indexes.RESULT_CUSTOM_INFO_UNIQUEID, Indexes.RESULT_CUSTOM_INFO_USERID);
+        return Arrays.asList();
     }
 
     @Override

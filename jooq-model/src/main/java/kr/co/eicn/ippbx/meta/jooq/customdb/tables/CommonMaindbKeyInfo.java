@@ -75,7 +75,7 @@ public class CommonMaindbKeyInfo extends TableImpl<MaindbKeyInfoRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MAINDB_KEY_INFO_GROUP_ID, Indexes.MAINDB_KEY_INFO_KEY_VALUE);
+        return Arrays.asList();
     }
 
     @Override

@@ -132,7 +132,7 @@ public class CommonTranscribeData extends TableImpl<CommonTranscribeDataRecord> 
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.TRANSCRIBE_DATA_FILENAME, Indexes.TRANSCRIBE_DATA_GROUPCODE, Indexes.TRANSCRIBE_DATA_USERID);
+        return Arrays.asList();
     }
 
     @Override

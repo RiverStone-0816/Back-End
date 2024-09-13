@@ -313,7 +313,7 @@ public class CommonEicnCdr extends TableImpl<EicnCdrRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.EICN_CDR_BILLSEC, Indexes.EICN_CDR_CALLSTATUS, Indexes.EICN_CDR_COMPANY_ID, Indexes.EICN_CDR_DST, Indexes.EICN_CDR_DST_UNIQUEID, Indexes.EICN_CDR_RING_DATE, Indexes.EICN_CDR_SRC, Indexes.EICN_CDR_TURN_OVER_NUMBER, Indexes.EICN_CDR_UNIQUEID, Indexes.EICN_CDR_USERID);
+        return Arrays.asList();
     }
 
     @Override

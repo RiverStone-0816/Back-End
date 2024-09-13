@@ -98,7 +98,7 @@ public class CommonChattMsg extends TableImpl<ChattMsgRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.CHATT_MSG_INSERT_TIME, Indexes.CHATT_MSG_ROOM_ID, Indexes.CHATT_MSG_USERID);
+        return Arrays.asList();
     }
 
     @Override

@@ -123,7 +123,7 @@ public class CommonStatOutbound extends TableImpl<CommonStatOutboundRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_OUTBOUND_COMPANY_ID, Indexes.STAT_OUTBOUND_DCONTEXT, Indexes.STAT_OUTBOUND_FROM_ORG, Indexes.STAT_OUTBOUND_GROUP_CODE, Indexes.STAT_OUTBOUND_GROUP_LEVEL, Indexes.STAT_OUTBOUND_GROUP_TREE_NAME, Indexes.STAT_OUTBOUND_STAT_DATE, Indexes.STAT_OUTBOUND_STAT_HOUR, Indexes.STAT_OUTBOUND_WORKTIME_YN);
+        return Arrays.asList();
     }
 
     @Override

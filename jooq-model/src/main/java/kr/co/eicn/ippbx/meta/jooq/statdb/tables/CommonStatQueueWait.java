@@ -98,7 +98,7 @@ public class CommonStatQueueWait extends TableImpl<StatQueueWaitRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_QUEUE_WAIT_COMPANY_ID, Indexes.STAT_QUEUE_WAIT_GROUP_CODE, Indexes.STAT_QUEUE_WAIT_GROUP_LEVEL, Indexes.STAT_QUEUE_WAIT_GROUP_TREE_NAME, Indexes.STAT_QUEUE_WAIT_QUEUE_NAME, Indexes.STAT_QUEUE_WAIT_STAT_DATE, Indexes.STAT_QUEUE_WAIT_STAT_HOUR);
+        return Arrays.asList();
     }
 
     @Override

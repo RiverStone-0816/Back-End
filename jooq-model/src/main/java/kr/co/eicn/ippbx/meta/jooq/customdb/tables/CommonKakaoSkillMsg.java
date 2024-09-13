@@ -175,7 +175,7 @@ public class CommonKakaoSkillMsg extends TableImpl<KakaoSkillMsgRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.KAKAO_SKILL_MSG_BOT_ID, Indexes.KAKAO_SKILL_MSG_INSERT_DATE, Indexes.KAKAO_SKILL_MSG_REQUEST_USER_PLUSFRIEND_USERKEY);
+        return Arrays.asList();
     }
 
     @Override

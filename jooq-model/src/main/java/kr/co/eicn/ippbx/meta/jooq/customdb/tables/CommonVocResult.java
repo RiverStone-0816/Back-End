@@ -116,7 +116,7 @@ public class CommonVocResult extends TableImpl<VocResultRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.VOC_RESULT_COMPANY_ID, Indexes.VOC_RESULT_RESEARCH_ID, Indexes.VOC_RESULT_TREE_PATH, Indexes.VOC_RESULT_VOC_GROUP_ID);
+        return Arrays.asList();
     }
 
     @Override

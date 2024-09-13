@@ -409,7 +409,7 @@ public class CommonPrvCustomInfo extends TableImpl<PrvCustomInfoRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PRV_CUSTOM_INFO_PRV_SYS_GROUP_ID);
+        return Arrays.asList();
     }
 
     @Override

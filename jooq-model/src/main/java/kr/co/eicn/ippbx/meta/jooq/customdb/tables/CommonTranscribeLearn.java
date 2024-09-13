@@ -77,7 +77,7 @@ public class CommonTranscribeLearn extends TableImpl<CommonTranscribeLearnRecord
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.TRANSCRIBE_LEARN_COMPANY_ID);
+        return Arrays.asList();
     }
 
     @Override

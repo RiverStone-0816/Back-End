@@ -108,7 +108,7 @@ public class CommonSttText extends TableImpl<SttTextRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STT_TEXT_CALL_UNIQUEID, Indexes.STT_TEXT_INSERT_TIME, Indexes.STT_TEXT_IPCC_USERID, Indexes.STT_TEXT_MESSAGE_ID, Indexes.STT_TEXT_MY_EXTENSION, Indexes.STT_TEXT_REMIND_YN);
+        return Arrays.asList();
     }
 
     @Override

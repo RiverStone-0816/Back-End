@@ -85,7 +85,7 @@ public class CommonVocCustomList extends TableImpl<VocCustomListRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.VOC_CUSTOM_LIST_COMPANY_ID, Indexes.VOC_CUSTOM_LIST_INSERT_DATE);
+        return Arrays.asList();
     }
 
     @Override

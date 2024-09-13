@@ -148,7 +148,7 @@ public class CommonStatUserOutbound extends TableImpl<CommonStatUserOutboundReco
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_USER_OUTBOUND_CID_NUMBER, Indexes.STAT_USER_OUTBOUND_COMPANY_ID, Indexes.STAT_USER_OUTBOUND_DCONTEXT, Indexes.STAT_USER_OUTBOUND_FROM_ORG, Indexes.STAT_USER_OUTBOUND_GROUP_CODE, Indexes.STAT_USER_OUTBOUND_GROUP_LEVEL, Indexes.STAT_USER_OUTBOUND_GROUP_TREE_NAME, Indexes.STAT_USER_OUTBOUND_STAT_DATE, Indexes.STAT_USER_OUTBOUND_STAT_HOUR, Indexes.STAT_USER_OUTBOUND_USERID, Indexes.STAT_USER_OUTBOUND_WORKTIME_YN);
+        return Arrays.asList();
     }
 
     @Override

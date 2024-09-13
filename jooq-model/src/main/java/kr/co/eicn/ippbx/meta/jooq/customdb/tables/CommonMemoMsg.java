@@ -98,7 +98,7 @@ public class CommonMemoMsg extends TableImpl<MemoMsgRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MEMO_MSG_INSERT_TIME, Indexes.MEMO_MSG_MESSAGE_ID, Indexes.MEMO_MSG_RECEIVE_USERID, Indexes.MEMO_MSG_SEND_USERID);
+        return Arrays.asList();
     }
 
     @Override

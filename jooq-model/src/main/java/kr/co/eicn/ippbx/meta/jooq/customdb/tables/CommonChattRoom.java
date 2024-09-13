@@ -113,7 +113,7 @@ public class CommonChattRoom extends TableImpl<ChattRoomRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.CHATT_ROOM_LAST_TIME, Indexes.CHATT_ROOM_MEMBER_MD5);
+        return Arrays.asList();
     }
 
     @Override

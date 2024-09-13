@@ -99,7 +99,7 @@ public class CommonMaindbMultichannelInfo extends TableImpl<CommonMaindbMulticha
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MAINDB_MULTICHANNEL_INFO_CHANNEL_DATA, Indexes.MAINDB_MULTICHANNEL_INFO_CHANNEL_TYPE, Indexes.MAINDB_MULTICHANNEL_INFO_MAINDB_CUSTOM_ID, Indexes.MAINDB_MULTICHANNEL_INFO_MAINDB_GROUP_ID);
+        return Arrays.asList();
     }
 
     @Override

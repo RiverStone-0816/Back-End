@@ -193,7 +193,7 @@ public class CommonWtalkRoom extends TableImpl<WtalkRoomRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.WTALK_ROOM_COMPANY_ID, Indexes.WTALK_ROOM_ROOM_ID, Indexes.WTALK_ROOM_ROOM_START_TIME, Indexes.WTALK_ROOM_ROOM_STATUS, Indexes.WTALK_ROOM_SENDER_KEY, Indexes.WTALK_ROOM_USER_KEY, Indexes.WTALK_ROOM_USERID);
+        return Arrays.asList();
     }
 
     @Override

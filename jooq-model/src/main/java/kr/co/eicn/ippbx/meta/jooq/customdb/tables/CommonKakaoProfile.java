@@ -118,7 +118,7 @@ public class CommonKakaoProfile extends TableImpl<KakaoProfileRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.KAKAO_PROFILE_APP_USER_ID, Indexes.KAKAO_PROFILE_BOT_ID, Indexes.KAKAO_PROFILE_INSERT_DATE, Indexes.KAKAO_PROFILE_MAINDB_CUSTOM_ID, Indexes.KAKAO_PROFILE_REQUEST_USER_PLUSFRIEND_USERKEY);
+        return Arrays.asList();
     }
 
     @Override

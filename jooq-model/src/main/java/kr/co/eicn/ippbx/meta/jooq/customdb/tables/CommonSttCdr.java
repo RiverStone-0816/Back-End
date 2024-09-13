@@ -122,7 +122,7 @@ public class CommonSttCdr extends TableImpl<SttCdrRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STT_CDR_CALL_UNIQUEID, Indexes.STT_CDR_CUSTOM_NUMBER, Indexes.STT_CDR_END_TIME, Indexes.STT_CDR_EXTENSION, Indexes.STT_CDR_IPCC_USERID, Indexes.STT_CDR_START_TIME);
+        return Arrays.asList();
     }
 
     @Override

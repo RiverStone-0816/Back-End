@@ -173,7 +173,7 @@ public class CommonStatUserInbound extends TableImpl<CommonStatUserInboundRecord
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_USER_INBOUND_COMPANY_ID, Indexes.STAT_USER_INBOUND_GROUP_CODE, Indexes.STAT_USER_INBOUND_GROUP_LEVEL, Indexes.STAT_USER_INBOUND_GROUP_TREE_NAME, Indexes.STAT_USER_INBOUND_HUNT_NUMBER, Indexes.STAT_USER_INBOUND_SERVICE_NUMBER, Indexes.STAT_USER_INBOUND_STAT_DATE, Indexes.STAT_USER_INBOUND_STAT_HOUR, Indexes.STAT_USER_INBOUND_USER_STAT_YN, Indexes.STAT_USER_INBOUND_USERID, Indexes.STAT_USER_INBOUND_WORKTIME_YN);
+        return Arrays.asList();
     }
 
     @Override

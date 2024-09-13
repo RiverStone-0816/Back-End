@@ -104,7 +104,7 @@ public class CommonMemberStatus extends TableImpl<CommonMemberStatusRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MEMBER_STATUS_PHONEID, Indexes.MEMBER_STATUS_START_DATE, Indexes.MEMBER_STATUS_STATUS);
+        return Arrays.asList();
     }
 
     @Override

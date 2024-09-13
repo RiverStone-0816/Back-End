@@ -246,7 +246,7 @@ public class CommonStatInbound extends TableImpl<CommonStatInboundRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_INBOUND_CATEGORY, Indexes.STAT_INBOUND_COMPANY_ID, Indexes.STAT_INBOUND_DCONTEXT, Indexes.STAT_INBOUND_GROUP_CODE, Indexes.STAT_INBOUND_GROUP_LEVEL, Indexes.STAT_INBOUND_GROUP_TREE_NAME, Indexes.STAT_INBOUND_HUNT_NUMBER, Indexes.STAT_INBOUND_SERVICE_NUMBER, Indexes.STAT_INBOUND_STAT_DATE, Indexes.STAT_INBOUND_STAT_HOUR);
+        return Arrays.asList();
     }
 
     @Override

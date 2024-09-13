@@ -113,7 +113,7 @@ public class CommonKakaoEvent extends TableImpl<KakaoEventRecord>  {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.KAKAO_EVENT_BOT_ID, Indexes.KAKAO_EVENT_INSERT_DATE, Indexes.KAKAO_EVENT_RESPONSE_BLOCK_ID, Indexes.KAKAO_EVENT_USER_ID);
+        return Arrays.asList();
     }
 
     @Override
