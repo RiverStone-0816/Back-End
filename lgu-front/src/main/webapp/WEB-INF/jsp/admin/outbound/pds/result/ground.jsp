@@ -152,8 +152,12 @@
                         <tr>
                             <th rowspan="2">번호</th>
                             <th colspan="2">상담기본정보</th>
-                            <th colspan="${resultType.fields.size()}">상담결과필드</th>
-                            <th colspan="${pdsType.fields.size()}">고객정보필드</th>
+                            <c:if test="${resultType.fields.size() > 0}">
+                                <th colspan="${resultType.fields.size()}">상담결과필드</th>
+                            </c:if>
+                            <c:if test="${pdsType.fields.size() > 0}">
+                                <th colspan="${pdsType.fields.size()}">고객정보필드</th>
+                            </c:if>
                         </tr>
                         <tr>
                             <th title="상담등록시간">상담등록시간</th>
