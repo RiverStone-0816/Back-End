@@ -42,18 +42,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">멀티채널데이터</label></div>
+                <div class="four wide column"><label class="control-label  label-require">멀티채널데이터</label></div>
                 <div class="twelve wide column">
                     [ 전화번호<c:if test="${company.service.indexOf('EMAIL') >= 0}">, 이메일</c:if><c:if test="${company.service.indexOf('TALK') >= 0}">, 상담톡아이디</c:if> ] 각각 여러개 컬럼 업로드가능
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">파일선택</label></div>
+                <div class="four wide column">
+                    <label class="control-label label-required">파일선택</label>
+                    <i class="circular red info icon small comment-icon" title="※ 파일 업로드 주의사항 ※
+                            1. 첫 행 필수 기입
+                            2. 필수 기입 필드 누락 시, 데이터 업로드가 실패할 수 있습니다.
+                            3. 필드명 수정 불가. 필드명 수정 시, 데이터 업로드가 실패할 수 있습니다.
+                            4. 모든 셀은 표시 형식이 '텍스트' 형식이어야 합니다."></i>
+                </div>
                 <div class="twelve wide column">
                     <form:hidden path="fileName"/>
                     <form:hidden path="filePath"/>
                     <form:hidden path="originalName"/>
                     <div class="file-upload-header">
+                        <label class="ui button blue mini compact" onclick="downloadExampleExcel('${entity.seq}')">
+                            예시 Excel 다운로드
+                        </label>
                         <label for="file" class="ui button blue mini compact">파일찾기</label>
                         <input type="file" id="file">
                         <span class="file-name">No file selected</span>

@@ -163,6 +163,10 @@
                     });
                 });
             }
+
+            function downloadExampleExcel(seq) {
+                window.open(contextPath + '/admin/application/maindb/group/' + seq + '/_excel/example', '_blank');
+            }
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

@@ -1,5 +1,10 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.application.maindb;
 
+import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
+import kr.co.eicn.ippbx.front.service.excel.example.MaindbCustomUploadExampleExcel;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
+import kr.co.eicn.ippbx.model.form.MaindbGroupFormRequest;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
@@ -11,18 +16,16 @@ import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonTypeResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupSummaryResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
 import kr.co.eicn.ippbx.model.enums.DupKeyKind;
-import kr.co.eicn.ippbx.model.form.MaindbGroupFormRequest;
 import kr.co.eicn.ippbx.model.form.MaindbGroupUpdateRequest;
 import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +33,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,18 +44,17 @@ import java.util.stream.Collectors;
 /**
  * @author tinywind
  */
+@AllArgsConstructor
 @LoginRequired
 @Controller
 @RequestMapping("admin/application/maindb/group")
 public class MaindbGroupController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(MaindbGroupController.class);
 
-    @Autowired
-    private MaindbGroupApiInterface apiInterface;
-    @Autowired
-    private OrganizationService organizationService;
-    @Autowired
-    private CompanyApiInterface companyApiInterface;
+    private final MaindbGroupApiInterface apiInterface;
+    private final OrganizationService     organizationService;
+    private final CompanyApiInterface     companyApiInterface;
+    private final CommonTypeApiInterface  commonTypeApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") MaindbGroupSearchRequest search) throws IOException, ResultFailException {
@@ -114,5 +118,13 @@ public class MaindbGroupController extends BaseController {
         model.addAttribute("company", company);
 
         return "admin/application/maindb/group/modal-upload";
+    }
+
+    @GetMapping("{seq}/_excel/example")
+    public void downloadExcel(@PathVariable Integer seq, HttpServletResponse response) throws IOException, ResultFailException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final MaindbGroupDetailResponse group = apiInterface.get(seq);
+        final CommonTypeEntity pdsType = commonTypeApiInterface.get(group.getMaindbType());
+
+        new MaindbCustomUploadExampleExcel(pdsType).generator(response, "고객정보_업로드_예시");
     }
 }
