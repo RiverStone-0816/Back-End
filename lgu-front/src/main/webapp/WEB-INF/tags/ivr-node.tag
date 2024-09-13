@@ -25,17 +25,15 @@
                     <div class="content">
                         <div class="header">${child.name}
                             <div class="ui buttons ivr-control">
-                                <c:if test="${node.soundCode != null && node.soundCode != ''}">
-                                    <button type="button" class="ui button mini compact -play-trigger" data-target="#ivr-sound-${node.seq}">음원듣기</button>
+                                <c:if test="${child.soundCode != null && child.soundCode != ''}">
+                                    <button type="button" class="ui icon button mini compact -sound-play -play-trigger" >
+                                        <i class="grey volume up icon" data-value="${child.soundCode}"></i>
+                                    </button>
+                                    <div class="ui popup top right"></div>
                                 </c:if>
                                 <button type="button" class="ui button mini compact" onclick="popupKeyMapModal(${child.seq})">버튼맵핑</button>
                                 <button type="button" class="ui button mini compact" onclick="deleteEntity(${child.code})">삭제</button>
                             </div>
-                            <c:if test="${node.soundCode != null && node.soundCode != ''}">
-                                <div class="ui popup top right" id="ivr-sound-${node.seq}">
-                                    <audio data-src="${pageContext.request.contextPath}/api/ars/id/${node.soundCode}/resource?mode=PLAY"></audio>
-                                </div>
-                            </c:if>
                         </div>
                         <div class="list">
                             <c:forEach var="grandchild" items="${child.nodes}">

@@ -88,10 +88,11 @@
                                             <div class="popup-element-wrap">
                                                     ${g.htmlQuote(g.messageOf('ResearchItemSoundKind', e.soundKind))}
                                                 <c:if test="${e.soundKind == 'S'}">
-                                                    <button type="button" class="ui button mini compact -play-trigger">음원듣기</button>
-                                                    <div class="ui popup top right">
-                                                        <audio data-src="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=PLAY"></audio>
-                                                    </div>
+                                                    <button type="button"
+                                                            class="ui icon button mini compact  -sound-play -play-trigger">
+                                                        <i class="volume up icon" data-value="${e.soundCode}"></i>
+                                                    </button>
+                                                    <div class="ui popup top right"></div>
                                                 </c:if>
                                             </div>
                                         </td>
@@ -162,6 +163,24 @@
 
     <tags:scripts>
         <script>
+            $('.-sound-play').click(function (event) {
+                event.stopPropagation();
+
+                const sound = $(this).find('i').first().data('value');
+                const player = $(this).next().empty();
+
+                if (player.hasClass('out'))
+                    return;
+
+                if (!sound)
+                    return;
+
+                const src = contextPath + "/api/ars/id/" + sound + "/resource?mode=PLAY";
+                const audio = $('<audio controls/>').attr('data-src', src);
+                player.append(audio);
+                maudio({obj: audio[0], fastStep: 10});
+            });
+
             function popupModal(seq) {
                 <c:choose>
                 <c:when test="${serviceKind.equals('CC') && pagination.rows.size() > 1}">

@@ -76,9 +76,10 @@
                                                 <div class="ui buttons ivr-control">
                                                     <c:if test="${e.soundCode != null && e.soundCode != ''}">
                                                         <button type="button"
-                                                                class="ui button mini compact -play-trigger"
-                                                                data-target="#ivr-sound-${e.seq}">음원듣기
+                                                                class="ui icon button mini compact -sound-play -play-trigger">
+                                                            <i class="volume up icon" data-value="${e.soundCode}"></i>
                                                         </button>
+                                                        <div class="ui popup top right"></div>
                                                     </c:if>
                                                     <button type="button" class="ui button mini compact"
                                                             onclick="popupKeyMapModal(${e.seq})">버튼맵핑
@@ -87,11 +88,6 @@
                                                             onclick="deleteEntity(${e.code})">삭제
                                                     </button>
                                                 </div>
-                                                <c:if test="${e.soundCode != null && e.soundCode != ''}">
-                                                    <div class="ui popup top right" id="ivr-sound-${e.seq}">
-                                                        <audio data-src="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=PLAY"></audio>
-                                                    </div>
-                                                </c:if>
                                             </div>
                                             <div class="ui secondary segment">
                                                 <div class="ui list">
@@ -114,6 +110,24 @@
 
     <tags:scripts>
         <script>
+            $('.-sound-play').click(function (event) {
+                event.stopPropagation();
+
+                const sound = $(this).find('i').first().data('value');
+                const player = $(this).next().empty();
+
+                if (player.hasClass('out'))
+                    return;
+
+                if (!sound)
+                    return;
+
+                const src = contextPath + "/api/ars/id/" + sound + "/resource?mode=PLAY";
+                const audio = $('<audio controls/>').attr('data-src', src);
+                player.append(audio);
+                maudio({obj: audio[0], fastStep: 10});
+            });
+
             function rootIvrModal() {
                 popupReceivedHtml('/admin/outbound/pds/ivr/new/modal', 'root-ivr-modal');
             }

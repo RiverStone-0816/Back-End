@@ -79,12 +79,10 @@
                                         <td>${g.htmlQuote(e.fileName)}</td>
                                         <td>
                                             <div class="popup-element-wrap">
-                                                <button class="ui icon button mini compact -play-trigger" type="button">
+                                                <button class="ui icon button mini compact -sound-play -play-trigger" type="button">
                                                     <i class="volume up icon" data-value="${e.category}"></i>
                                                 </button>
-                                                <div class="ui popup top right">
-                                                    <audio data-src="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=PLAY"></audio>
-                                                </div>
+                                                <div class="ui popup top right"></div>
                                                 <a class="ui icon button mini compact"
                                                    href="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=DOWN">
                                                     <i class="arrow down icon" data-value="${e.category}"></i>
@@ -112,6 +110,24 @@
 
     <tags:scripts>
         <script>
+            $('.-sound-play').click(function (event) {
+            event.stopPropagation();
+
+            const sound = $(this).find('i').first().data('value');
+            const player = $(this).next().empty();
+
+            if (player.hasClass('out'))
+                return;
+
+            if (!sound)
+                return;
+
+            const src = contextPath + "/api/ring-back-tone/id/" + sound + "/resource?mode=PLAY";
+            const audio = $('<audio controls/>').attr('data-src', src);
+            player.append(audio);
+            maudio({obj: audio[0], fastStep: 10});
+        });
+
             function popupModal() {
                 popupReceivedHtml('/admin/sounds/sounds/ring-back-tone/new/modal', 'modal-ring-back-tone');
             }
