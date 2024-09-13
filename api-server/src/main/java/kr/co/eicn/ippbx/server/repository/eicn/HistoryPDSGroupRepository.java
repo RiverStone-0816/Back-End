@@ -2,6 +2,8 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.HistoryPdsGroup;
 import kr.co.eicn.ippbx.model.dto.eicn.HistoryPdsGroupResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.HistoryPdsResearchGroupResponse;
+import kr.co.eicn.ippbx.model.enums.PDSGroupConnectKind;
 import kr.co.eicn.ippbx.model.enums.PDSGroupExecuteStatus;
 import kr.co.eicn.ippbx.model.enums.PDSGroupResultKind;
 import kr.co.eicn.ippbx.model.search.PDSHistorySearchRequest;
@@ -10,14 +12,12 @@ import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
-import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.HISTORY_PDS_GROUP;
@@ -104,5 +104,19 @@ public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGrou
                 .and(HISTORY_PDS_GROUP.PDS_STATUS.ne(PDSGroupExecuteStatus.EXCLUDED.getCode()))
                 .orderBy(HISTORY_PDS_GROUP.START_DATE.desc())
                 .fetchInto(HistoryPdsGroupResponse.class);
+    }
+
+    public List<HistoryPdsResearchGroupResponse> getResearchExecuteList() {
+        return dsl.select(HISTORY_PDS_GROUP.PDS_GROUP_ID,
+                          HISTORY_PDS_GROUP.EXECUTE_ID,
+                          HISTORY_PDS_GROUP.EXECUTE_NAME,
+                          HISTORY_PDS_GROUP.PDS_TYPE,
+                          HISTORY_PDS_GROUP.CONNECT_DATA)
+                .from(HISTORY_PDS_GROUP)
+                .where(compareCompanyId())
+                .and(HISTORY_PDS_GROUP.CONNECT_KIND.eq(PDSGroupConnectKind.ARS_RSCH.getCode()))
+                .and(HISTORY_PDS_GROUP.PDS_STATUS.ne(PDSGroupExecuteStatus.EXCLUDED.getCode()))
+                .orderBy(HISTORY_PDS_GROUP.START_DATE.desc())
+                .fetchInto(HistoryPdsResearchGroupResponse.class);
     }
 }

@@ -2,22 +2,24 @@ package kr.co.eicn.ippbx.front.controller.web.admin.outbound.pds;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.model.search.PDSResearchResultSearch;
+import kr.co.eicn.ippbx.model.dto.eicn.HistoryPdsResearchGroupResponse;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.pds.PdsResearchResultApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.research.ResearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.research.ResearchItemApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.PdsResearchResultExcel;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree;
 import kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.PdsResearchResult;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
 import kr.co.eicn.ippbx.model.entity.pds.PdsResearchResultEntity;
-import kr.co.eicn.ippbx.model.search.HistoryPdsGroupSearchRequest;
-import kr.co.eicn.ippbx.model.search.PDSResearchResultSearchRequest;
 import kr.co.eicn.ippbx.model.search.ResearchItemSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -43,20 +45,20 @@ public class PdsResearchResultController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(PdsResearchResultController.class);
 
     private final PdsResearchResultApiInterface apiInterface;
-    private final CommonTypeApiInterface commonTypeApiInterface;
-    private final ResearchApiInterface researchApiInterface;
-    private final ResearchItemApiInterface researchItemApiInterface;
+    private final CommonTypeApiInterface        commonTypeApiInterface;
+    private final ResearchApiInterface          researchApiInterface;
+    private final ResearchItemApiInterface      researchItemApiInterface;
 
-    public static Map<Integer, Map<Integer, String>> createSeqToPathIndexToValueMap(List<PdsResearchResultEntity> list) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public static <T extends PdsResearchResult> Map<Integer, Map<Integer, String>> createSeqToPathIndexToValueMap(List<T> list) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<Integer, Map<Integer, String>> seqToFieldNameToValueMap = new HashMap<>();
 
-        for (PdsResearchResultEntity row : list) {
+        for (T row : list) {
             seqToFieldNameToValueMap.put(row.getSeq(), createPathIndexToValueMap(row));
         }
         return seqToFieldNameToValueMap;
     }
 
-    public static Map<Integer, String> createPathIndexToValueMap(PdsResearchResultEntity entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public static Map<Integer, String> createPathIndexToValueMap(PdsResearchResult entity) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final int MIN_PATH = 1;
         final int MAX_PATH = 20;
 
@@ -70,76 +72,79 @@ public class PdsResearchResultController extends BaseController {
     }
 
     @GetMapping("")
-    public String page(Model model, @ModelAttribute("search") PDSResearchResultSearchRequest search) throws IOException, ResultFailException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        final List<HistoryPdsGroup> executingPdsList = apiInterface.addExecuteLists(new HistoryPdsGroupSearchRequest());
-        if (executingPdsList.size() > 0) {
-            executingPdsList.sort(Comparator.comparing(HistoryPdsGroup::getExecuteName));
-            model.addAttribute("executingPdsList", executingPdsList);
+    public String page(Model model, @ModelAttribute("search") PDSResearchResultSearch search) throws IOException, ResultFailException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        final List<HistoryPdsResearchGroupResponse> executingPdsList = apiInterface.getExecutingPdsList();
 
-            if (search.getExecuteId() == null)
-                search.setExecuteId(executingPdsList.get(0).getExecuteId());
+        if (CollectionUtils.isEmpty(executingPdsList))
+            return "admin/outbound/pds/research-result/ground";
 
-            final Optional<HistoryPdsGroup> pdsGroupOptional = executingPdsList.stream().filter(e -> Objects.equals(e.getExecuteId(), search.getExecuteId())).findFirst();
-            if (pdsGroupOptional.isPresent()) {
+        model.addAttribute("executingPdsList", new MapToLinkedHashMap().toLinkedHashMapByValue(executingPdsList.stream().collect(Collectors.toMap(HistoryPdsResearchGroupResponse::getExecuteId, HistoryPdsResearchGroupResponse::getExecuteName))));
 
-                final HistoryPdsGroup pdsGroup = pdsGroupOptional.get();
+        if (search.getExecuteId() == null)
+            search.setExecuteId(executingPdsList.get(0).getExecuteId());
 
-                final List<PdsResearchResultEntity> list = apiInterface.getList(search.getExecuteId(), search);
-                model.addAttribute("list", list);
+        final Optional<HistoryPdsResearchGroupResponse> executePDSGroupEntityOptional = executingPdsList.stream().filter(e -> Objects.equals(e.getExecuteId(), search.getExecuteId())).findFirst();
+        if (!executePDSGroupEntityOptional.isPresent())
+            throw new IllegalArgumentException("존재하지 않는 PDS실행정보입니다: " + search.getExecuteId());
 
-                final CommonTypeEntity pdsType = commonTypeApiInterface.get(pdsGroup.getPdsType());
-                pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
-                model.addAttribute("pdsType", pdsType);
+        final HistoryPdsResearchGroupResponse executingPds = executePDSGroupEntityOptional.get();
 
-                model.addAttribute("customIdToFieldNameToValueMap", PdsCustominfoController.createCustomIdToFieldNameToValueMap(list.stream().map(PdsResearchResultEntity::getCustomInfo).collect(Collectors.toList()), pdsType));
+        final CommonTypeEntity pdsType = commonTypeApiInterface.get(executingPds.getPdsType());
+        pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
+        model.addAttribute("pdsType", pdsType);
 
-                final List<ResearchTree> researchTrees = researchApiInterface.getTrees(Integer.valueOf(pdsGroup.getConnectData()));
-                final Integer maxLevel = researchTrees.stream().map(ResearchTree::getLevel).max(Comparator.comparingInt(e -> e)).orElse(0);
-                model.addAttribute("maxLevel", maxLevel);
+        final List<ResearchTree> researchTrees = researchApiInterface.getTrees(Integer.valueOf(executingPds.getConnectData()));
+        final Integer maxLevel = researchTrees.stream().map(ResearchTree::getLevel).max(Comparator.comparingInt(e -> e)).orElse(0);
+        model.addAttribute("maxLevel", maxLevel);
 
-                model.addAttribute("seqToPathIndexToValueMap", createSeqToPathIndexToValueMap(list));
+        final ResearchItemSearchRequest itemSearch = new ResearchItemSearchRequest();
+        itemSearch.setItemIds(researchTrees.stream().mapToInt(ResearchTree::getItemId).boxed().distinct().collect(Collectors.toList()));
+        final List<ResearchItem> items = researchItemApiInterface.list(itemSearch);
 
-                final ResearchItemSearchRequest itemSearch = new ResearchItemSearchRequest();
-                itemSearch.setItemIds(researchTrees.stream().mapToInt(ResearchTree::getItemId).boxed().distinct().collect(Collectors.toList()));
-                final List<ResearchItem> items = researchItemApiInterface.list(itemSearch);
+        final Map<String, Map<String, String>> idToNumberToDescription = new HashMap<>();
+        items.forEach(e -> idToNumberToDescription.computeIfAbsent(e.getItemId() + "", k -> new HashMap<>()).put(e.getMappingNumber() + "", e.getWord()));
+        model.addAttribute("idToNumberToDescription", idToNumberToDescription);
 
-                final Map<String, Map<String, String>> idToNumberToDescription = new HashMap<>();
-                for (ResearchItem e : items)
-                    idToNumberToDescription.computeIfAbsent(e.getItemId() + "", k -> new HashMap<>()).put(e.getMappingNumber() + "", e.getWord());
+        final Pagination<PdsResearchResultEntity> pagination = apiInterface.pagination(search.getExecuteId(), search.convertToRequest(""));
+        model.addAttribute("pagination", pagination);
 
-                model.addAttribute("idToNumberToDescription", idToNumberToDescription);
-            }
-        }
+        model.addAttribute("customIdToFieldNameToValueMap", PdsCustominfoController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(PdsResearchResultEntity::getCustomInfo).collect(Collectors.toList()), pdsType));
+        model.addAttribute("seqToPathIndexToValueMap", createSeqToPathIndexToValueMap(pagination.getRows()));
 
         return "admin/outbound/pds/research-result/ground";
     }
 
     @GetMapping("_excel")
-    public void downloadExcel(PDSResearchResultSearchRequest search, HttpServletResponse response) throws IOException, ResultFailException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final List<HistoryPdsGroup> executingPdsList = apiInterface.addExecuteLists(new HistoryPdsGroupSearchRequest());
-        if (executingPdsList.size() == 0)
-            throw new IllegalStateException("PDS 실행이력이 존재하지 않습니다.");
+    public void downloadExcel(PDSResearchResultSearch search, HttpServletResponse response) throws IOException, ResultFailException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final List<HistoryPdsResearchGroupResponse> executingPdsList = apiInterface.getExecutingPdsList();
+
+        if (CollectionUtils.isEmpty(executingPdsList))
+            throw new IllegalStateException("실행한 PDS가 존재하지 않습니다.");
 
         if (search.getExecuteId() == null)
             search.setExecuteId(executingPdsList.get(0).getExecuteId());
 
-        final Optional<HistoryPdsGroup> pdsGroupOptional = executingPdsList.stream().filter(e -> Objects.equals(e.getExecuteId(), search.getExecuteId())).findFirst();
-        if (!pdsGroupOptional.isPresent())
-            throw new IllegalArgumentException("존재하지 않는 PDS 실행이력입니다.");
+        final Optional<HistoryPdsResearchGroupResponse> executePDSGroupEntityOptional = executingPdsList.stream().filter(e -> Objects.equals(e.getExecuteId(), search.getExecuteId())).findFirst();
+        if (!executePDSGroupEntityOptional.isPresent())
+            throw new IllegalArgumentException("존재하지 않는 PDS실행정보입니다: " + search.getExecuteId());
 
-        final HistoryPdsGroup pdsGroup = pdsGroupOptional.get();
+        final HistoryPdsResearchGroupResponse executingPds = executePDSGroupEntityOptional.get();
 
-        final List<PdsResearchResultEntity> list = apiInterface.getList(search.getExecuteId(), search);
-        final CommonTypeEntity pdsType = commonTypeApiInterface.get(pdsGroup.getPdsType());
+        final CommonTypeEntity pdsType = commonTypeApiInterface.get(executingPds.getPdsType());
         pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
 
-        final List<ResearchTree> researchTrees = researchApiInterface.getTrees(Integer.valueOf(pdsGroup.getConnectData()));
+        final List<ResearchTree> researchTrees = researchApiInterface.getTrees(Integer.valueOf(executingPds.getConnectData()));
         final Integer maxLevel = researchTrees.stream().map(ResearchTree::getLevel).max(Comparator.comparingInt(e -> e)).orElse(0);
 
         final ResearchItemSearchRequest itemSearch = new ResearchItemSearchRequest();
         itemSearch.setItemIds(researchTrees.stream().mapToInt(ResearchTree::getItemId).boxed().distinct().collect(Collectors.toList()));
-        final List<ResearchItem> researchItems = researchItemApiInterface.list(itemSearch);
+        final List<ResearchItem> items = researchItemApiInterface.list(itemSearch);
 
-        new PdsResearchResultExcel(list, pdsType, maxLevel, researchItems).generator(response, "결과이력");
+        final Map<String, Map<String, String>> idToNumberToDescription = new HashMap<>();
+        items.forEach(e -> idToNumberToDescription.computeIfAbsent(e.getItemId() + "", k -> new HashMap<>()).put(e.getMappingNumber() + "", e.getWord()));
+
+        final Pagination<PdsResearchResultEntity> pagination = apiInterface.pagination(search.getExecuteId(), search.convertToRequest(""));
+
+        new PdsResearchResultExcel(pagination.getRows(), pdsType, maxLevel, items).generator(response, "설문결과이력");
     }
 }
