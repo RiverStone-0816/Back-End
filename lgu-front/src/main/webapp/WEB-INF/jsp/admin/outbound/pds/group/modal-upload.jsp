@@ -42,10 +42,10 @@
                     <label class="control-label label-required">파일선택</label>
                     <i class="circular red info icon small comment-icon" title="※ 파일 업로드 주의사항 ※
                             1. 첫 행 필수 기입
-                            3. 해당 PDS그룹의 'RID(발신번호)' 설정이 '고객별RID설정에따름'으로 되어 있을 경우, 'RID' 필드 필수 기입(조건부 필수)
-                            4. 위의 필수 기입 필드 누락 시, 데이터 업로드가 실패할 수 있습니다.
-                            5. 필드명 수정 불가. 필드명 수정 시, 데이터 업로드가 실패할 수 있습니다.
-                            6. 모든 셀은 표시 형식이 '텍스트' 형식이어야 합니다."></i>
+                            2. 해당 PDS그룹의 'RID(발신번호)' 설정이 '고객별RID설정에따름'으로 되어 있을 경우, 'RID' 필드 필수 기입(조건부 필수)
+                            3. 필수 기입 필드(빨간 배경) 누락 시, 데이터 업로드가 실패할 수 있습니다.
+                            4. 필드명 수정 불가. 필드명 수정 시, 데이터 업로드가 실패할 수 있습니다.
+                            5. 모든 셀은 표시 형식이 '텍스트' 형식이어야 합니다."></i>
                 </div>
                 <div class="twelve wide column">
                     <form:hidden path="fileName"/>
