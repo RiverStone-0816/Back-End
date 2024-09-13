@@ -247,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`transcribe_learn`
     `learnFileName`  VARCHAR(200) NULL     DEFAULT '' COMMENT '학습모델파일',
     PRIMARY KEY (`seq`) USING BTREE,
     INDEX `company_id` (`company_id`) USING BTREE
-) COMMENT ='EICN 학습그룹' AUTO_INCREMENT = 23
+) COMMENT ='EICN 학습그룹'
 ;
 
 CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`maindb_custom_info`
@@ -365,7 +365,8 @@ CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`member_status`
     PRIMARY KEY (`seq`) USING BTREE,
     INDEX `phoneid` (`phoneid`) USING BTREE,
     INDEX `start_date` (`start_date`) USING BTREE,
-    INDEX `status` (`status`) USING BTREE
+    INDEX `status` (`status`) USING BTREE,
+    INDEX `company_id` (`company_id`) USING BTREE
 );
 
 CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`memo`
@@ -525,7 +526,8 @@ CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`prv_custom_info`
     `PRV_CSCODE_2`               VARCHAR(50)   NULL     DEFAULT '',
     `PRV_CSCODE_3`               VARCHAR(50)   NULL     DEFAULT '',
     PRIMARY KEY (`PRV_SYS_CUSTOM_ID`) USING BTREE,
-    INDEX `PRV_SYS_GROUP_ID` (`PRV_SYS_GROUP_ID`) USING BTREE
+    INDEX `PRV_SYS_GROUP_ID` (`PRV_SYS_GROUP_ID`) USING BTREE,
+    INDEX `PRV_SYS_COMPANY_ID` (`PRV_SYS_COMPANY_ID`) USING BTREE
 );
 
 CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`result_custom_info`
@@ -726,7 +728,8 @@ CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`transcribe_group`
     `recRate`    DOUBLE       NULL DEFAULT '0' COMMENT '인식률',
     PRIMARY KEY (`seq`) USING BTREE,
     INDEX `status` (`status`) USING BTREE,
-    INDEX `userId` (`userId`) USING BTREE
+    INDEX `userId` (`userId`) USING BTREE,
+    INDEX `company_id` (`company_id`) USING BTREE
 );
 
 CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`voc_custom_list`
@@ -889,8 +892,7 @@ CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`wtalk_room`
     INDEX `company_id` (`company_id`) USING BTREE,
     INDEX `sender_key` (`sender_key`) USING BTREE,
     INDEX `user_key` (`user_key`) USING BTREE
-) AUTO_INCREMENT = 37
-;
+);
 
 #################    PDS    #################
 CREATE TABLE IF NOT EXISTS `PDS`.`execute_pds_custom_info`
@@ -1149,14 +1151,13 @@ CREATE TABLE IF NOT EXISTS `PDS`.`result_custom_info`
     `RS_CSCODE_3`    VARCHAR(50)   NULL     DEFAULT '',
     PRIMARY KEY (`seq`) USING BTREE,
     INDEX `result_date` (`result_date`) USING BTREE,
-    INDEX `uniqueid` (`uniqueid`) USING BTREE,
     INDEX `custom_id` (`custom_id`) USING BTREE,
-    INDEX `custom_number` (`custom_number`) USING BTREE,
+    INDEX `click_key` (`click_key`) USING BTREE,
+    INDEX `group_kind` (`group_kind`) USING BTREE,
     INDEX `group_id` (`group_id`) USING BTREE,
     INDEX `userid` (`userid`) USING BTREE,
-    INDEX `group_kind` (`group_kind`) USING BTREE,
-    INDEX `click_key` (`click_key`) USING BTREE,
-    INDEX `userid_tr` (`userid_tr`) USING BTREE,
+    INDEX `custom_number` (`custom_number`) USING BTREE,
+    INDEX `uniqueid` (`uniqueid`) USING BTREE,
     INDEX `company_id` (`company_id`) USING BTREE
 );
 
@@ -1460,5 +1461,6 @@ CREATE TABLE IF NOT EXISTS `STATDB`.`stat_wtalk`
     INDEX `worktime_yn` (`worktime_yn`) USING BTREE,
     INDEX `sender_key` (`sender_key`) USING BTREE,
     INDEX `userid` (`userid`) USING BTREE,
-    INDEX `action_type` (`action_type`) USING BTREE
+    INDEX `action_type` (`action_type`) USING BTREE,
+    INDEX `company_id` (`company_id`) USING BTREE
 );
