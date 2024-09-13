@@ -621,7 +621,8 @@ CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`result_custom_info`
     INDEX `userid` (`userid`) USING BTREE,
     INDEX `group_kind` (`group_kind`) USING BTREE,
     INDEX `click_key` (`click_key`) USING BTREE,
-    INDEX `userid_tr` (`userid_tr`) USING BTREE
+    INDEX `userid_tr` (`userid_tr`) USING BTREE,
+    INDEX `company_id` (`company_id`) USING BTREE
 );
 
 CREATE TABLE IF NOT EXISTS `CUSTOMDB`.`stt_cdr`
@@ -996,7 +997,8 @@ CREATE TABLE IF NOT EXISTS `PDS`.`pds_custom_info`
     `PDS_CSCODE_2`               VARCHAR(100)  NULL     DEFAULT '',
     `PDS_CSCODE_3`               VARCHAR(100)  NULL     DEFAULT '',
     PRIMARY KEY (`PDS_SYS_CUSTOM_ID`) USING BTREE,
-    INDEX `PDS_SYS_GROUP_ID` (`PDS_SYS_GROUP_ID`) USING BTREE
+    INDEX `PDS_SYS_GROUP_ID` (`PDS_SYS_GROUP_ID`) USING BTREE,
+    INDEX `PDS_SYS_COMPANY_ID` (`PDS_SYS_COMPANY_ID`) USING BTREE
 );
 
 CREATE TABLE IF NOT EXISTS `PDS`.`pds_research_result`
@@ -1154,7 +1156,8 @@ CREATE TABLE IF NOT EXISTS `PDS`.`result_custom_info`
     INDEX `userid` (`userid`) USING BTREE,
     INDEX `group_kind` (`group_kind`) USING BTREE,
     INDEX `click_key` (`click_key`) USING BTREE,
-    INDEX `userid_tr` (`userid_tr`) USING BTREE
+    INDEX `userid_tr` (`userid_tr`) USING BTREE,
+    INDEX `company_id` (`company_id`) USING BTREE
 );
 
 #################    STATDB    #################
