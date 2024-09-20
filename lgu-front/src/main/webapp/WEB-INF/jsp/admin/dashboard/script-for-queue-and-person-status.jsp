@@ -85,10 +85,9 @@
                         const queueNames = serviceNumberToQueueName[serviceNumber];
                         if (!queueNames)
                             return false;
-
                         for (let i = 0; i < queueNames.length; i++)
                             return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0
-                                && person.login && peer.isStat;
+                                && person.login && person.isStat;
                     }).length);
                 } else {
                     $(this).text(values(peerStatuses).filter(function (peer) {
@@ -114,7 +113,7 @@
 
                         for (let i = 0; i < queueNames.length; i++)
                             return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0
-                                && !person.login && peer.isStat;
+                                && !person.login && person.isStat;
                     }).length);
                 } else {
                     $(this).text(values(peerStatuses).filter(function (peer) {
@@ -138,7 +137,7 @@
                             return false;
 
                         for (let i = 0; i < queueNames.length; i++)
-                            return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0 && peer.isStat;
+                            return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0 && person.isStat;
                     }).length);
                 } else {
                     $(this).text(values(peerStatuses).filter(function (peer) {
