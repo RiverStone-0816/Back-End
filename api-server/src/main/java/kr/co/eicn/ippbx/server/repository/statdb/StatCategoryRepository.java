@@ -70,7 +70,7 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
 
     @Override
     protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
-        query.groupBy(TABLE.SEQ);
+        query.groupBy(TABLE.IVR_TREE_NAME);
 
         if (SearchCycle.DATE.getCode().equals(standardTime.getCode()))
             query.groupBy(TABLE.STAT_DATE);
@@ -107,15 +107,14 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
         if (!search.getServiceNumbers().isEmpty())
             conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
-        if (!search.getIvrMulti().isEmpty()) {
+        if (search.getIvrMulti().size() > 0 ) {
             for (int i = 0; i < search.getIvrMulti().size(); i++) {
                 if (i == 0)
-                    categoryCondition = TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i) + "%");
+                    categoryCondition = TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%");
                 else
-                    categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i) + "%"));
-
-                conditions.add(categoryCondition);
+                    categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%"));
             }
+            conditions.add(categoryCondition);
         }
 
         if (search.getPerson())
