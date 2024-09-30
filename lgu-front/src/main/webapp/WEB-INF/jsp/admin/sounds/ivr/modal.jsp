@@ -28,6 +28,7 @@
 <c:set var="CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION" value="${IvrMenuType.CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION.code}"/>
 <c:set var="CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION" value="${IvrMenuType.CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION.code}"/>
 <c:set var="CONNECT_INNER_NUMBER_DIRECTLY" value="${IvrMenuType.CONNECT_INNER_NUMBER_DIRECTLY.code}"/>
+<c:set var="CONNECT_INNER_CALLBOT" value="${IvrMenuType.CONNECT_INNER_CALLBOT.code}"/>
 <c:set var="RETRY_MENU" value="${IvrMenuType.RETRY_MENU.code}"/>
 <c:set var="FINISH_AFTER_CONNECT_SOUND" value="${IvrMenuType.FINISH_AFTER_CONNECT_SOUND.code}"/>
 <c:set var="TO_PREVIOUS_MENU" value="${IvrMenuType.TO_PREVIOUS_MENU.code}"/>
@@ -99,6 +100,21 @@
                             <select name="typeDataStrings" data-multiple="multiple">
                                 <option value="">선택안함</option>
                                 <c:forEach var="e" items="${contexts}">
+                                    <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[0] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+            <c:if test="${[CONNECT_INNER_CALLBOT].contains(form.type)}">
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">콜봇(*)</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <select name="typeDataStrings" data-multiple="multiple">
+                                <option value="">선택안함</option>
+                                <c:forEach var="e" items="${callbots}">
                                     <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[0] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
                                 </c:forEach>
                             </select>

@@ -61,10 +61,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -413,5 +410,12 @@ public class CounselCallController extends BaseController {
     public String sttPanel(Model model, @RequestParam(required = false) String channelData) throws IOException, ResultFailException {
         model.addAttribute("personListMap", userApiInterface.list(new PersonSearchRequest()).stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
         return "counsel/call/stt";
+    }
+
+    @GetMapping("modal-call-bot/{uniqueId}/bot")
+    public String modalCallBot(Model model, @PathVariable String uniqueId) throws IOException, ResultFailException {
+        CommonEicnCdrResponse response = recordingHistoryApiInterface.getCallBot(uniqueId);
+        model.addAttribute("cdr", response);
+        return "counsel/call/modal-call-bot";
     }
 }

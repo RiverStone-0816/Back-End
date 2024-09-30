@@ -2,6 +2,9 @@ package kr.co.eicn.ippbx.front.controller.api.record.history;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
+import kr.co.eicn.ippbx.front.service.api.CallBotApiInterface;
+import kr.co.eicn.ippbx.model.CallBotRequest;
+import kr.co.eicn.ippbx.model.CallBotResponse;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;
 import kr.co.eicn.ippbx.model.RecordFile;
@@ -29,6 +32,7 @@ public class RecordingHistoryApiController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(RecordingHistoryApiController.class);
 
     private final RecordingHistoryApiInterface apiInterface;
+    private final CallBotApiInterface          callBotApiInterface;
 
     @GetMapping("{seq}")
     public CommonEicnCdrResponse get(@PathVariable Integer seq) throws IOException, ResultFailException {
@@ -54,5 +58,14 @@ public class RecordingHistoryApiController extends BaseController {
     @DeleteMapping("{seq}")
     public void delete(@PathVariable Integer seq) throws IOException, ResultFailException {
         apiInterface.delete(seq);
+    }
+
+    @GetMapping("call-bot/{callUuid}/{createdDt}/{tenantId}/{serviceCode}/{phoneNumber}")
+    public CallBotResponse callBot(@PathVariable String callUuid, @PathVariable String createdDt, @PathVariable String tenantId, @PathVariable String serviceCode, @PathVariable String phoneNumber) throws IOException {
+        final CallBotRequest request = new CallBotRequest(callUuid, createdDt, tenantId, phoneNumber);
+        if (g.getLguCallBotApiUrl() == null)
+            throw new IllegalArgumentException("콜봇 URL 이 등록되지 않았습니다.\nmaster 에서 등록해주세요.");
+
+        return callBotApiInterface.getCallbot(request, g.getLguCallBotApiUrl().get(tenantId + "_" + serviceCode));
     }
 }

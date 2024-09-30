@@ -20,7 +20,7 @@ public enum ScheduleKind implements CodeHasable<String> {
     EXCEPTION_CONTEXT("C"), VOICE("V"),
     EXCEPTION_CONTEXT_IVR_CONNECT("CI"),
     EXCEPTION_CONTEXT_DIRECT_NUMBER("CD"),
-    SMS("SMS");
+    SMS("SMS"), CALLBOT("B");
 
     private final String code;
 

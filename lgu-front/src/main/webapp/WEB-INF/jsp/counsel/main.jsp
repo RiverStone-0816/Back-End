@@ -466,6 +466,10 @@
             replaceReceivedHtmlInSilence('/counsel/todo-list', '#todo-list');
         }
 
+        function popupCounselCallBot() {
+            popupReceivedHtml('/counsel/call/modal-call-bot/'+audioId.toString()+'/bot', 'modal-call-bot');
+        }
+
         function loadKmsList(id) {
             replaceReceivedHtmlInSilence('/counsel/kms?keyword='+ kmsKeyword +'&id='+ id, '#kms');
         }
@@ -590,7 +594,7 @@
     <script>
         window.ipccCommunicator = new IpccCommunicator();
 
-        let audioId, phoneNumber, customId, callType, callUnique, callingModalTimeoutId, countChk = 0;
+        let audioId, phoneNumber, customId, callType, callUnique, callingModalTimeoutId, countChk = 0, CallBot;
         ipccCommunicator
             .on('LOGIN', function (message, kind /*[ LOGIN_OK | LOGIN_ALREADY | LOGOUT | ... ]*/) {
                 if (kind === "LOGOUT")
@@ -638,6 +642,8 @@
                     audioId = data8;
                     callType = 'I';
                     phoneNumber = data1;
+                    CallBot = data9;
+
                     const callingPath = data3;
                     const extension = data2;
                     const secondNum = data4;
@@ -664,10 +670,16 @@
 
                     // 키워드 차트 초기화
                     if(window.keywordChart != null) window.keywordChart.initialize()
+
+                    if(CallBot === 'CALLBOT')
+                        $('#call-bot').show();
+
                 } else if (kind === 'PICKUP') { //픽업
                     audioId = data8;
                     callType = 'I';
                     phoneNumber = data1;
+                    CallBot = data9;
+
                     const callingPath = data3;
                     const extension = data2;
                     const secondNum = data4;
@@ -694,6 +706,10 @@
 
                     // 키워드 차트 초기화
                     if(window.keywordChart != null) window.keywordChart.initialize()
+
+                    if(CallBot === 'CALLBOT')
+                        $('#call-bot').show();
+
                 } else if (kind === 'ID') { // 인바운드 통화시작
                     if (!audioId || audioId !== data8 || $('#call-custom-input').find('[name=channels]').find('option[value=' + data1 + ']').length === 0)
                         loadCustomInput(null, null, data1, data8)
@@ -712,6 +728,10 @@
                     $('#user-call-history').empty().append('<option>통화진행중</option>');
 
                     loadUserCallHistory(phoneNumber)
+
+                    if(CallBot === 'CALLBOT')
+                        $('#call-bot').show();
+
                 } else if (kind === 'OR') { // 아웃바운드 링울림
                     audioId = data8;
                     callType = 'O';

@@ -75,6 +75,10 @@ public class ScheduleGroupApiInterface extends ApiServerInterface {
         return getList(subUrl + "add-context-list", null, SummaryContextInfoResponse.class).getData();
     }
 
+    public List<SummaryCallbotResponse> addCallbotList() throws IOException, ResultFailException {
+        return getList(subUrl + "add-callbot-list", null, SummaryCallbotResponse.class).getData();
+    }
+
     public void itemCopy(Integer parent, Integer targetParent) throws IOException, ResultFailException {
         post(subUrl + parent + "/" + targetParent + "/copy", null);
     }

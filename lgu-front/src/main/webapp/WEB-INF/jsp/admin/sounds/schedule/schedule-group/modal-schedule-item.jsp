@@ -12,6 +12,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/schedule-group/item/${entity == null ? null : entity.child}"
@@ -96,6 +97,14 @@
                                     <label>음성사서함</label>
                                 </div>
                             </div>
+                            <c:if test="${usingServices.contains('LGUCB')}">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="kind" value="B" class="hidden"/>
+                                        <label>콜봇</label>
+                                    </div>
+                                </div>
+                            </c:if>
                         </div>
                         <div class="inline fields">
                             <div class="field">
@@ -124,7 +133,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row -kind-data" data-kind="S,D,F,C,V,SMS">
+            <div class="row -kind-data" data-kind="S,D,F,C,V,SMS,B">
                 <div class="four wide column">
                     <label class="control-label">음원선택</label>
                     <button type="button" class="ui icon button mini compact remove-margin -sound-play sound-mini -play-trigger" data-sound-input="[name=kindSoundCode]" data-tts-input="[name=ttsData]">
@@ -207,6 +216,20 @@
                     </div>
                 </div>
             </div>
+            <c:if test="${usingServices.contains('LGUCB')}">
+                <div class="row -kind-data" data-kind="B">
+                    <div class="four wide column"><label class="control-label">콜봇</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <select name="kindDataB">
+                                <c:forEach var="e" items="${callbotList}">
+                                    <option value="${g.htmlQuote(e.callbotKey)}" ${entity.kind == 'B' && entity.kindData == e.callbotKey ? 'selected' : null}>${g.htmlQuote(e.serviceName)}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
             <div class="row -kind-data" data-kind="SMS">
                 <div class="four wide column"><label class="control-label label-required">SMS 템플릿</label></div>
                 <div class="twelve wide column">
@@ -326,12 +349,14 @@
         if (data.kind === 'CI') data.kindData = data.kindDataC.concat("|").concat(data.kindDataI)
         if (data.kind === 'CD') data.kindData = data.kindDataC.concat("|").concat(data.kindDataD)
         if (data.kind === 'SMS') data.kindData = data.kindDataSMS;
+        if (data.kind === 'B') data.kindData = data.kindDataB;
 
         delete data.kindDataD;
         delete data.kindDataF;
         delete data.kindDataI;
         delete data.kindDataC;
         delete data.kindDataSMS;
+        delete data.kindDataB;
 
         if (['I','CI','CD'].includes(data.kind)) {
             delete data.kindSoundData;

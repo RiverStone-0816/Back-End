@@ -42,6 +42,7 @@ public class RequestGlobal {
     private static final String REQUEST_GLOBAL_KMS_PASSWORD = "REQUEST_GLOBAL_KMS_PASSWORD";
     private static final String SSO_REQUEST_URL = "SSO_REQUEST_URL";
     private static final String STT_SOCKET_URL = "STT_SOCKET_URL";
+    private static final String REQUEST_GLOBAL_LGU_CALLBOT_API_URL = "REQUEST_GLOBAL_LGU_CALLBOT_API_URL";
 
     private final HttpSession session;
     private final FileService fileService;
@@ -134,6 +135,15 @@ public class RequestGlobal {
     public void setSSORequestSiteUrl(){
         log.info("ssoRequestSiteUrl = {}", ssoRequestSiteUrl);
         session.setAttribute(SSO_REQUEST_URL, ssoRequestSiteUrl);
+    }
+
+    public void setLguCallBotApiUrl(Map<String, String> url) {
+        session.setAttribute(REQUEST_GLOBAL_LGU_CALLBOT_API_URL, url);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getLguCallBotApiUrl() {
+        return (Map<String, String>) session.getAttribute(REQUEST_GLOBAL_LGU_CALLBOT_API_URL);
     }
 
     public String getSTTSocketUrl(){

@@ -69,7 +69,7 @@
                                                     </td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${s.kind == 'I' || s.kind == 'C' || s.kind == 'CI' || s.kind == 'CD'}">
+                                                            <c:when test="${s.kind == 'I' || s.kind == 'C' || s.kind == 'CI' || s.kind == 'CD' || s.kind == 'B'}">
                                                                 ${g.htmlQuote(s.kindDataName)}
                                                             </c:when>
                                                             <c:when test="${s.kind == 'SMS'}">

@@ -199,4 +199,11 @@ public class RecordingHistoryController extends BaseController {
 
         new RecordingHistoryStatExcel(apiInterface.pagination(search).getRows()).generator(response, "녹취_통화이력");
     }
+
+    @GetMapping("modal-call-bot/{seq}")
+    public String callBot(Model model, @PathVariable Integer seq) throws IOException, ResultFailException {
+        CommonEicnCdrResponse response = apiInterface.get(seq);
+        model.addAttribute("cdr", response);
+        return "admin/record/history/history/modal-call-bot";
+    }
 }
