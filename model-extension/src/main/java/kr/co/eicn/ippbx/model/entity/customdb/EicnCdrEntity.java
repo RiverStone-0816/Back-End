@@ -153,7 +153,7 @@ public class EicnCdrEntity extends CommonEicnCdr {
                     result.append("개인전화비수신");
                 else
                     result.append("큐대기중끊음");
-            } else if (startsWith(getDetailCallstatus(), "event_server_inbound")) {
+            } else if (startsWith(getDetailCallstatus(), "event_server_inbound") || startsWith(getDetailCallstatus(), "event_server_ivrkey")) {
                 result.append("연결전끊음");
             } else {
                 result.append(EMPTY);

@@ -179,7 +179,7 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
                             TABLE.ETC3.eq(EMPTY).or(TABLE.ETC3.isNull()).and(TABLE.IN_OUT.eq(CallType.INBOUND.getCode()))
                                     .and(TABLE.BILLSEC.eq(0))
 //                                    .and(DSL.and(TABLE.HANGUP_CAUSE.like("19(%")).or(TABLE.HANGUP_CAUSE.like("17(%")))
-                                    .and(TABLE.DETAIL_CALLSTATUS.like("%event_server_inbound%"))
+                                    .and(TABLE.DETAIL_CALLSTATUS.like("%event_server_inbound%").or(TABLE.DETAIL_CALLSTATUS.like("event_server_ivrkey%")))
                     );
                     break;
                 case CANCEL_CONNECT: // 포기호(헌트대기중끊음)
@@ -187,10 +187,8 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
                             .and(TABLE.SECOND_NUM.ne(EMPTY))
                             .and(DSL.or(TABLE.TURN_OVER_KIND.eq(EMPTY).or(TABLE.TURN_OVER_KIND.isNull()).or(TABLE.TURN_OVER_KIND.eq(PICKUPER.getCode())))));
                     break;
-
                 case TRANSFEREE: //돌려받음
                     conditions.add(TABLE.TURN_OVER_KIND.eq("TRANSFEREE").and(TABLE.TURN_OVER_NUMBER.isNotNull().or(TABLE.TURN_OVER_NUMBER.notEqual(""))));
-
                     break;
                 default:
                     conditions.add(TABLE.TURN_OVER_KIND.eq(search.getEtcStatus()));
