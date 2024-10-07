@@ -142,21 +142,22 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
         final CallStatus byCallStatus = RecordCallSearch.SearchCallStatus.findByCallStatus(search.getCallStatus());
         if (byCallStatus != null) { // 호상태
             switch (byCallStatus) {
-                case fail:
+                case fail:  // 0
                     conditions.add(
                             TABLE.HANGUP_CAUSE.notLike("0(%")
                                     .and(TABLE.HANGUP_CAUSE.notLike("16%"))
                                     .and(TABLE.HANGUP_CAUSE.notLike("19(%"))
                                     .and(TABLE.HANGUP_CAUSE.notLike("17(%"))
+                                    .and(TABLE.HANGUP_CAUSE.notLike("330(%"))
                     );
                     break;
-                case normal_clear:
+                case normal_clear: // 16
                     conditions.add(TABLE.BILLSEC.gt(0));
                     break;
-                case user_busy:
+                case user_busy:  // 17
                     conditions.add(TABLE.HANGUP_CAUSE.like("17(%").and(TABLE.IN_OUT.eq("O")));
                     break;
-                case no_answer:
+                case no_answer: // 19
                     conditions.add(
                             DSL.and(DSL.and(TABLE.HANGUP_CAUSE.like("19(%").and(TABLE.IN_OUT.eq("O")))
                                     .or(DSL.and(TABLE.HANGUP_CAUSE.like("19%").or(TABLE.HANGUP_CAUSE.like("17%")).or(TABLE.HANGUP_CAUSE.like("16%"))
