@@ -159,7 +159,7 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
                 case no_answer:
                     conditions.add(
                             DSL.and(DSL.and(TABLE.HANGUP_CAUSE.like("19(%").and(TABLE.IN_OUT.eq("O")))
-                                    .or(DSL.and(TABLE.HANGUP_CAUSE.like("19%").or(TABLE.HANGUP_CAUSE.like("17%"))
+                                    .or(DSL.and(TABLE.HANGUP_CAUSE.like("19%").or(TABLE.HANGUP_CAUSE.like("17%")).or(TABLE.HANGUP_CAUSE.like("16%"))
                                             .and(TABLE.IN_OUT.eq(CallType.INBOUND.getCode())).and(TABLE.BILLSEC.eq(0)))
                                     )
                             )
