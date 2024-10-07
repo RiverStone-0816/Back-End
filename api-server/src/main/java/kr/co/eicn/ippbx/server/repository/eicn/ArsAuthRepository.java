@@ -87,7 +87,6 @@ public class ArsAuthRepository extends EicnBaseRepository<ArsAuth, kr.co.eicn.ip
 			arsAuth = findAll(ARS_AUTH.USERID.eq(userId)).stream().findFirst();
 		} else {
             final DSLContext pbxDsl = pbxServerInterface.using(pbxServer.getHost());
-			orderByFields.add(ARS_AUTH.INSERT_DATE.desc());
 			arsAuth = findAll(pbxDsl, ARS_AUTH.USERID.eq(userId)).stream().findFirst();
 		}
 
