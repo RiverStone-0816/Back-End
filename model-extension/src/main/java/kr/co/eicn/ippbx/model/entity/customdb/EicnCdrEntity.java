@@ -78,7 +78,7 @@ public class EicnCdrEntity extends CommonEicnCdr {
                     || AdditionalState.EXTEN_TRANSFERER.getCode().equals(getTurnOverKind())
                     || AdditionalState.SCD_TRANSFERER.getCode().equals(getTurnOverKind())
                     || AdditionalState.PICKUPEE.getCode().equals(getTurnOverKind())) {
-                return EMPTY;
+                return "기타";
             }
         }
 
@@ -126,7 +126,6 @@ public class EicnCdrEntity extends CommonEicnCdr {
                 } else {
                     result.append("기타비수신");
                 }
-                nCallResult = 3;
             } else {
                 result.append("실패");
             }
