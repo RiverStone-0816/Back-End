@@ -54,16 +54,17 @@ public class MaindbMultichannelInfoRepository extends CustomDBBaseRepository<Com
             dsl.update(TABLE)
                     .set(TABLE.CHANNEL_TYPE, channel.getType().name())
                     .set(TABLE.CHANNEL_DATA, channel.getValue())
-                    .where(TABLE.SEQ.eq(maindbMultichannelInfoEntity1.getSeq()));
+                    .where(TABLE.SEQ.eq(maindbMultichannelInfoEntity1.getSeq()))
+                    .execute();
         }
     }
 
     public void updateCustomName(String customId, String customName) {
         dsl.update(TABLE)
                 .set(TABLE.MAINDB_CUSTOM_NAME, customName)
-                .where(TABLE.MAINDB_CUSTOM_ID.eq(customId));
+                .where(TABLE.MAINDB_CUSTOM_ID.eq(customId))
+                .execute();
     }
-
 
     public List<MaindbMultichannelInfoEntity> findAllByCustomIds(List<String> customIds) {
         return findAll(TABLE.MAINDB_CUSTOM_ID.in(customIds));
