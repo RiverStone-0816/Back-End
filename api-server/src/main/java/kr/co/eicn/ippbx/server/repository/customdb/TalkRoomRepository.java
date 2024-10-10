@@ -48,13 +48,11 @@ public class TalkRoomRepository extends CustomDBBaseRepository<CommonWtalkRoom, 
         if (StringUtils.isNotEmpty(search.getRoomName()))
             conditions.add(TABLE.ROOM_NAME.like("%" + search.getRoomName() + "%"));
 
-        if (search.getSequence().equals("asc")) {
-            orderByFields.clear();
-            orderByFields.add(TABLE.field(name(search.getSort().field())).asc());
-        } else if (search.getSequence().equals("desc")) {
-            orderByFields.clear();
-            orderByFields.add(TABLE.field(name(search.getSort().field())).desc());
-        }
+        orderByFields.clear();
+        if (search.getSequence().equals("asc"))
+            orderByFields.add(TABLE.field(name(search.getSorts())).asc());
+        else if (search.getSequence().equals("desc"))
+            orderByFields.add(TABLE.field(name(search.getSorts())).desc());
 
         return conditions;
     }

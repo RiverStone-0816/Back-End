@@ -37,7 +37,7 @@
                         <div class="ui grid">
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                <div class="ten wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
+                                <div class="fourteen wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="date-picker from-to">
                                         <div class="dp-wrap">
                                             <label class="control-label" for="startDate" style="display:none">From</label>
@@ -58,15 +58,6 @@
                                         <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">상담자</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="id">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${users}" itemValue="id" itemLabel="idName"/>
-                                        </form:select>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">대화방상태</label></div>
@@ -84,20 +75,23 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">대화방명</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid">
-                                        <form:input path="roomName"/>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">정렬데이터</label></div>
+                                <div class="two wide column"><label class="control-label">상담자</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
-                                        <form:select path="sort" items="${orderTypes}"/>
+                                        <form:select path="id">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${users}" itemValue="id" itemLabel="idName"/>
+                                        </form:select>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="two wide column"><label class="control-label">정렬데이터</label></div>
+                                <div class="two wide column">
+                                    <div class="ui form">
+                                        <form:select path="sorts" items="${orderTypes}"/>
+                                    </div>
+                                </div>
                                 <div class="two wide column"><label class="control-label">정렬순서</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
@@ -105,6 +99,12 @@
                                             <form:option value="desc" label="내림차순"/>
                                             <form:option value="asc" label="오름차순"/>
                                         </form:select>
+                                    </div>
+                                </div>
+                                <div class="two wide column"><label class="control-label">대화방명</label></div>
+                                <div class="four wide column">
+                                    <div class="ui input fluid">
+                                        <form:input path="roomName"/>
                                     </div>
                                 </div>
                             </div>

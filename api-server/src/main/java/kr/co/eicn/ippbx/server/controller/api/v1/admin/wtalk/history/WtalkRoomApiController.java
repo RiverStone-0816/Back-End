@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.wtalk.history;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkRoom;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.customdb.WtalkMsgResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WtalkRoomResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.WtalkRoomEntity;
@@ -63,16 +62,16 @@ public class WtalkRoomApiController extends ApiBaseController {
         if (search.getStartDate() != null && search.getEndDate() != null)
             if (search.getStartDate().after(search.getEndDate()))
                 throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
-        if (Objects.isNull(search.getSort()))
-            search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME);
+        if (Objects.isNull(search.getSorts()))
+            search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME.getCode());
         if (StringUtils.isEmpty(search.getSequence()))
             search.setSequence("desc");
 
-        if (RoomStatus.PROCESS_OR_STOP.getCode().equals(search.getRoomStatus())) {
+        if (RoomStatus.PROCESS_OR_STOP.getCode().equals(search.getRoomStatus()))
             pagination = currentWtalkRoomRepository.pagination(search);
-        } else if (RoomStatus.DOWN.getCode().equals(search.getRoomStatus())) {
+        else if (RoomStatus.DOWN.getCode().equals(search.getRoomStatus()))
             pagination = wtalkRoomService.getRepository().pagination(search);
-        } else
+        else
             throw new IllegalArgumentException(message.getText("messages.validator.invalid", "방상태 (진행.중지/내려짐)"));
 
         final List<WtalkRoomResponse> rows = pagination.getRows().stream()
