@@ -28,6 +28,8 @@ public class ManualRepository extends EicnBaseRepository<BoardNoticeInfo,kr.co.e
     public ManualRepository(ManualXFileRepository manualXFileRepository) {
         super(BOARD_NOTICE_INFO,BOARD_NOTICE_INFO.ID,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo.class);
         this.manualXFileRepository = manualXFileRepository;
+
+        orderByFields.add(BOARD_NOTICE_INFO.CREATED_AT.desc());
     }
 
     public Long nextId() {
@@ -36,7 +38,6 @@ public class ManualRepository extends EicnBaseRepository<BoardNoticeInfo,kr.co.e
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo> pagination(BoardSearchRequest search) {
-        orderByFields.add(BOARD_NOTICE_INFO.CREATED_AT.desc());
         return super.pagination(search, conditions(search));
     }
 

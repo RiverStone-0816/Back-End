@@ -47,10 +47,14 @@ public class WtalkRoomRepository extends CustomDBBaseRepository<CommonWtalkRoom,
         if (StringUtils.isNotEmpty(search.getRoomName()))
             conditions.add(TABLE.ROOM_NAME.like("%" + search.getRoomName() + "%"));
 
-        if (search.getSequence().equals("asc"))
+        if (search.getSequence().equals("asc")) {
+            orderByFields.clear();
             orderByFields.add(TABLE.field(name(search.getSorts().field())).asc());
-        else if (search.getSequence().equals("desc"))
+        }
+        else if (search.getSequence().equals("desc")) {
+            orderByFields.clear();
             orderByFields.add(TABLE.field(name(search.getSorts().field())).desc());
+        }
 
         return conditions;
     }

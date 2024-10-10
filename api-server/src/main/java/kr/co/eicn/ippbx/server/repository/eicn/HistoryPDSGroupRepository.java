@@ -70,7 +70,6 @@ public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGrou
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup> findAll(HistoryPdsGroupSearchRequest search) {
-        orderByFields.add(HISTORY_PDS_GROUP.START_DATE.desc());
         return findAll(conditions(search));
     }
 

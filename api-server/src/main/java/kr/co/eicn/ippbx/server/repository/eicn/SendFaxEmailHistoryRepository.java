@@ -23,10 +23,11 @@ public class SendFaxEmailHistoryRepository extends EicnBaseRepository<SendFaxEma
 
     public SendFaxEmailHistoryRepository() {
         super(SEND_FAX_EMAIL, SEND_FAX_EMAIL.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFaxEmail.class);
+
+        orderByFields.add(SEND_FAX_EMAIL.ID.asc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFaxEmail> pagination(SendFaxEmailHistorySearchRequest search) {
-        orderByFields.add(SEND_FAX_EMAIL.ID.asc());
         return super.pagination(search, conditions(search));
     }
 

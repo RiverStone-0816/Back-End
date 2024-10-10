@@ -23,10 +23,11 @@ public class LoginHistoryRepository extends EicnBaseRepository<LoginHistory, kr.
 
     public LoginHistoryRepository() {
         super(LOGIN_HISTORY, LOGIN_HISTORY.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.LoginHistory.class);
+
+        orderByFields.add(LOGIN_HISTORY.LOGIN_DATE.desc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.LoginHistory> pagination(LoginHistorySearchRequest search) {
-        orderByFields.add(LOGIN_HISTORY.LOGIN_DATE.desc());
         return super.pagination(search, conditions(search));
     }
 

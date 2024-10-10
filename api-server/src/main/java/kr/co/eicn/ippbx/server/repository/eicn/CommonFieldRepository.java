@@ -27,6 +27,8 @@ public class CommonFieldRepository extends EicnBaseRepository<CommonField, kr.co
     public CommonFieldRepository(CommonCodeRepository commonCodeRepository) {
         super(COMMON_FIELD, COMMON_FIELD.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField.class);
         this.commonCodeRepository = commonCodeRepository;
+
+        orderByFields.add(COMMON_FIELD.SEQ.asc());
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField> findAllCodeField() {
@@ -66,8 +68,6 @@ public class CommonFieldRepository extends EicnBaseRepository<CommonField, kr.co
         conditions.add(COMMON_FIELD.FIELD_ID.notEqual(fieldId));
         conditions.add(COMMON_FIELD.FIELD_ID.notLike("%CODE_1"));
         conditions.add(COMMON_FIELD.FIELD_TYPE.eq("CODE"));
-
-        orderByFields.add(COMMON_FIELD.SEQ.asc());
 
         return findAll(conditions);
     }

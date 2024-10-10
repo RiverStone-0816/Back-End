@@ -76,6 +76,8 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         this.commonTypeRepository = commonTypeRepository;
         this.cacheService = cacheService;
         this.pbxServerInterface = pbxServerInterface;
+
+        orderByFields.add(PDS_GROUP.LAST_EXECUTE_DATE.asc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup> pagination(PDSGroupSearchRequest search) {
@@ -425,9 +427,6 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
 
         conditions.add(PDS_GROUP.LAST_EXECUTE_STATUS.notEqual(""));
         conditions.add(PDS_GROUP.LAST_EXECUTE_STATUS.notEqual("D"));
-
-        orderByFields.clear();
-        orderByFields.add(PDS_GROUP.LAST_EXECUTE_DATE.asc());
 
         return conditions;
     }
