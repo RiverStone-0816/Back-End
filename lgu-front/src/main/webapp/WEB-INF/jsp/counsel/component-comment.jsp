@@ -123,6 +123,8 @@
         $('#comment-modal-wrap .content-wrap .request-name').text(requesterName)
         $('#comment-modal-wrap .content-wrap .request-table td.value').text(requesterContent)
         $('#comment-modal-wrap .content-wrap .reply-table td.value').text(replyContent)
+        $('#detail-view .comment-wrap').show()
+        $('#detail-view .info-file').hide()
 
     })
     // 질문/답변 모달 닫기

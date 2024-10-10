@@ -324,6 +324,44 @@ public class KmsGraphQLInterface {
         }
     }
 
+    public GetNoticeList getSearchNotice() {
+        getAuthenticate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(g.getKmsToken());
+
+        String query = "query { searchNotice {\n" +
+                "  rows {\n" +
+                "   id\n" +
+                "   important\n" +
+                "   title\n" +
+                "   content\n" +
+                "   hits\n" +
+                "   creator\n" +
+                "   createdAt\n" +
+                "   creatorName\n" +
+                "   files {\n" +
+                "    company\n" +
+                "    id\n" +
+                "    size\n" +
+                "    originalName\n" +
+                "    createdAt } } } }";
+        Map<String, Object> variables = Collections.emptyMap();
+        Map<String, Object> body = new HashMap<>();
+        body.put("query", query);
+        body.put("variables", variables);
+
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<GetNoticeList> responseEntity = restTemplate.postForEntity(KMS_GRAPHQL_URL, requestEntity, GetNoticeList.class);
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            return responseEntity.getBody();
+        } else {
+            System.out.println("Failed to call GraphQL API");
+            return null;
+        }
+    }
+
     public GetKnowledgeList getSearchKnowledge(String keyword, Integer category, String sort, String searchTypeFlag) throws JsonProcessingException {
 //        checkExistsKmsAccessToken();
         getAuthenticate();
@@ -792,6 +830,35 @@ public class KmsGraphQLInterface {
     @Data
     public static class GetKnowledge {
         private List<Knowledge> rows;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class GetNoticeList {
+        private SearchNotices data;
+    }
+
+    @Data
+    public static class SearchNotices {
+        private SearchNotice searchNotice;
+    }
+
+    @Data
+    public static class SearchNotice {
+        private List<Notice> rows;
+    }
+
+    @Data
+    public static class Notice {
+        private Integer id;
+        private boolean important;
+        private String title;
+        private String content;
+        private Integer hits;
+        private Integer creator;
+        private Timestamp createdAt;
+        private String creatorName;
+        private List<HashMap<String, Object>> files;
     }
 
     @Data

@@ -152,6 +152,7 @@
 #assist-custom-sidebar #assist-custom-sidebar-wrap .content .top .top-inner #detail-view .detail-view-inner-wrap .info-wrap .info-icon-list .item .icon.star {margin: 0; cursor: pointer;}
 #assist-custom-sidebar #assist-custom-sidebar-wrap .content .top .top-inner #detail-view .detail-view-inner-wrap .info-wrap .info-icon-list .item .icon.star.active {color: #dfdf0f;}
 #assist-custom-sidebar #assist-custom-sidebar-wrap .content .top .top-inner #detail-view .detail-view-inner-wrap .info-wrap .info-icon-list .item .value {color: #b7b7b7;}
+#assist-custom-sidebar #assist-custom-sidebar-wrap .content .top .top-inner #detail-view .detail-view-inner-wrap .info-file {margin-top: 12px;}
 
 #assist-custom-sidebar #assist-custom-sidebar-wrap .content .bottom {display: flex; flex-direction: column; align-items: stretch; height: 40%; max-height: 450px; overflow-y: hidden; padding: 15px 10px 10px; border-top: 1px solid #DCDCDC;}
 #assist-custom-sidebar #assist-custom-sidebar-wrap .content .bottom .dragger-box {display: flex; flex-direction: row; justify-content: space-between;  height: 100%; overflow-y: hidden;}

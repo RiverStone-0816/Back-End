@@ -260,6 +260,12 @@ public class CounselController extends BaseController {
         return ResponseEntity.ok(data(result));
     }
 
+    @GetMapping("kms/notice/{id}")
+    public ResponseEntity<JsonResult<KmsGraphQLInterface.Notice>> getKmsNotice(Model model, @PathVariable Integer id) {
+        final KmsGraphQLInterface.Notice notice = kmsGraphQLInterface.getSearchNotice().getData().getSearchNotice().getRows().stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
+        return ResponseEntity.ok(data(notice));
+    }
+
     // kms 지식정보 상세 조회 (modal)
     @GetMapping("kms/{id}/modal")
     public String getKmsViewModal(Model model, @PathVariable Integer id) throws IOException {
@@ -367,6 +373,14 @@ public class CounselController extends BaseController {
         model.addAttribute("recommendList", recommendList);
 
         return "counsel/component-recommend-rank";
+    }
+
+    @GetMapping(value = "kms/component", params = "type=notice")
+    public String getKmsComponentNotice(Model model) throws IOException {
+        final List<KmsGraphQLInterface.Notice> noticeList = kmsGraphQLInterface.getSearchNotice().getData().getSearchNotice().getRows();
+        model.addAttribute("noticeList", noticeList);
+
+        return "counsel/component-notice";
     }
 
     /**

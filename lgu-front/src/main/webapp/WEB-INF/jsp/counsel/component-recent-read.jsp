@@ -66,6 +66,8 @@
             $('#detail-view .info-icon-list .views .value').text(hits)
             $('#detail-view .info-icon-list .like').html(likeTag)
             $('#detail-view .info-icon-list .bookmark').html(bookmarkTag)
+            $('#detail-view .comment-wrap').show()
+            $('#detail-view .info-file').hide()
         })
     }
 

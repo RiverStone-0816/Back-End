@@ -167,6 +167,9 @@
                                     <li class="item bookmark"><i class="thumbs up outline icon"></i> <span class="value">3</span></li>
                                 </ul>
                             </div>
+                            <div class="info-file">
+                                첨부파일 : <a href="#">첨부파일1</a>, <a href="#">첨부파일2</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,6 +194,9 @@
 
                 <div class="bottom-menu-box" id="slider">
                     <ul class="bottom-menus">
+                        <li class="-dashboard-component" data-id="0" data-name="공지" data-type="notice" data-value="">
+                            공지
+                        </li>
                         <li class="-dashboard-component" data-id="1" data-name="북마크" data-type="bookmark" data-value="">
                             북마크
                         </li>
@@ -298,6 +304,8 @@
                     $('#detail-view .info-icon-list .views').html(visibleTag)
                     $('#detail-view .info-icon-list .like').html(likeTag)
                     $('#detail-view .info-icon-list .bookmark').html(bookmarkTag)
+                    $('#detail-view .comment-wrap').show()
+                    $('#detail-view .info-file').hide()
 
                     // 상세보기 좋아요 기능
                     $('#assist-custom-sidebar #detail-view .info-icon-list .item .icon.thumbs').on('click', (e) => {

@@ -97,6 +97,8 @@
 
         // 이벤트 다시 바인드
         initialBindingEvent()
+        $('#detail-view .comment-wrap').show()
+        $('#detail-view .info-file').hide()
       })
     })
   }
