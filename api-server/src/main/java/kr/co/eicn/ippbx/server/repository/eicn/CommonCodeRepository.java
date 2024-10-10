@@ -21,6 +21,7 @@ public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.e
 
     public CommonCodeRepository() {
         super(COMMON_CODE, COMMON_CODE.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode.class);
+        orderByFields.add(COMMON_CODE.SEQUENCE.asc());
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> findAllByType(Integer type) {
@@ -28,7 +29,6 @@ public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.e
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> findAllByTypeField(Integer type, String fieldId) {
-        orderByFields.add(COMMON_CODE.SEQUENCE.asc());
         return findAll(COMMON_CODE.TYPE.eq(type).and(COMMON_CODE.FIELD_ID.eq(fieldId)));
     }
 

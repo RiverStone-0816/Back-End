@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
+import static org.jooq.impl.DSL.name;
 
 @Getter
 @Repository
@@ -77,11 +78,12 @@ public class CurrentWtalkRoomRepository extends EicnBaseRepository<CurrentWtalkR
             conditions.add(CURRENT_WTALK_ROOM.SENDER_KEY.eq(search.getSenderKey()));
         if (StringUtils.isNotEmpty(search.getRoomName()))
             conditions.add(CURRENT_WTALK_ROOM.ROOM_NAME.like("%" + search.getRoomName() + "%"));
+
         orderByFields.clear();
         if (search.getSequence().equals("asc"))
-            orderByFields.add(CURRENT_WTALK_ROOM.field(search.getSorts().field()).asc());
-        else
-            orderByFields.add(CURRENT_WTALK_ROOM.field(search.getSorts().field()).desc());
+            orderByFields.add(CURRENT_WTALK_ROOM.field(name(search.getSorts())).asc());
+        else if (search.getSequence().equals("desc"))
+            orderByFields.add(CURRENT_WTALK_ROOM.field(name(search.getSorts())).desc());
 
         return conditions;
     }

@@ -2,13 +2,14 @@ package kr.co.eicn.ippbx.model.search;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.co.eicn.ippbx.model.Constants;
-import kr.co.eicn.ippbx.util.SortField;
+import kr.co.eicn.ippbx.util.CodeHasable;
 import kr.co.eicn.ippbx.util.page.PageForm;
 import kr.co.eicn.ippbx.util.page.PageQueryable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.sql.Date;
+import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -31,21 +32,31 @@ public class TalkRoomSearchRequest extends PageForm {
     @PageQueryable
     private String roomName;    //대화방명
     @PageQueryable
-    private Sorts sorts = Sorts.START_TIME;         //정렬데이터
+    private String sorts = Sorts.START_TIME.getCode();         //정렬데이터
     @PageQueryable
     private String sequence = "desc";    //정렬순서 desc | asc
 
     /**
      *  START_TIME : 시작시간, LAST_TIME : 마지막메시지시간
      * */
-    public enum Sorts implements SortField {
+    public enum Sorts implements CodeHasable<String> {
         START_TIME("room_start_time"), LAST_TIME("room_last_time");
 
-        private String field;
+        private String code;
 
-        Sorts(String field) { this.field = field;}
+        Sorts(String field) { this.code = field;}
 
-        @Override
-        public String field() {return this.field;}
+        public static Sorts of(String value) {
+            for (Sorts type : Sorts.values()) {
+                if (Objects.equals(type.code, value))
+                    return type;
+            }
+
+            return null;
+        }
+
+        public String getCode() {
+            return code;
+        }
     }
 }

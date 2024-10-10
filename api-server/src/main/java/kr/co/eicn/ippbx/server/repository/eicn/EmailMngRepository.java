@@ -21,10 +21,10 @@ public class EmailMngRepository extends EicnBaseRepository<EmailServiceInfo, kr.
 
     public EmailMngRepository() {
         super(EMAIL_SERVICE_INFO, EMAIL_SERVICE_INFO.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailServiceInfo.class);
+        orderByFields.add(EMAIL_SERVICE_INFO.SEQ.asc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailServiceInfo> pagination(EmailMngSearchRequest search) {
-        orderByFields.add(EMAIL_SERVICE_INFO.SEQ.asc());
         return super.pagination(search, conditions(search));
     }
 

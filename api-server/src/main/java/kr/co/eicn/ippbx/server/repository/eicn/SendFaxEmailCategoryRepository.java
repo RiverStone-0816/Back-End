@@ -24,10 +24,11 @@ public class SendFaxEmailCategoryRepository extends EicnBaseRepository<SendCateg
 
     public SendFaxEmailCategoryRepository() {
         super(SEND_CATEGORY, SEND_CATEGORY.CATEGORY_CODE, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory.class);
+
+        orderByFields.add(SEND_CATEGORY.CATEGORY_CODE.asc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory> pagination(SendCategorySearchRequest search) {
-        orderByFields.add(SEND_CATEGORY.CATEGORY_CODE.asc());
         return super.pagination(search, conditions(search));
     }
 

@@ -60,7 +60,7 @@ public class WtalkHistoryController extends BaseController {
             search.setSequence("desc");
 
         if (search.getSorts() == null)
-            search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME);
+            search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME.getCode());
 
         final Pagination<WtalkRoomResponse> pagination = apiInterface.pagination(search);
         model.addAttribute("pagination", pagination);
@@ -73,7 +73,7 @@ public class WtalkHistoryController extends BaseController {
 
         model.addAttribute("users", searchApiInterface.persons());
 
-        final Map<String, String> orderTypes = FormUtils.options(false, TalkRoomSearchRequest.Sorts.class);
+        final Map<String, String> orderTypes = FormUtils.optionsOfCode(TalkRoomSearchRequest.Sorts.class);
         model.addAttribute("orderTypes", orderTypes);
 
         return "admin/wtalk/history/ground";
