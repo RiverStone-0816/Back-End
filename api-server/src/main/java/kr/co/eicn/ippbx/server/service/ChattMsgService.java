@@ -14,10 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +24,7 @@ public class ChattMsgService extends ApiBaseService implements ApplicationContex
     private ApplicationContext applicationContext;
     private final ChattMsgReadService chattMsgReadService;
     private final PersonListRepository personListRepository;
+    final ArrayList<String> userPool = new ArrayList<>();
 
     public ChattMsgService(ChattMsgReadService chattMsgReadService, PersonListRepository personListRepository) {
         this.chattMsgReadService = chattMsgReadService;
@@ -51,10 +49,20 @@ public class ChattMsgService extends ApiBaseService implements ApplicationContex
     }
 
     public void setLastReadMessage(List<ChattRoomMemberEntity> entities, List<CommonChattMsgRead> msgReadList, String messageId) {
-        final Map<String, CommonChattMsgRead> msgRead = msgReadList.stream().filter(e -> e.getMessageId().equals(messageId)).collect(Collectors.toMap(CommonChattMsgRead::getUserid, e -> e));
+        userPool.clear();
+        final Map<String, CommonChattMsgRead> msgRead = msgReadList.stream().filter(e -> e.getMessageId().equals(messageId) && userIdDuplicateCheck(e.getUserid())).collect(Collectors.toMap(CommonChattMsgRead::getUserid, e -> e));
         for (ChattRoomMemberEntity entity : entities) {
             if (Objects.isNull(entity.getLastReadMessageId()) && Objects.isNull(msgRead.get(entity.getUserid())))
                 entity.setLastReadMessageId(messageId);
+        }
+    }
+
+    private boolean userIdDuplicateCheck(String userId) {
+        if (userPool.contains(userId))
+            return false;
+        else {
+            userPool.add(userId);
+            return true;
         }
     }
 
