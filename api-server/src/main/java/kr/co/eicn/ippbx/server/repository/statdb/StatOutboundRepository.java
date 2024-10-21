@@ -1,11 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatOutbound;
 import kr.co.eicn.ippbx.model.dto.eicn.DashServiceStatResponse;
 import kr.co.eicn.ippbx.model.entity.statdb.StatOutboundEntity;
 import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatOutboundSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatTotalSearchRequest;
+import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
+import kr.co.eicn.ippbx.util.FunctionUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -15,11 +18,13 @@ import org.jooq.SelectJoinStep;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.jooq.impl.DSL.*;
 
@@ -28,6 +33,9 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
     private final Logger logger = LoggerFactory.getLogger(StatOutboundRepository.class);
 
     private final CommonStatOutbound TABLE;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     public StatOutboundRepository(String companyId) {
         super(new CommonStatOutbound(companyId), new CommonStatOutbound(companyId).SEQ, StatOutboundEntity.class);
@@ -57,8 +65,20 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
     private List<Condition> conditions(StatOutboundSearchRequest search) {
         final List<Condition> conditions = defaultConditions(search);
 
-        if (!search.getServiceNumbers().isEmpty())
-            conditions.add(TABLE.CID_NUMBER.in(search.getServiceNumbers()));
+        if (!search.getServiceNumbers().isEmpty()) {
+            final Map<String, ServiceList> serviceListMap = serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(ServiceList::getSvcNumber)).collect(Collectors.toMap(ServiceList::getSvcNumber, e -> e));
+            Condition serviceCondition = DSL.noCondition();
+
+            for (String serviceNumber : search.getServiceNumbers()) {
+                if (serviceListMap.containsKey(serviceNumber)) {
+                    final ServiceList searchTargetService = serviceListMap.get(serviceNumber);
+                    serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.in(searchTargetService.getSvcNumber(), searchTargetService.getSvcCid()));
+                } else
+                    serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(serviceNumber));
+            }
+
+            conditions.add(serviceCondition);
+        }
 
         return conditions;
     }
@@ -68,10 +88,23 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
     }
 
     private List<Condition> conditions(StatTotalSearchRequest search) {
+
         final List<Condition> conditions = defaultConditions(search);
 
-        if (!search.getServiceNumbers().isEmpty())
-            conditions.add(TABLE.CID_NUMBER.in(search.getServiceNumbers()));
+        if (!search.getServiceNumbers().isEmpty()) {
+            final Map<String, ServiceList> serviceListMap = serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(ServiceList::getSvcNumber)).collect(Collectors.toMap(ServiceList::getSvcNumber, e -> e));
+            Condition serviceCondition = DSL.noCondition();
+
+            for (String serviceNumber : search.getServiceNumbers()) {
+                if (serviceListMap.containsKey(serviceNumber)) {
+                    final ServiceList searchTargetService = serviceListMap.get(serviceNumber);
+                    serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.in(searchTargetService.getSvcNumber(), searchTargetService.getSvcCid()));
+                } else
+                    serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(serviceNumber));
+            }
+
+            conditions.add(serviceCondition);
+        }
 
         return conditions;
     }
