@@ -205,4 +205,8 @@ public class WtalkScheduleInfoRepository extends EicnBaseRepository<WtalkSchedul
 			return row;
 		}).collect(Collectors.groupingBy(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkScheduleInfo::getSenderKey));
 	}
+
+	public Boolean isExistGroupId(Integer groupId) {
+		return super.fetchCount(WTALK_SCHEDULE_INFO.GROUP_ID.eq(groupId)) > 0;
+	}
 }

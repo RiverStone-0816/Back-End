@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.WtalkMentRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleGroupListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleGroupRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleInfoRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,7 @@ public class WtalkScheduleGroupApiController extends ApiBaseController {
 	private final WtalkScheduleGroupRepository repository;
 	private final WtalkScheduleGroupListRepository wtalkScheduleGroupListRepository;
 	private final WtalkMentRepository wtalkMentRepository;
+    private final WtalkScheduleInfoRepository wtalkScheduleInfoRepository;
 
 	/**
 	 * 스케쥴유형 목록조회
@@ -66,6 +68,9 @@ public class WtalkScheduleGroupApiController extends ApiBaseController {
 	 */
 	@DeleteMapping("{parent}")
 	public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer parent) {
+		if (wtalkScheduleInfoRepository.isExistGroupId(parent))
+			throw new IllegalStateException("주간/일별 스케쥴러에 등록된 유형은 삭제할 수 없습니다.");
+
 		repository.deleteOnIfNullThrow(parent);
 		return ResponseEntity.ok(create());
 	}
