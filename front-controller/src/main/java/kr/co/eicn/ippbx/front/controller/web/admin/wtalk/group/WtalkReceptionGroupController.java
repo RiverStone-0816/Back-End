@@ -51,12 +51,13 @@ public class WtalkReceptionGroupController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") TalkMemberGroupFormRequest form) throws IOException, ResultFailException {
-        final Map<String, String> addOnPersons = new HashMap<>();
-        apiInterface.addOnPersons().forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
-        model.addAttribute("addOnPersons", new MapToLinkedHashMap().toLinkedHashMapByValue(addOnPersons));
-        final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
         model.addAttribute("distributionType", FormUtils.options(TalkMemberDistributionType.class));
+
+        if (!model.containsAttribute("addOnPersons")) {
+            final Map<String, String> addOnPersons = new HashMap<>();
+            apiInterface.addOnPersons().forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
+            model.addAttribute("addOnPersons", new MapToLinkedHashMap().toLinkedHashMapByValue(addOnPersons));
+        }
 
         return "admin/wtalk/group/reception-group/modal";
     }
@@ -70,11 +71,10 @@ public class WtalkReceptionGroupController extends BaseController {
         final Map<String, String> addOnPersons = new HashMap<>();
         apiInterface.addOnPersons(entity.getGroupId()).forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
         model.addAttribute("addOnPersons", new MapToLinkedHashMap().toLinkedHashMapByValue(addOnPersons));
-        model.addAttribute("distributionType", FormUtils.options(TalkMemberDistributionType.class));
 
         for (SummaryWtalkGroupPersonResponse person : entity.getPersons())
             addOnPersons.remove(person.getId());
 
-        return "admin/wtalk/group/reception-group/modal";
+        return modal(model, form);
     }
 }

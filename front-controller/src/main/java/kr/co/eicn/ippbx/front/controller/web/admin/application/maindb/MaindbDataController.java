@@ -3,6 +3,9 @@ package kr.co.eicn.ippbx.front.controller.web.admin.application.maindb;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.MaindbDataSearch;
+import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceSummaryInfoResponse;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
@@ -52,6 +55,7 @@ public class MaindbDataController extends BaseController {
     private final MaindbGroupApiInterface maindbGroupApiInterface;
     private final CommonTypeApiInterface commonTypeApiInterface;
     private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    private final WebchatConfigApiInterface webchatConfigApiInterface;
 
     public static <T extends CommonMaindbCustomInfo> Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<T> list, CommonTypeEntity customDbType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = new HashMap<>();
@@ -138,8 +142,10 @@ public class MaindbDataController extends BaseController {
 
         form.setGroupSeq(entity.getMaindbSysGroupId());
 
+        final Map<String, String> chatServiceMap = webchatConfigApiInterface.list().stream().collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
+        talkServices.putAll(chatServiceMap);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         final MaindbGroupDetailResponse customGroup = maindbGroupApiInterface.get(entity.getMaindbSysGroupId());
         model.addAttribute("customGroup", customGroup);

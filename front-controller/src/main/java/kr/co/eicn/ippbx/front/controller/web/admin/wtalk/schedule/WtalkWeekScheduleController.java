@@ -48,7 +48,10 @@ public class WtalkWeekScheduleController extends BaseController {
         model.addAttribute("list", list);
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(search.getGroupCode()));
 
+        final Map<String, String> chatBotServices = webchatConfigApiInterface.list().stream().filter(e -> StringUtils.isNotEmpty(e.getSenderKey()))
+                .collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
+        talkServices.putAll(chatBotServices);
         model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().collect(Collectors.toMap(SummaryWtalkScheduleInfoResponse::getParent, SummaryWtalkScheduleInfoResponse::getName));

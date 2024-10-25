@@ -4,11 +4,13 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
+import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
 import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.wtalk.history.WtalkHistoryApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.TalkHistoryStatExcel;
 import kr.co.eicn.ippbx.model.dto.customdb.WtalkMsgResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkServiceResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WtalkRoomResponse;
 import kr.co.eicn.ippbx.model.enums.RoomStatus;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
@@ -43,10 +45,11 @@ import java.util.stream.Collectors;
 public class WtalkHistoryController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(WtalkHistoryController.class);
 
-    private final WtalkHistoryApiInterface apiInterface;
+    private final WtalkHistoryApiInterface        apiInterface;
     private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
-    private final ChatbotApiInterface chatbotApiInterface;
-    private final SearchApiInterface searchApiInterface;
+    private final ChatbotApiInterface             chatbotApiInterface;
+    private final SearchApiInterface              searchApiInterface;
+    private final WebchatConfigApiInterface       webchatConfigApiInterface;
 
     @Value("${eicn.wtalk.socket.id}")
     private String talkSocketId;
@@ -68,7 +71,9 @@ public class WtalkHistoryController extends BaseController {
         final Map<String, String> roomStatuses = FormUtils.optionsOfCode(RoomStatus.PROCESS_OR_STOP, RoomStatus.DOWN);
         model.addAttribute("roomStatuses", roomStatuses);
 
+        final Map<String, String> chatServiceMap = webchatConfigApiInterface.list().stream().collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
+        talkServices.putAll(chatServiceMap);
         model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         model.addAttribute("users", searchApiInterface.persons());
@@ -84,19 +89,23 @@ public class WtalkHistoryController extends BaseController {
         final WtalkRoomResponse entity = apiInterface.get(seq, roomStatus);
         model.addAttribute("entity", entity);
 
-        final List<WtalkMsgResponse> messageHistory =  apiInterface.messageHistory(roomId).stream().map(e -> {
-            if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
-            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
+        final List<WtalkMsgResponse> messageHistory = apiInterface.messageHistory(roomId).stream().map(e -> {
+            if (e.getSendReceive().equals("SB") && e.getType().equals("block"))
+                e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
+            if (e.getSendReceive().equals("S") && e.getType().equals("block"))
+                e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
             if (e.getSendReceive().equals("RARC") || e.getSendReceive().equals("RVRC")) {
-                String[] records = e.getContent().replaceAll("\"","").split(",");
+                String[] records = e.getContent().replaceAll("\"", "").split(",");
                 String record = "";
                 for (String r : records) {
-                    if (r.contains("record_file:")) record = r.replaceAll("record_file:","").replaceAll("}","");
-                };
+                    if (r.contains("record_file:")) record = r.replaceAll("record_file:", "").replaceAll("}", "");
+                }
+                ;
                 e.setContent(record);
             }
             return e;
-        }).collect(Collectors.toList());;
+        }).collect(Collectors.toList());
+        ;
         messageHistory.sort(Comparator.comparingInt(WtalkMsgResponse::getSeq));
         model.addAttribute("messageHistory", messageHistory);
 
@@ -112,14 +121,17 @@ public class WtalkHistoryController extends BaseController {
         model.addAttribute("entity", entity);
 
         final List<WtalkMsgResponse> messageHistory = apiInterface.messageHistory(roomId).stream().map(e -> {
-            if (e.getSendReceive().equals("SB") && e.getType().equals("block") ) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
-            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
+            if (e.getSendReceive().equals("SB") && e.getType().equals("block"))
+                e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
+            if (e.getSendReceive().equals("S") && e.getType().equals("block"))
+                e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
             if (e.getSendReceive().equals("RARC") || e.getSendReceive().equals("RVRC")) {
-                String[] records = e.getContent().replaceAll("\"","").split(",");
+                String[] records = e.getContent().replaceAll("\"", "").split(",");
                 String record = "";
                 for (String r : records) {
-                    if (r.contains("record_file:")) record = r.replaceAll("record_file:","").replaceAll("}","");
-                };
+                    if (r.contains("record_file:")) record = r.replaceAll("record_file:", "").replaceAll("}", "");
+                }
+                ;
                 e.setContent(record);
             }
             return e;

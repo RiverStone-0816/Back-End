@@ -8,6 +8,7 @@ import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
+import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
@@ -27,10 +28,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup;
 import kr.co.eicn.ippbx.model.dto.customdb.CommonEicnCdrResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupDetailResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkServiceResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
@@ -95,6 +93,7 @@ public class CounselCallController extends BaseController {
     private final GradelistApiInterface gradelistApiInterface;
     private final VocGroupApiInterface vocGroupApiInterface;
     private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    private final WebchatConfigApiInterface webchatConfigApiInterface;
     private final MaindbResultApiInterface maindbResultApiInterface;
     private final ScreenDataApiInterface screenDataApiInterface;
     private final CompanyApiInterface companyApiInterface;
@@ -139,7 +138,9 @@ public class CounselCallController extends BaseController {
         if (groups.isEmpty())
             return "counsel/call/custom-input";
 
+        final Map<String, String> chatServiceMap = webchatConfigApiInterface.list().stream().collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
+        talkServices.putAll(chatServiceMap);
         model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         final GradeListSearchRequest gradeListSearchRequest = new GradeListSearchRequest();

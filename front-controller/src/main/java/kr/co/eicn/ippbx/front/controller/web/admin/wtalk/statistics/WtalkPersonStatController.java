@@ -10,6 +10,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkServiceResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.WtalkStatisticsPersonResponse;
 import kr.co.eicn.ippbx.model.search.TalkStatisticsSearchRequest;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class WtalkPersonStatController extends BaseController {
         final Map<String, String> chatServiceMap = webchatConfigApiInterface.list().stream().collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
         talkServices.putAll(chatServiceMap);
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         return "admin/wtalk/statistics/person/ground";
     }

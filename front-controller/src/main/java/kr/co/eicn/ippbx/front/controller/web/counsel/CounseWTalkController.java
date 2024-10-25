@@ -171,6 +171,7 @@ public class CounseWTalkController extends BaseController {
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
         talkServices.putAll(chatServiceMap);
         model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
+
         if (talkServices.isEmpty())
             return "counsel/wtalk/custom-input";
 
