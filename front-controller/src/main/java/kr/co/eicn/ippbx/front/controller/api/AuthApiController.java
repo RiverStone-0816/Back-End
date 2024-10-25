@@ -108,10 +108,16 @@ public class AuthApiController extends BaseController {
     @PostMapping("check-login-condition")
     public ArsAuthInfo checkLoginCondition(HttpServletRequest request, HttpServletResponse response, @RequestBody @Valid LoginForm form, BindingResult bindingResult) throws IOException, ResultFailException {
         authApiInterface.login(form);
-        final ArsAuthInfo arsAuth = authApiInterface.getArsAuth(form.getId());
-        final boolean isArs = companyApiInterface.checkService("LGN");
 
-        if (!isArs || arsAuth == null || StringUtils.isEmpty(arsAuth.getAuthNum())) {
+        final boolean isArs = companyApiInterface.checkService("LGN");
+        if (!isArs) {
+            login(form, bindingResult, request, response);
+
+            return null;
+        }
+
+        final ArsAuthInfo arsAuth = authApiInterface.getArsAuth(form.getId());
+        if (arsAuth == null || StringUtils.isEmpty(arsAuth.getAuthNum())) {
             login(form, bindingResult, request, response);
 
             return arsAuth;
