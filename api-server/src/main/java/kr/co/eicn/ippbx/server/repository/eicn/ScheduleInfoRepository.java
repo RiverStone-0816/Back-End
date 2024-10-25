@@ -246,4 +246,10 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 				.groupBy(SCHEDULE_INFO.NUMBER, SCHEDULE_GROUP_LIST.KIND_DATA)
 				.fetchInto(ServiceNumberIvrRootEntity.class);
 	}
+
+	public Boolean isExistGroupId(Integer groupId) {
+		return super.fetchCount(SCHEDULE_INFO.GROUP_ID.eq(groupId)
+										.and(SCHEDULE_INFO.TYPE.eq(ScheduleType.WEEK.getCode())
+													 .or(SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()).and(SCHEDULE_INFO.FROMDATE.ge(DSL.currentDate()))))) > 0;
+	}
 }

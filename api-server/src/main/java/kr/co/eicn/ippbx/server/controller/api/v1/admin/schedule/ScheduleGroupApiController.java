@@ -53,6 +53,7 @@ public class ScheduleGroupApiController extends ApiBaseController {
 	private final PhoneInfoRepository phoneInfoRepository;
 	private final ServiceRepository serviceRepository;
 	private final ConfRoomRepository confRoomRepository;
+	private final ScheduleInfoRepository scheduleInfoRepository;
 
 	/**
 	 * 스케쥴유형 목록조회
@@ -92,6 +93,9 @@ public class ScheduleGroupApiController extends ApiBaseController {
 	 */
 	@DeleteMapping("{parent}")
 	public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer parent) {
+		if (scheduleInfoRepository.isExistGroupId(parent))
+			throw new IllegalStateException("주간/일별 스케쥴러에 등록된 유형은 삭제할 수 없습니다.");
+
 		repository.deleteAllPBXServer(parent);
 		scheduleGroupListRepository.deleteByParent(parent);
 		return ResponseEntity.ok(create());
