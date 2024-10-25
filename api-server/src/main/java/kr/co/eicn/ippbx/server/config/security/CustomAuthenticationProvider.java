@@ -77,24 +77,25 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (!"C".equals(company.getStatus()))
             throw new IllegalStateException("고객사 계정상태가 사용중이 아닙니다.");
 
-        final WebSecureHistoryRecord webSecureHistoryRecord = new WebSecureHistoryRecord();
         final HttpServletRequest request = ContextUtil.getRequest();
         final String ip = request.getHeader("HTTP_CLIENT_IP");
 
+        final WebSecureHistoryRecord webSecureHistoryRecord = new WebSecureHistoryRecord();
+        webSecureHistoryRecord.setSecureIp(StringUtils.isNotEmpty(ip) ? ip : request.getRemoteHost());
+        webSecureHistoryRecord.setCompanyId(authenticationRequest.getCompanyId());
+        webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
+
         if (user == null) {
-            webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
             webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.NO_USERID.getCode());
-            webSecureHistoryRecord.setActionData("아이디: " + id);
+            webSecureHistoryRecord.setActionData("아이디 불일치(" + id + ")");
             webSecureHistoryRepository.insert(webSecureHistoryRecord);
             throw new IllegalStateException("아이디 패스워드 인증에 실패하셨습니다.");
         }
 
         webSecureHistoryRecord.setSecureSessionid(id.toLowerCase().concat("_").concat(String.valueOf(new Date().getTime())));
-        webSecureHistoryRecord.setSecureIp(StringUtils.isNotEmpty(ip) ? ip : request.getRemoteHost());
         webSecureHistoryRecord.setUserid(id);
         webSecureHistoryRecord.setUserName(user.getIdName());
         webSecureHistoryRecord.setIdType(user.getIdType());
-        webSecureHistoryRecord.setCompanyId(authenticationRequest.getCompanyId());
         webSecureHistoryRecord.setInsertDate(new Timestamp(System.currentTimeMillis()));
 
         if (!company.getService().contains("APP") && user.getIdType().equals(IdType.USER.getCode()))
@@ -105,9 +106,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         if (!Objects.equals(IdType.MASTER, IdType.of(user.getIdType()))) {
             if (!user.getCompanyId().equals(authenticationRequest.getCompanyId())) {
-                webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
                 webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.WRONG_COMPANYID.getCode());
-                webSecureHistoryRecord.setActionData("아이디: " + id);
+                webSecureHistoryRecord.setActionData("고객사 불일치(" + authenticationRequest.getCompanyId() + ")");
                 webSecureHistoryRepository.insert(webSecureHistoryRecord);
                 throw new IllegalStateException("아이디 패스워드 인증에 실패하셨습니다.");
             }
@@ -116,9 +116,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         //아래 조건식에 && 이후 조건을 지우지 마세요. MC버전 IVR 로그인 등에 필요한 코드입니다.
         if (!getSHA512(getSHA512(authenticationRequest.getCredentials().toString()) + user.getSoltPw()).equals(user.getPasswd()) && !authenticationRequest.getCredentials().toString().equals(user.getPasswd())) {
             if (!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd())) {
-                webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
                 webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.WRONG_PASSWORD.getCode());
-                webSecureHistoryRecord.setActionData("패스워드오류");
+                webSecureHistoryRecord.setActionData("패스워드 불일치");
                 personListRepository.countLoginFail(user.getId(), user.getTryLoginCount() + 1);
                 webSecureHistoryRepository.insert(webSecureHistoryRecord);
                 throw new IllegalStateException("아이디 패스워드 인증에 실패하셨습니다.");
@@ -141,9 +140,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         if (StringUtils.isNotEmpty(authenticationRequest.getExtension())) {
             if (phone == null) {
-                webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
                 webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.NO_EXTEN.getCode());
-                webSecureHistoryRecord.setActionData(authenticationRequest.getExtension());
+                webSecureHistoryRecord.setActionData("내선 불일치(" + authenticationRequest.getExtension() + ")");
                 webSecureHistoryRepository.insert(webSecureHistoryRecord);
                 throw new EntityNotFoundException("해당하는 내선이 없습니다.");
             }
@@ -153,9 +151,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             //이중인증시휴대폰없음
             if (company.getService().contains("LGN")) {
                 if (isEmpty(user.getHpNumber()) || !user.getHpNumber().startsWith("01")) {
-                    webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
                     webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.NO_PHONE_NUMBER.getCode());
-                    webSecureHistoryRecord.setActionData(id);
+                    webSecureHistoryRecord.setActionData("휴대폰 미등록(" + id + ")");
                     webSecureHistoryRepository.insert(webSecureHistoryRecord);
                     throw new IllegalStateException("ARS인증을 위한 전화번호가 등록되지 않았습니다.");
                 }
@@ -182,7 +179,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             webSecureHistoryRecord.setExtension(authenticationRequest.getExtension());
         }
 
-        webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
         webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.OK.getCode());
         webSecureHistoryRecord.setActionData(StringUtils.isNotEmpty(authenticationRequest.getActionType()) ? "최종로긴성공" : "로긴시도성공");
 
