@@ -167,8 +167,9 @@ public class AuthApiController extends BaseController {
         final List<UserMenuCompanyResponse> menus = menuApiInterface.getUserMenus(user.getId());
 
         CompanyServerEntity companyServerEntity = null;
-        if (authApiInterface.getServer().stream().anyMatch(e -> e.getType().equals("U")))
-            companyServerEntity = authApiInterface.getServer().stream().filter(e -> e.getType().equals("U")).collect(Collectors.toList()).get(0);
+        final List<CompanyServerEntity> serverInfoList = authApiInterface.getServer();
+        if (serverInfoList.stream().anyMatch(e -> e.getType().equals("U")))
+            companyServerEntity = serverInfoList.stream().filter(e -> e.getType().equals("U")).toList().get(0);
 
         g.setMenus(new CurrentUserMenu(menus));
         g.setCurrentUser(user);
