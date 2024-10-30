@@ -1,8 +1,11 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatUserOutbound;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
+import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
+import kr.co.eicn.ippbx.util.FunctionUtils;
 import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,10 +16,12 @@ import org.jooq.SelectJoinStep;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.jooq.impl.DSL.*;
 
@@ -25,7 +30,11 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
     protected final Logger logger = LoggerFactory.getLogger(StatUserOutboundRepository.class);
 
     private final CommonStatUserOutbound TABLE;
-    private       boolean                isTotal = false;
+
+    private boolean isTotal = false;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     public StatUserOutboundRepository(String companyId) {
         super(new CommonStatUserOutbound(companyId), new CommonStatUserOutbound(companyId).SEQ, StatUserOutboundEntity.class);
@@ -97,8 +106,20 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
         if (CollectionUtils.isNotEmpty(search.getPersonIds()))
             conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
-        if (CollectionUtils.isNotEmpty(search.getServiceNumbers()))
-            conditions.add(TABLE.CID_NUMBER.in(search.getServiceNumbers()));
+        if (CollectionUtils.isNotEmpty(search.getServiceNumbers())) {
+            final Map<String, ServiceList> serviceListMap = serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(ServiceList::getSvcNumber)).collect(Collectors.toMap(ServiceList::getSvcNumber, e -> e));
+            Condition serviceCondition = DSL.noCondition();
+
+            for (String serviceNumber : search.getServiceNumbers()) {
+                if (serviceListMap.containsKey(serviceNumber)) {
+                    final ServiceList searchTargetService = serviceListMap.get(serviceNumber);
+                    serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.in(searchTargetService.getSvcNumber(), searchTargetService.getSvcCid()));
+                } else
+                    serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(serviceNumber));
+            }
+
+            conditions.add(serviceCondition);
+        }
 
         conditions.add(getOutboundCondition(search));
 
