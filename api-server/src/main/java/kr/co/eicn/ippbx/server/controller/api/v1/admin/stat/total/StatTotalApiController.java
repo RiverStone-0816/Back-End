@@ -35,7 +35,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/admin/stat/total", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StatTotalApiController extends ApiBaseController {
-    private final StatInboundService inboundService;
+    private final StatInboundService  inboundService;
     private final StatOutboundService outboundService;
 
     @GetMapping("")
@@ -50,13 +50,10 @@ public class StatTotalApiController extends ApiBaseController {
         final List<StatOutboundEntity> outboundList = outboundService.getRepository().findAllTotal(search);
         final List<StatInboundEntity> inboundList = inboundService.getRepository().findAllTotal(search);
 
-        List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
+        final List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
 
         for (Object timeInformation : dateByTypeList) {
             StatTotalRow<?> row = null;
-
-            List<StatOutboundEntity> statOutboundList = SearchCycleUtils.streamFiltering(outboundList, search.getTimeUnit(), timeInformation);
-            List<StatInboundEntity> statInboundList = SearchCycleUtils.streamFiltering(inboundList, search.getTimeUnit(), timeInformation);
 
             if (search.getTimeUnit().equals(SearchCycle.DATE)) {
                 row = new StatTotalRow<>((DateResponse) timeInformation);
@@ -69,6 +66,9 @@ public class StatTotalApiController extends ApiBaseController {
             } else if (search.getTimeUnit().equals(SearchCycle.DAY_OF_WEEK)) {
                 row = new StatTotalRow<>((DayOfWeekResponse) timeInformation);
             }
+
+            final List<StatOutboundEntity> statOutboundList = SearchCycleUtils.streamFiltering(outboundList, search.getTimeUnit(), timeInformation);
+            final List<StatInboundEntity> statInboundList = SearchCycleUtils.streamFiltering(inboundList, search.getTimeUnit(), timeInformation);
 
             if (row != null) {
                 row.setInboundStat(
@@ -88,7 +88,7 @@ public class StatTotalApiController extends ApiBaseController {
     @GetMapping("total")
     public ResponseEntity<JsonResult<StatTotalRow<DateResponse>>> getTotal(StatTotalSearchRequest search) {
         search.setTimeUnit(null);
-        StatTotalRow<DateResponse> result = new StatTotalRow<>();
+        final StatTotalRow<DateResponse> result = new StatTotalRow<>();
         result.setTimeInformation(null);
 
         outboundService.getRepository().findAllTotal(search).stream().findFirst()

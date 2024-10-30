@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatUserOutbound;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -24,7 +25,7 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
     protected final Logger logger = LoggerFactory.getLogger(StatUserOutboundRepository.class);
 
     private final CommonStatUserOutbound TABLE;
-    private boolean isTotal = false;
+    private       boolean                isTotal = false;
 
     public StatUserOutboundRepository(String companyId) {
         super(new CommonStatUserOutbound(companyId), new CommonStatUserOutbound(companyId).SEQ, StatUserOutboundEntity.class);
@@ -72,6 +73,8 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
 
     public List<Condition> conditions(StatUserSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
+        standardTime = search.getTimeUnit();
+
         conditions.add(TABLE.USER_STAT_YN.eq("Y"));
 
         if (g.getUser().getDataSearchAuthorityType() != null) {
@@ -88,15 +91,13 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
             }
         }
 
-        standardTime = search.getTimeUnit();
-
         if (StringUtils.isNotEmpty(search.getGroupCode()))
             conditions.add(TABLE.GROUP_TREE_NAME.like("%" + search.getGroupCode() + "%"));
 
-        if (!search.getPersonIds().isEmpty())
+        if (CollectionUtils.isNotEmpty(search.getPersonIds()))
             conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
-        if (!search.getServiceNumbers().isEmpty())
+        if (CollectionUtils.isNotEmpty(search.getServiceNumbers()))
             conditions.add(TABLE.CID_NUMBER.in(search.getServiceNumbers()));
 
         conditions.add(getOutboundCondition(search));
@@ -110,6 +111,7 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
 
         entity.setOutSuccess(0);
         entity.setOutBillsecSum(0);
+
         for (StatUserOutboundEntity outboundEntity : entityList) {
             entity.setOutBillsecSum(entity.getOutBillsecSum() + outboundEntity.getOutBillsecSum());
             entity.setOutSuccess(entity.getOutSuccess() + outboundEntity.getOutSuccess());
@@ -130,9 +132,9 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
 
     public Map<String, StatUserOutboundEntity> findAllUserIndividualStat() {
         return dsl.select(TABLE.USERID,
-                ifnull(sum(TABLE.OUT_TOTAL), 0).as(TABLE.OUT_TOTAL),
-                ifnull(sum(TABLE.OUT_SUCCESS), 0).as(TABLE.OUT_SUCCESS),
-                ifnull(sum(TABLE.OUT_BILLSEC_SUM), 0).as(TABLE.OUT_BILLSEC_SUM))
+                          ifnull(sum(TABLE.OUT_TOTAL), 0).as(TABLE.OUT_TOTAL),
+                          ifnull(sum(TABLE.OUT_SUCCESS), 0).as(TABLE.OUT_SUCCESS),
+                          ifnull(sum(TABLE.OUT_BILLSEC_SUM), 0).as(TABLE.OUT_BILLSEC_SUM))
                 .from(TABLE)
                 .where(compareCompanyId())
                 .and(TABLE.STAT_DATE.eq(currentDate()))
@@ -140,11 +142,11 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
                 .fetchMap(TABLE.USERID, StatUserOutboundEntity.class);
     }
 
-    public StatUserOutboundEntity findUserCallStat(){
+    public StatUserOutboundEntity findUserCallStat() {
         return dsl.select(TABLE.USERID,
-                ifnull(sum(TABLE.OUT_TOTAL), 0).as(TABLE.OUT_TOTAL),
-                ifnull(sum(TABLE.OUT_SUCCESS), 0).as(TABLE.OUT_SUCCESS),
-                ifnull(sum(TABLE.CALLBACK_CALL_SUCC), 0).as(TABLE.CALLBACK_CALL_SUCC))
+                          ifnull(sum(TABLE.OUT_TOTAL), 0).as(TABLE.OUT_TOTAL),
+                          ifnull(sum(TABLE.OUT_SUCCESS), 0).as(TABLE.OUT_SUCCESS),
+                          ifnull(sum(TABLE.CALLBACK_CALL_SUCC), 0).as(TABLE.CALLBACK_CALL_SUCC))
                 .from(TABLE)
                 .where(compareCompanyId())
                 .and(TABLE.STAT_DATE.eq(currentDate()))
@@ -153,14 +155,14 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
                 .fetchOneInto(StatUserOutboundEntity.class);
     }
 
-    public Map<String, Object> findChatUserOutboundMonitor(List<String> person){
+    public Map<String, Object> findChatUserOutboundMonitor(List<String> person) {
         return dsl.select(TABLE.USERID
-                , ifnull(sum(TABLE.OUT_SUCCESS), 0).as("out_success"))
+                        , ifnull(sum(TABLE.OUT_SUCCESS), 0).as("out_success"))
                 .from(TABLE)
                 .where(compareCompanyId())
                 .and(TABLE.STAT_DATE.eq(currentDate()))
                 .and(TABLE.USERID.in(person))
                 .groupBy(TABLE.USERID)
-                .fetchMap(TABLE.USERID,field("out_success"));
+                .fetchMap(TABLE.USERID, field("out_success"));
     }
 }

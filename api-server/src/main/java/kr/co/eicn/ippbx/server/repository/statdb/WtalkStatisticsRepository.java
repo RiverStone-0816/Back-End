@@ -32,6 +32,9 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
         super(new CommonStatWtalk(companyId), new CommonStatWtalk(companyId).SEQ, StatWtalkEntity.class);
         TABLE = new CommonStatWtalk(companyId);
 
+        addField(TABLE.STAT_DATE);
+        addField(TABLE.STAT_HOUR);
+        addField(TABLE.USERID);
         addField(TABLE.ACTION_TYPE);
         addField(ifnull(sum(TABLE.CNT), 0).as(TABLE.CNT));
     }
@@ -52,21 +55,18 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
 
         query.groupBy(TABLE.ACTION_TYPE);
 
-
         return query.where();
     }
 
     public List<StatWtalkEntity> dailyStatList(TalkStatisticsSearchRequest search) {
-        addField(TABLE.STAT_DATE);
         type = "day";
         return super.findAll(dsl, condition(search), Collections.singletonList(TABLE.STAT_DATE.asc()));
     }
 
     public List<StatWtalkEntity> hourlyStatList(TalkStatisticsHourlySearchRequest search) {
-        addField(TABLE.STAT_HOUR);
         type = "hour";
 
-        List<Condition> conditions = condition(search);
+        final List<Condition> conditions = condition(search);
         if (search.getStartHour() != null)
             conditions.add(TABLE.STAT_HOUR.ge(search.getStartHour()));
         if (search.getEndHour() != null)
@@ -76,10 +76,8 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
     }
 
     public List<StatWtalkEntity> personStatList(TalkStatisticsSearchRequest search) {
-        addField(TABLE.USERID);
         type = "person";
-        List<Condition> conditions = condition(search);
-//        conditions.add(TABLE.USERID.notEqual(""));
+        final List<Condition> conditions = condition(search);
 
         return super.findAll(conditions);
     }
@@ -97,15 +95,15 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
         return conditions;
     }
 
-    public Map<String, Object> findChatUserTalkMonitor(List<String> person){
+    public Map<String, Object> findChatUserTalkMonitor(List<String> person) {
         return dsl.select(TABLE.USERID
-                , ifnull(sum(TABLE.CNT), 0).as("talk_success"))
+                        , ifnull(sum(TABLE.CNT), 0).as("talk_success"))
                 .from(TABLE)
                 .where(compareCompanyId())
                 .and(TABLE.ACTION_TYPE.eq("USER_END_ROOM").or(TABLE.ACTION_TYPE.eq("CUSTOM_END_ROOM")))
                 .and(TABLE.STAT_DATE.eq(currentDate()))
                 .and(TABLE.USERID.in(person))
                 .groupBy(TABLE.USERID)
-                .fetchMap(TABLE.USERID,field("talk_success"));
+                .fetchMap(TABLE.USERID, field("talk_success"));
     }
 }

@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatMemberStatus;
 import kr.co.eicn.ippbx.model.entity.statdb.StatMemberStatusEntity;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
@@ -23,7 +24,7 @@ public class StatMemberStatusRepository extends StatDBBaseRepository<CommonStatM
     private final Logger logger = LoggerFactory.getLogger(StatMemberStatusRepository.class);
 
     private final CommonStatMemberStatus TABLE;
-    private boolean isTotal = false;
+    private       boolean                isTotal = false;
 
     public StatMemberStatusRepository(String companyName) {
         super(new CommonStatMemberStatus(companyName), new CommonStatMemberStatus(companyName).SEQ, StatMemberStatusEntity.class);
@@ -66,15 +67,15 @@ public class StatMemberStatusRepository extends StatDBBaseRepository<CommonStatM
     }
 
     public List<Condition> conditions(StatUserSearchRequest search) {
-        standardTime = search.getTimeUnit();
         final List<Condition> conditions = new ArrayList<>();
+        standardTime = search.getTimeUnit();
 
         if (Objects.nonNull(search.getStartDate()))
             conditions.add(TABLE.STAT_DATE.ge(search.getStartDate()));
         if (Objects.nonNull(search.getEndDate()))
             conditions.add(TABLE.STAT_DATE.le(search.getEndDate()));
 
-        if (!search.getPersonIds().isEmpty())
+        if (CollectionUtils.isNotEmpty(search.getPersonIds()))
             conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
         return conditions;

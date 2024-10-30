@@ -48,7 +48,6 @@ public class StatInboundApiController extends ApiBaseController {
         final List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
 
         for (Object timeInformation : dateByTypeList) {
-            List<StatInboundEntity> statInboundList = SearchCycleUtils.streamFiltering(inboundList, search.getTimeUnit(), timeInformation);
             StatInboundTimeResponse<?> inboundResponse = null;
 
             if (search.getTimeUnit().equals(SearchCycle.DATE)) {
@@ -63,12 +62,15 @@ public class StatInboundApiController extends ApiBaseController {
                 inboundResponse = new StatInboundTimeResponse<>((DayOfWeekResponse) timeInformation);
             }
 
+            final List<StatInboundEntity> statInboundList = SearchCycleUtils.streamFiltering(inboundList, search.getTimeUnit(), timeInformation);
+
             if (inboundResponse != null) {
                 inboundResponse.setInboundStat(
                         statInboundList.stream().map(entity -> convertDto(entity, StatInboundResponse.class))
                                 .findFirst().orElse(new StatInboundResponse())
                 );
             }
+
             rows.add(inboundResponse);
         }
 
@@ -80,7 +82,6 @@ public class StatInboundApiController extends ApiBaseController {
         search.setTimeUnit(null);
         final StatInboundEntity entity = statInboundService.getRepository().findAll(search).stream().findFirst().orElse(new StatInboundEntity());
         final StatInboundResponse result = convertDto(entity, StatInboundResponse.class);
-
         result.setBillSecSum(entity.getBillsecSum());
         result.setWaitAvg(entity.getWaitAvg());
         result.setCancelAvg(entity.getCancelAvg());

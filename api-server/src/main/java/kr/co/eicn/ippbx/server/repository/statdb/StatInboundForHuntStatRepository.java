@@ -8,6 +8,7 @@ import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatHuntSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatInboundSearchRequest;
 import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -20,18 +21,14 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.jooq.impl.DSL.ifnull;
-import static org.jooq.impl.DSL.noCondition;
-import static org.jooq.impl.DSL.not;
-import static org.jooq.impl.DSL.sum;
-import static org.jooq.impl.DSL.when;
+import static org.jooq.impl.DSL.*;
 
 @Getter
 public class StatInboundForHuntStatRepository extends StatDBBaseRepository<CommonStatInbound, StatInboundEntity, Integer> {
     private final Logger logger = LoggerFactory.getLogger(StatInboundForHuntStatRepository.class);
 
     private final CommonStatInbound TABLE;
-    private String type = "";
+    private       String            type = "";
 
     // 큐그룹별통계가 stat_user_inbound_cjlogistics 테이블 대신 stat_inbound_cjlogistics 테이블을 사용하기 위한 메서드
     public StatInboundForHuntStatRepository(String companyId) {
@@ -102,42 +99,19 @@ public class StatInboundForHuntStatRepository extends StatDBBaseRepository<Commo
     }
 
     public List<Condition> conditions(StatInboundSearchRequest search) {
-        List<Condition> conditions = defaultConditions(search);
+        final List<Condition> conditions = defaultConditions(search);
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = DSL.noCondition();
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(serviceCondition);
-        }
+        if (CollectionUtils.isNotEmpty(search.getServiceNumbers()))
+            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
-        if (search.getQueueNumbers() != null) {
-            Condition huntCondition = DSL.noCondition();
-            for (int i = 0; i < search.getQueueNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getQueueNumbers().get(i))) {
-                    if (i == 0)
-                        huntCondition = TABLE.HUNT_NUMBER.eq(search.getQueueNumbers().get(i));
-                    else
-                        huntCondition = huntCondition.or(TABLE.HUNT_NUMBER.eq(search.getQueueNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(huntCondition);
-        }
+        if (CollectionUtils.isNotEmpty(search.getQueueNumbers()))
+            conditions.add(TABLE.HUNT_NUMBER.in(search.getQueueNumbers()));
 
         return conditions;
     }
 
     public List<Condition> defaultConditions(AbstractStatSearchRequest search) {
-        List<Condition> conditions = new ArrayList<>();
-
+        final List<Condition> conditions = new ArrayList<>();
         standardTime = search.getTimeUnit();
 
         conditions.add(getInboundCondition(search));
@@ -145,7 +119,7 @@ public class StatInboundForHuntStatRepository extends StatDBBaseRepository<Commo
     }
 
     public List<Condition> huntConditions(StatHuntSearchRequest search, List<QueueName> queueNameList, String searchGroupTreeName) {
-        List<Condition> conditions = new ArrayList<>();
+        final List<Condition> conditions = new ArrayList<>();
         standardTime = search.getTimeUnit();
 
         if (g.getUser().getDataSearchAuthorityType() != null) {
@@ -161,31 +135,11 @@ public class StatInboundForHuntStatRepository extends StatDBBaseRepository<Commo
 
         conditions.add(getDefaultCondition("inbound", TABLE.DCONTEXT.eq(ContextType.HUNT_CALL.getCode()), search));
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = null;
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
+        if (CollectionUtils.isNotEmpty(search.getServiceNumbers()))
+            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
-            if (serviceCondition != null)
-                conditions.add(serviceCondition);
-        }
-
-        if (queueNameList.size() > 0) {
-            Condition queueCondition = noCondition();
-
-            for (QueueName queueName : queueNameList) {
-                queueCondition = queueCondition.or(TABLE.HUNT_NUMBER.eq(queueName.getNumber()));
-            }
-
-            conditions.add(queueCondition);
-        }
+        if (CollectionUtils.isNotEmpty(queueNameList))
+            conditions.add(TABLE.HUNT_NUMBER.in(queueNameList));
 
         if (StringUtils.isNotEmpty(searchGroupTreeName))
             conditions.add(TABLE.GROUP_TREE_NAME.like(searchGroupTreeName + "%"));

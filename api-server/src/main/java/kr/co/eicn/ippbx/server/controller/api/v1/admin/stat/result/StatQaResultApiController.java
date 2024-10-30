@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.stat.result;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo;
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
@@ -12,6 +11,7 @@ import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.IndividualCodeResponse;
 import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatQaResultSearchRequest;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
@@ -38,10 +38,10 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/admin/stat/result", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StatQaResultApiController extends ApiBaseController {
-    private final StatQaResultService statQaResultService;
-    private final CommonTypeRepository commonTypeRepository;
+    private final StatQaResultService   statQaResultService;
+    private final CommonTypeRepository  commonTypeRepository;
     private final CommonFieldRepository commonFieldRepository;
-    private final CommonCodeRepository commonCodeRepository;
+    private final CommonCodeRepository  commonCodeRepository;
 
     @GetMapping("")
     public ResponseEntity<JsonResult<List<StatQaResultResponse>>> list(StatQaResultSearchRequest search) {

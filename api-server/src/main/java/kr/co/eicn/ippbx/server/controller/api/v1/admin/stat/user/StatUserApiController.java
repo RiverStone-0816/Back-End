@@ -43,12 +43,12 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/admin/stat/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StatUserApiController extends ApiBaseController {
-    private final StatUserInboundService statUserInboundService;
-    private final StatUserOutboundService statUserOutboundService;
-    private final StatMemberStatusService StatMemberStatusService;
-    private final PersonListRepository personListRepository;
+    private final StatUserInboundService        statUserInboundService;
+    private final StatUserOutboundService       statUserOutboundService;
+    private final StatMemberStatusService       StatMemberStatusService;
+    private final PersonListRepository          personListRepository;
     private final CmpMemberStatusCodeRepository cmpMemberStatusCodeRepository;
-    private final CompanyTreeRepository companyTreeRepository;
+    private final CompanyTreeRepository         companyTreeRepository;
 
     @GetMapping(value = "")
     public ResponseEntity<JsonResult<List<StatUserResponse<?>>>> list(StatUserSearchRequest search) {
@@ -57,16 +57,16 @@ public class StatUserApiController extends ApiBaseController {
         if ((search.getEndDate().getTime() - search.getStartDate().getTime()) / 1000 > 6 * 30 * 24 * 60 * 60)
             throw new IllegalArgumentException(message.getText("messages.validator.enddate.indays", "180일"));
 
-        List<StatUserResponse<?>> rows = new ArrayList<>();
+        final List<StatUserResponse<?>> rows = new ArrayList<>();
 
-        List<StatUserInboundEntity> userInboundList = statUserInboundService.getRepository().findAllUserStat(search);
-        List<StatUserOutboundEntity> userOutboundList = statUserOutboundService.getRepository().findAll(search);
-        List<StatMemberStatusEntity> memberStatusList = StatMemberStatusService.getRepository().findAll(search);
-        List<PersonList> personList = personListRepository.findAllStatUser(search);
-        List<CmpMemberStatusCodeEntity> statusCodeList = cmpMemberStatusCodeRepository.findAll();
-        List<Organization> allOrganization = companyTreeRepository.getAllOrganization();
+        final List<StatUserInboundEntity> userInboundList = statUserInboundService.getRepository().findAllUserStat(search);
+        final List<StatUserOutboundEntity> userOutboundList = statUserOutboundService.getRepository().findAll(search);
+        final List<StatMemberStatusEntity> memberStatusList = StatMemberStatusService.getRepository().findAll(search);
+        final List<PersonList> personList = personListRepository.findAllStatUser(search);
+        final List<CmpMemberStatusCodeEntity> statusCodeList = cmpMemberStatusCodeRepository.findAll();
+        final List<Organization> allOrganization = companyTreeRepository.getAllOrganization();
 
-        List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
+        final List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
 
         for (Object timeInformation : dateByTypeList) {
             StatUserResponse<?> response = null;
@@ -82,13 +82,13 @@ public class StatUserApiController extends ApiBaseController {
                 response = new StatUserResponse<>((DayOfWeekResponse) timeInformation);
             }
 
-            List<StatUserInboundEntity> statUserInboundList = SearchCycleUtils.streamFiltering(userInboundList, search.getTimeUnit(), timeInformation);
-            List<StatUserOutboundEntity> statUserOutboundList = SearchCycleUtils.streamFiltering(userOutboundList, search.getTimeUnit(), timeInformation);
-            List<StatMemberStatusEntity> statMemberStatusList = SearchCycleUtils.streamFiltering(memberStatusList, search.getTimeUnit(), timeInformation);
+            final List<StatUserInboundEntity> statUserInboundList = SearchCycleUtils.streamFiltering(userInboundList, search.getTimeUnit(), timeInformation);
+            final List<StatUserOutboundEntity> statUserOutboundList = SearchCycleUtils.streamFiltering(userOutboundList, search.getTimeUnit(), timeInformation);
+            final List<StatMemberStatusEntity> statMemberStatusList = SearchCycleUtils.streamFiltering(memberStatusList, search.getTimeUnit(), timeInformation);
 
-            List<StatUserResponse.UserStat> userStatList = new ArrayList<>();
+            final List<StatUserResponse.UserStat> userStatList = new ArrayList<>();
             for (PersonList person : personList) {
-                StatUserResponse.UserStat row = new StatUserResponse.UserStat();
+                final StatUserResponse.UserStat row = new StatUserResponse.UserStat();
                 row.setUserId(person.getId());
                 row.setIdName(person.getIdName());
                 row.setGroupName(
@@ -98,9 +98,9 @@ public class StatUserApiController extends ApiBaseController {
                 row.setGroupCode(person.getGroupCode());
                 row.setGroupTreeName(person.getGroupTreeName());
 
-                Stream<StatUserInboundEntity> userInboundStream = statUserInboundList.stream().filter(inbound -> inbound.getUserid().equals(person.getId()));
-                Stream<StatUserOutboundEntity> userOutboundStream = statUserOutboundList.stream().filter(outbound -> outbound.getUserid().equals(person.getId()));
-                Stream<StatMemberStatusEntity> memberStream = statMemberStatusList.stream().filter(member -> member.getUserid().equals(person.getId()));
+                final Stream<StatUserInboundEntity> userInboundStream = statUserInboundList.stream().filter(inbound -> inbound.getUserid().equals(person.getId()));
+                final Stream<StatUserOutboundEntity> userOutboundStream = statUserOutboundList.stream().filter(outbound -> outbound.getUserid().equals(person.getId()));
+                final Stream<StatMemberStatusEntity> memberStream = statMemberStatusList.stream().filter(member -> member.getUserid().equals(person.getId()));
 
                 row.setInboundStat(
                         userInboundStream.map(inbound -> convertDto(inbound, StatUserInboundResponse.class))
@@ -112,8 +112,8 @@ public class StatUserApiController extends ApiBaseController {
                                 .findFirst().orElse(new StatUserOutboundResponse())
                 );
 
-                StatMemberStatusResponse memberStatus = new StatMemberStatusResponse();
-                Map<Integer, Long> statusCountMap = new LinkedHashMap<>();
+                final StatMemberStatusResponse memberStatus = new StatMemberStatusResponse();
+                final Map<Integer, Long> statusCountMap = new LinkedHashMap<>();
                 statusCodeList.forEach(code -> statusCountMap.put(code.getStatusNumber(), 0L));
                 memberStream.forEach(i -> {
                     if (i.getStatus() == 2) {
@@ -146,7 +146,7 @@ public class StatUserApiController extends ApiBaseController {
         search.setTimeUnit(null);
         final StatUserInboundResponse inboundTotal = statUserInboundService.getRepository().findAllUserTotalStat(search).stream().findFirst().map(e -> convertDto(e, StatUserInboundResponse.class)).orElse(new StatUserInboundResponse());
         final StatUserOutboundResponse outboundTotal = statUserOutboundService.getRepository().findAllTotal(search).stream().findFirst().map(e -> convertDto(e, StatUserOutboundResponse.class)).orElse(new StatUserOutboundResponse());
-        Map<Integer, Long> statusCountMap = new LinkedHashMap<>();
+        final Map<Integer, Long> statusCountMap = new LinkedHashMap<>();
         final StatMemberStatusResponse memberTotal = new StatMemberStatusResponse();
         StatMemberStatusService.getRepository().findAllTotal(search)
                 .forEach(e -> {
@@ -160,7 +160,6 @@ public class StatUserApiController extends ApiBaseController {
         memberTotal.setStatusCountMap(statusCountMap);
 
         final StatUserResponse.UserStat result = new StatUserResponse.UserStat();
-
         result.setOutboundStat(outboundTotal);
         result.setInboundStat(inboundTotal);
         result.setMemberStatusStat(memberTotal);
@@ -180,10 +179,12 @@ public class StatUserApiController extends ApiBaseController {
             response.setInSuccess(statUserInboundEntity.getInSuccess());
             response.setInTotal(statUserInboundEntity.getInTotal());
         }
+
         if (Objects.nonNull(statUserOutboundEntity)) {
             response.setCallback(statUserOutboundEntity.getCallbackCallSucc());
             response.setOutSuccess(statUserOutboundEntity.getOutSuccess());
         }
+
         double successPer = 0.0;
         if (response.getInTotal() > 0)
             successPer = (double) response.getInSuccess() / response.getInTotal() * 100;
@@ -204,7 +205,7 @@ public class StatUserApiController extends ApiBaseController {
         final List<StatUserOutboundEntity> userOutboundList = statUserOutboundService.getRepository().findAll(search);
         final List<StatMemberStatusEntity> memberStatusList = StatMemberStatusService.getRepository().findAll(search);
 
-        StatMyCallByTimeResponse res = new StatMyCallByTimeResponse();
+        final StatMyCallByTimeResponse res = new StatMyCallByTimeResponse();
 
         for (int i = 0; i < 24; i++) {
             byte hour = (byte) i;

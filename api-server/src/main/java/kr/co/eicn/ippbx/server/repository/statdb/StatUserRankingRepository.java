@@ -29,13 +29,13 @@ public class StatUserRankingRepository extends StatDBBaseRepository<CommonStatUs
 
     public StatUserRankingResponse getExcellentConsultantList(ExcellentConsultant.Type field) {
         return dsl.select(PERSON_LIST.ID_NAME,
-                sum(TABLE.IN_SUCCESS).as(TABLE.IN_SUCCESS),
-                sum(TABLE.OUT_SUCCESS).as(TABLE.OUT_SUCCESS),
-                sum(TABLE.IN_BILLSEC_SUM).as(TABLE.IN_BILLSEC_SUM),
-                sum(TABLE.OUT_BILLSEC_SUM).as(TABLE.OUT_BILLSEC_SUM),
-                sum(TABLE.TOTAL_BILLSEC_SUM).as(TABLE.TOTAL_BILLSEC_SUM),
-                sum(TABLE.TOTAL_SUCCESS).as(TABLE.TOTAL_SUCCESS),
-                sum(TABLE.CALLBACK_SUCCESS).as(TABLE.CALLBACK_SUCCESS))
+                          sum(TABLE.IN_SUCCESS).as(TABLE.IN_SUCCESS),
+                          sum(TABLE.OUT_SUCCESS).as(TABLE.OUT_SUCCESS),
+                          sum(TABLE.IN_BILLSEC_SUM).as(TABLE.IN_BILLSEC_SUM),
+                          sum(TABLE.OUT_BILLSEC_SUM).as(TABLE.OUT_BILLSEC_SUM),
+                          sum(TABLE.TOTAL_BILLSEC_SUM).as(TABLE.TOTAL_BILLSEC_SUM),
+                          sum(TABLE.TOTAL_SUCCESS).as(TABLE.TOTAL_SUCCESS),
+                          sum(TABLE.CALLBACK_SUCCESS).as(TABLE.CALLBACK_SUCCESS))
                 .from(TABLE)
                 .innerJoin(PERSON_LIST)
                 .on(TABLE.USERID.eq(PERSON_LIST.ID))
@@ -49,9 +49,9 @@ public class StatUserRankingRepository extends StatDBBaseRepository<CommonStatUs
                 .fetchOneInto(StatUserRankingResponse.class);
     }
 
-    public List<StatUserRankingResponse> getTopTenToDay(ExcellentConsultantTopTen.Type field){
-        return dsl.select(PERSON_LIST.ID,PERSON_LIST.ID_NAME,
-                sum((Field<? extends Number>) TABLE.field(field.getFieldName())).as((Field<? extends Number>) TABLE.field(field.getFieldName())))
+    public List<StatUserRankingResponse> getTopTenToDay(ExcellentConsultantTopTen.Type field) {
+        return dsl.select(PERSON_LIST.ID, PERSON_LIST.ID_NAME,
+                          sum((Field<? extends Number>) TABLE.field(field.getFieldName())).as((Field<? extends Number>) TABLE.field(field.getFieldName())))
                 .from(TABLE)
                 .innerJoin(PERSON_LIST)
                 .on(TABLE.USERID.eq(PERSON_LIST.ID))

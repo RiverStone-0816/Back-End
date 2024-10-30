@@ -47,7 +47,6 @@ public class StatOutboundApiController extends ApiBaseController {
         final List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
 
         for (Object timeInformation : dateByTypeList) {
-            List<StatOutboundEntity> statOutboundList = SearchCycleUtils.streamFiltering(outboundList, search.getTimeUnit(), timeInformation);
             StatOutboundTimeResponse<?> statOutbound = null;
 
             if (search.getTimeUnit().equals(SearchCycle.DATE)) {
@@ -61,6 +60,8 @@ public class StatOutboundApiController extends ApiBaseController {
             } else if (search.getTimeUnit().equals(SearchCycle.DAY_OF_WEEK)) {
                 statOutbound = new StatOutboundTimeResponse<>((DayOfWeekResponse) timeInformation);
             }
+
+            final List<StatOutboundEntity> statOutboundList = SearchCycleUtils.streamFiltering(outboundList, search.getTimeUnit(), timeInformation);
 
             if (statOutbound != null) {
                 statOutbound.setStatOutboundResponse(

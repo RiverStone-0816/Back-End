@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.model.enums.ContextType;
 import kr.co.eicn.ippbx.model.enums.SearchCycle;
 import kr.co.eicn.ippbx.model.search.StatCategorySearchRequest;
 import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -93,7 +94,6 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
 
     public List<Condition> conditions(StatCategorySearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
-        Condition categoryCondition = null;
         Condition inboundCondition = TABLE.DCONTEXT.in("inbound", "hunt_context");
 
         if (Objects.nonNull(search.getStartDate()))
@@ -104,16 +104,16 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
         if (search.getTimeUnit() != null)
             standardTime = search.getTimeUnit();
 
-        if (!search.getServiceNumbers().isEmpty())
+        if (CollectionUtils.isNotEmpty(search.getServiceNumbers()))
             conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
-        if (search.getIvrMulti().size() > 0 ) {
+        if (CollectionUtils.isNotEmpty(search.getIvrMulti())) {
+            Condition categoryCondition = DSL.noCondition();
+
             for (int i = 0; i < search.getIvrMulti().size(); i++) {
-                if (i == 0)
-                    categoryCondition = TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%");
-                else
-                    categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%"));
+                categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.startsWith(search.getIvrMulti().get(i)));
             }
+
             conditions.add(categoryCondition);
         }
 

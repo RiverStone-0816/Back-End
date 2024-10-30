@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.stat.inbound;
 
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatInbound;
@@ -10,6 +9,7 @@ import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.ServiceNumberIvrRootEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.model.search.StatCategorySearchRequest;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.IvrTreeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ScheduleInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;

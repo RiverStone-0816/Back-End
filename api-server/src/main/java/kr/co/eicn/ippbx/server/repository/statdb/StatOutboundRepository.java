@@ -10,7 +10,7 @@ import kr.co.eicn.ippbx.model.search.StatTotalSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
 import kr.co.eicn.ippbx.util.FunctionUtils;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
@@ -65,7 +65,7 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
     private List<Condition> conditions(StatOutboundSearchRequest search) {
         final List<Condition> conditions = defaultConditions(search);
 
-        if (!search.getServiceNumbers().isEmpty()) {
+        if (CollectionUtils.isNotEmpty(search.getServiceNumbers())) {
             final Map<String, ServiceList> serviceListMap = serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(ServiceList::getSvcNumber)).collect(Collectors.toMap(ServiceList::getSvcNumber, e -> e));
             Condition serviceCondition = DSL.noCondition();
 
@@ -91,7 +91,7 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
 
         final List<Condition> conditions = defaultConditions(search);
 
-        if (!search.getServiceNumbers().isEmpty()) {
+        if (CollectionUtils.isNotEmpty(search.getServiceNumbers())) {
             final Map<String, ServiceList> serviceListMap = serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(ServiceList::getSvcNumber)).collect(Collectors.toMap(ServiceList::getSvcNumber, e -> e));
             Condition serviceCondition = DSL.noCondition();
 
@@ -126,11 +126,11 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(date(now())))
                 .and(TABLE.STAT_HOUR.eq((byte) currentHour)
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 1))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 2))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 3))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 4))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 5))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 1))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 2))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 3))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 4))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 5))))
                 )
                 .and(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
                 .and(TABLE.DCONTEXT.eq("outbound"))
@@ -140,7 +140,7 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
 
     public StatOutboundEntity getTodayStat() {
         return dsl.select(ifnull(sum(TABLE.TOTAL), 0).as("total"),
-                ifnull(sum(TABLE.SUCCESS), 0).as("success"))
+                          ifnull(sum(TABLE.SUCCESS), 0).as("success"))
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(date(now())))
                 .and(TABLE.DCONTEXT.eq("outbound"))

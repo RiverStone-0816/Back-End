@@ -31,16 +31,15 @@ public class StatQueueWaitRepository extends StatDBBaseRepository<CommonStatQueu
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(date(now())))
                 .and(TABLE.STAT_HOUR.eq((byte) currentHour)
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 1))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 2))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 3))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 4))))
-                        .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 5))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 1))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 2))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 3))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 4))))
+                             .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 5))))
                 )
                 .and(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
 //                .and(TABLE.DCONTEXT.eq("hunt_context")/*.or(TABLE.DCONTEXT.eq("inbound"))*/)
                 .groupBy(TABLE.STAT_HOUR)
                 .fetchMap(TABLE.STAT_HOUR, DashResultChartResponse.class);
     }
-
 }

@@ -21,7 +21,7 @@ public abstract class StatDBBaseRepository<TABLE extends TableImpl<?>, ENTITY, P
 
     @Autowired
     @Qualifier(Constants.BEAN_DSL_STATDB)
-    protected DSLContext dsl;
+    protected DSLContext  dsl;
     protected SearchCycle standardTime;
 
     public StatDBBaseRepository(TABLE table, TableField<? extends Record, PK> primaryField, Class<ENTITY> entityClass) {
