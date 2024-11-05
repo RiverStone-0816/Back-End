@@ -36,7 +36,6 @@ public class StatInboundService extends ApiBaseService implements ApplicationCon
             throw new IllegalStateException(message.getText("messages.company.notfound"));
 
         return huntRepositories.computeIfAbsent(g.getUser().getCompanyId(), companyId -> {
-//            final StatInboundRepository repository = new StatInboundRepository(companyId, true);
             final StatInboundForHuntStatRepository huntRepositories = new StatInboundForHuntStatRepository(companyId);
             applicationContext.getAutowireCapableBeanFactory().autowireBean(huntRepositories);
             return huntRepositories;

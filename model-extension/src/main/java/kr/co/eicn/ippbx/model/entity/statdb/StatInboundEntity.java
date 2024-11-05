@@ -111,6 +111,7 @@ public class StatInboundEntity extends CommonStatInbound implements StatByTimeUn
         return getTotal() + getCallback();
     }
 
+    //큐그룹 통계 호응답률
     public float getAvgRate() {
         if (getSuccess() == null || getTotal() == null)
             return 0;

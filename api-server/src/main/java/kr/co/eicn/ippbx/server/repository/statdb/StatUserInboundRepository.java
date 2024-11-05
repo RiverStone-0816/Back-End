@@ -1,11 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatUserInbound;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
 import kr.co.eicn.ippbx.model.enums.ContextType;
 import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
-import kr.co.eicn.ippbx.model.search.StatHuntSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -81,16 +79,6 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
         return findAll(userConditions(search));
     }
 
-    public List<StatUserInboundEntity> findAllHuntStat(StatHuntSearchRequest search, List<QueueName> queueNameList, String searchGroupTreeName) {
-        type = "hunt";
-        return findAll(huntConditions(search, queueNameList, searchGroupTreeName));
-    }
-
-    public List<StatUserInboundEntity> findAllHuntTotalStat(StatHuntSearchRequest search, List<QueueName> queueNameList, String searchGroupTreeName) {
-        type = "total";
-        return findAll(huntConditions(search, queueNameList, searchGroupTreeName));
-    }
-
     public List<Condition> defaultConditions(AbstractStatSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
         standardTime = search.getTimeUnit();
@@ -128,68 +116,6 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
             conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
         return conditions;
-    }
-
-
-    public List<Condition> huntConditions(StatHuntSearchRequest search, List<QueueName> queueNameList, String searchGroupTreeName) {
-        final List<Condition> conditions = new ArrayList<>();
-        standardTime = search.getTimeUnit();
-
-        if (g.getUser().getDataSearchAuthorityType() != null) {
-            switch (g.getUser().getDataSearchAuthorityType()) {
-                case NONE:
-                    conditions.add(DSL.falseCondition());
-                    return conditions;
-                case MINE:
-                    conditions.add(TABLE.USERID.eq(g.getUser().getId()));
-                    break;
-                case GROUP:
-                    conditions.add(TABLE.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
-                    break;
-            }
-        }
-
-        conditions.add(getDefaultCondition("inbound", TABLE.DCONTEXT.eq(ContextType.HUNT_CALL.getCode()), search));
-
-        if (CollectionUtils.isNotEmpty(search.getServiceNumbers()))
-            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
-
-        if (CollectionUtils.isNotEmpty(queueNameList))
-            conditions.add(TABLE.HUNT_NUMBER.in(queueNameList.stream().map(QueueName::getNumber).toList()));
-
-        if (StringUtils.isNotEmpty(searchGroupTreeName))
-            conditions.add(TABLE.GROUP_TREE_NAME.like(searchGroupTreeName + "%"));
-
-        if (CollectionUtils.isNotEmpty(search.getPersonIds()))
-            conditions.add(TABLE.USERID.in(search.getPersonIds()));
-
-        return conditions;
-    }
-
-    public StatUserInboundEntity getBillsecSumByHunt(String userId, String huntNumber) {
-        final StatUserInboundEntity entity = new StatUserInboundEntity();
-        final List<StatUserInboundEntity> entityList = findAllByHunt(userId, huntNumber);
-
-        entity.setInSuccess(0);
-        entity.setInBillsecSum(0);
-
-        for (StatUserInboundEntity inboundEntity : entityList) {
-            entity.setInBillsecSum(entity.getInBillsecSum() + inboundEntity.getInBillsecSum());
-            entity.setInSuccess(entity.getInSuccess() + inboundEntity.getInSuccess());
-        }
-
-        return entity;
-    }
-
-    public List<StatUserInboundEntity> findAllByHunt(String userId, String queueNumber) {
-        return dsl.select(TABLE.fields())
-                .from(TABLE)
-                .where(compareCompanyId())
-                .and(TABLE.STAT_DATE.eq(currentDate()))
-                .and(TABLE.DCONTEXT.eq("hunt_context"))
-                .and(TABLE.USERID.eq(userId))
-                .and(TABLE.HUNT_NUMBER.eq(queueNumber))
-                .fetchInto(StatUserInboundEntity.class);
     }
 
     public Map<String, StatUserInboundEntity> findAllUserIndividualStat() {
