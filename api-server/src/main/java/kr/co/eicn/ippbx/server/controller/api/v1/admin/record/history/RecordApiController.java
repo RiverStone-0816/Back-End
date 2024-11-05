@@ -1,8 +1,5 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.history;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonEicnCdr;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EicnCdr;
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
@@ -15,6 +12,7 @@ import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
 import kr.co.eicn.ippbx.model.form.RecordDownFormRequest;
 import kr.co.eicn.ippbx.model.search.RecordCallSearch;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.customdb.EicnCdrRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.GradeListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
@@ -29,8 +27,6 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.jooq.DatePart;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.util.ObjectUtils;
@@ -65,15 +61,15 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @RequestMapping(value = "api/v1/admin/record/history", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RecordApiController extends ApiBaseController {
 
-    private final PersonListRepository personListRepository;
-    private final GradeListRepository gradeListRepository;
-    private final ServiceRepository serviceRepository;
+    private final PersonListRepository       personListRepository;
+    private final GradeListRepository        gradeListRepository;
+    private final ServiceRepository          serviceRepository;
     private final WebSecureHistoryRepository webSecureHistoryRepository;
-    private final EicnCdrService eicnCdrService;
-    private final RecordFileService recordFileService;
-    private final RecordDownService recordDownService;
-    private final StorageService fileSystemStorageService;
-    private final Period LIMIT_INQUIRY_PERIOD = Period.ofMonths(6);
+    private final EicnCdrService             eicnCdrService;
+    private final RecordFileService          recordFileService;
+    private final RecordDownService          recordDownService;
+    private final StorageService             fileSystemStorageService;
+    private final Period                     LIMIT_INQUIRY_PERIOD = Period.ofMonths(6);
 
     /**
      * 녹취통화이력 목록조회
@@ -191,7 +187,7 @@ public class RecordApiController extends ApiBaseController {
     }
 
     /**
-     * 녹취파일 모달 절대경로 리소스 반환 형식 제거
+     * 녹취파일 모달 절대경로 리소스 반환 형식
      */
     @GetMapping(value = "resource", params = {"token"})
     public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile, @RequestParam("mode") String mode) {
@@ -206,64 +202,18 @@ public class RecordApiController extends ApiBaseController {
                 .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
                 .headers(header -> {
                     header.add(HttpHeaders.CONTENT_DISPOSITION,
-                            ContentDisposition.builder("attachment")
-                                    .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
-                                    .build().toString());
+                               ContentDisposition.builder("attachment")
+                                       .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                                       .build().toString());
                     header.setPragma("no-cache");
                     header.setCacheControl(CacheControl.noCache());
                 })
                 .body(resource);
     }
 
-    /*@GetMapping(value = "resource")
-    public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile, @RequestParam("mode") String mode){
-        final RecordFileService.Result actualExistingFile = recordFileService.getActualExistingFile(recordFile, mode);
-
-        if (actualExistingFile.getCode() != 1)
-            throw new IllegalArgumentException(actualExistingFile.getMessage());
-
-        final Resource resource = fileSystemStorageService.loadAsResource(actualExistingFile.getPath(), actualExistingFile.getFileName());
-
-        return ResponseEntity.ok()
-                .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
-                .headers(header -> {
-                    header.add(HttpHeaders.CONTENT_DISPOSITION,
-                            ContentDisposition.builder("attachment")
-                                    .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
-                                    .build().toString());
-                    header.setPragma("no-cache");
-                    header.setCacheControl(CacheControl.noCache());
-                })
-                .body(resource);
-    }*/
-
-    /*@GetMapping(value = "down-resource", params = {"token"})
-    public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile, @RequestParam("mode") String mode, @RequestParam("companyId") String company) {
-        if (StringUtils.isNotEmpty(company))
-            recordFileService.fetchAll(Collections.singletonList(eicnCdrService.getRepository().findOneIfNullThrow(new CommonEicnCdr(company).RECORD_FILE.eq(recordFile))));
-        final RecordFileService.Result actualExistingFile = recordFileService.getActualExistingFile(recordFile, mode);
-
-        if (actualExistingFile.getCode() != 1)
-            throw new IllegalArgumentException(actualExistingFile.getMessage());
-
-        final Resource resource = fileSystemStorageService.loadAsResource(actualExistingFile.getPath(), actualExistingFile.getFileName());
-
-        return ResponseEntity.ok()
-                .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
-                .headers(header -> {
-                    header.add(HttpHeaders.CONTENT_DISPOSITION,
-                            ContentDisposition.builder("attachment")
-                                    .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
-                                    .build().toString());
-                    header.setPragma("no-cache");
-                    header.setCacheControl(CacheControl.noCache());
-                })
-                .body(resource);
-    }*/
-
     /**
      * 녹취파일 플레이 전용.
-     * */
+     */
     @GetMapping(value = "resource-front-play/{seq}/{uniqueid}")
     public ResponseEntity<Resource> getResourceFrontPlay(@PathVariable Integer seq, @PathVariable String uniqueid, @RequestParam(value = "partial", required = false) Integer partial) {
         if (partial < 0)
@@ -273,10 +223,7 @@ public class RecordApiController extends ApiBaseController {
 
         if (!einCdr.getUniqueid().equals(uniqueid))
             throw new IllegalArgumentException("잘못된 접근입니다.");
-    /*
-        if (!auditListeningHistoryRepository.existReason(seq, -2, DatePart.SECOND))
-            throw new IllegalArgumentException("잘못된 접근입니다.(청취 사유 미확인)");
-    */
+
         final String cdrRecordFile = einCdr.getRecordFile();
         final String recordFile = !ObjectUtils.isEmpty(partial) && partial > 0
                 ? cdrRecordFile.substring(0, cdrRecordFile.lastIndexOf(".")) + "_" + partial + cdrRecordFile.substring(cdrRecordFile.lastIndexOf("."))
@@ -293,9 +240,9 @@ public class RecordApiController extends ApiBaseController {
                 .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
                 .headers(header -> {
                     header.add(HttpHeaders.CONTENT_DISPOSITION,
-                            ContentDisposition.builder("attachment")
-                                    .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
-                                    .build().toString());
+                               ContentDisposition.builder("attachment")
+                                       .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                                       .build().toString());
                     header.setPragma("no-cache");
                     header.setCacheControl(CacheControl.noCache());
                 })
@@ -304,7 +251,7 @@ public class RecordApiController extends ApiBaseController {
 
     /**
      * 녹취파일 다운로드 전용.
-     * */
+     */
     @GetMapping(value = "resource-front-down/{seq}/{uniqueid}/{dstUniqueid}")
     public ResponseEntity<Resource> getResourceFrontDown(@PathVariable Integer seq, @PathVariable String uniqueid, @PathVariable String dstUniqueid, @RequestParam(value = "partial", required = false) Integer partial) {
         if (partial < 0)
@@ -314,13 +261,7 @@ public class RecordApiController extends ApiBaseController {
 
         if (!einCdr.getUniqueid().equals(uniqueid) || !einCdr.getDstUniqueid().equals(dstUniqueid))
             throw new IllegalArgumentException("잘못된 접근입니다.");
-/*
-        try {
-            auditListeningHistoryRepository.insertDownloadLog(seq);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("다운로드 가능 시간이 초과되었습니다. (청취 사유 입력 후 1분 이내)");
-        }
-*/
+
         final String cdrRecordFile = einCdr.getRecordFile();
         final String recordFile = !ObjectUtils.isEmpty(partial) && partial > 0
                 ? cdrRecordFile.substring(0, cdrRecordFile.lastIndexOf(".")) + "_" + partial + cdrRecordFile.substring(cdrRecordFile.lastIndexOf("."))
@@ -338,14 +279,15 @@ public class RecordApiController extends ApiBaseController {
                 .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
                 .headers(header -> {
                     header.add(HttpHeaders.CONTENT_DISPOSITION,
-                            ContentDisposition.builder("attachment")
-                                    .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
-                                    .build().toString());
+                               ContentDisposition.builder("attachment")
+                                       .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                                       .build().toString());
                     header.setPragma("no-cache");
                     header.setCacheControl(CacheControl.noCache());
                 })
                 .body(resource);
     }
+
     /**
      * 녹취 일괄다운로드 등록
      */
