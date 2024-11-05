@@ -7,20 +7,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class StatTotalRow<T> {
-    private T timeInformation;
+    private T timeInformation;  //날짜/시간
 
+    private StatOutboundResponse outboundStat;
+    private StatInboundResponse  inboundStat;
+
+    //총 통화 건수
     @JsonIgnore
     public Integer getTotalCount() {
         return outboundStat.getSuccess() + inboundStat.getSuccess();
     }
 
+    //총 통화 시간
     @JsonIgnore
     public Integer getTotalBillSec() {
         return outboundStat.getBillSecSum() + inboundStat.getBillSecSum();
     }
-
-    private StatOutboundResponse outboundStat;
-    private StatInboundResponse inboundStat;
 
     public StatTotalRow(T timeInformation) {
         this.timeInformation = timeInformation;

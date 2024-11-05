@@ -59,12 +59,14 @@ public class StatUserOutboundEntity extends CommonStatUserOutbound implements St
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
+    //비수신
     public Integer getFails() {
         if (getOutTotal() == null || getOutSuccess() == null)
             return 0;
         return getOutTotal() - getOutSuccess();
     }
 
+    //평균 통화시간
     public long getAvgBillSec() {
         if (getOutBillsecSum() == null || getOutSuccess() == null || getOutSuccess() == 0)
             return 0;
@@ -72,6 +74,7 @@ public class StatUserOutboundEntity extends CommonStatUserOutbound implements St
         return (getOutSuccess() > 0 ? (long) (getOutBillsecSum() / getOutSuccess()) : 0);
     }
 
+    //통화성공률
     public float getAvgRate() {
         if (getOutSuccess() == null || getOutTotal() == null)
             return 0;
@@ -79,6 +82,7 @@ public class StatUserOutboundEntity extends CommonStatUserOutbound implements St
         return EicnUtils.getRateValue(getOutSuccess(), getOutTotal());
     }
 
+    //콜백 성공률
     public float getCallbackProcessRate() {
         if (getCallbackCallSucc() == null || getCallbackCallCnt() == null)
             return 0;
@@ -86,6 +90,7 @@ public class StatUserOutboundEntity extends CommonStatUserOutbound implements St
         return EicnUtils.getRateValue(getCallbackCallSucc(), getCallbackCallCnt());
     }
 
+    //예약 성공률
     public float getReserveProcessRate() {
         if (getReserveCallSucc() == null || getReserveCallCnt() == null)
             return 0;

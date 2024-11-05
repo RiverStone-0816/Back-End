@@ -8,7 +8,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class StatHuntResponse<T> {
-    private T timeInformation;
+    private T timeInformation;  //날짜/시간
+
     private List<StatHuntInboundResponse> statQueueInboundResponses;
 
     public StatHuntResponse(T timeInformation) {

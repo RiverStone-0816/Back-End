@@ -59,6 +59,7 @@ public class StatUserInboundEntity extends CommonStatUserInbound implements Stat
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
+    //평균 통화시간
     public long getAvgBillSec() {
         if (getInBillsecSum() == null || getInSuccess() == null || getInSuccess() == 0)
             return 0;
@@ -66,17 +67,7 @@ public class StatUserInboundEntity extends CommonStatUserInbound implements Stat
         return getInBillsecSum() / getInSuccess();
     }
 
-    public Integer getCancel() {
-        return getInHuntNoanswer();
-    }
-
-    public float getAvgRate() {
-        if (getInSuccess() == null || getInTotal() == null)
-            return 0;
-
-        return EicnUtils.getRateValue(getInSuccess(), getInTotal());
-    }
-
+    //평균 대기시간
     public Integer getAvgWaitSec() {
         if (getInWaitsecSum() == null || getInTotal() == null || getInTotal() == 0)
             return 0;
@@ -84,6 +75,20 @@ public class StatUserInboundEntity extends CommonStatUserInbound implements Stat
         return getInWaitsecSum() / getInTotal();
     }
 
+    //개인비수신
+    public Integer getCancel() {
+        return getInHuntNoanswer();
+    }
+
+    //응대율
+    public float getAvgRate() {
+        if (getInSuccess() == null || getInTotal() == null)
+            return 0;
+
+        return EicnUtils.getRateValue(getInSuccess(), getInTotal());
+    }
+
+    //전환율
     public float getTransferCountRate() {
         if (getTransferer() == null || getInTotal() == null)
             return 0;

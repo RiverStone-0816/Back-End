@@ -59,16 +59,19 @@ public class StatOutboundEntity extends CommonStatOutbound implements StatByTime
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
+    //비수신
     public Integer getCancel() {
         if (getTotal() == null || getSuccess() == null)
             return 0;
         return (getTotal() - getSuccess());
     }
 
+    //통화성공률
     public Double getSuccessAvg() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess(), getTotal())));
     }
 
+    //평균 통화시간
     public Long getBillSecAvg() {
         if (getBillsecSum() == 0 || getSuccess() == 0)
             return 0L;

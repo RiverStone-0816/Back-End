@@ -9,7 +9,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class StatCategoryIvrResponse {
-    private String ivrName;
+    private String ivrName; //IVR명
 
     private List<StatCategoryIvrPathResponse> recordNameList = new ArrayList<>();
 }

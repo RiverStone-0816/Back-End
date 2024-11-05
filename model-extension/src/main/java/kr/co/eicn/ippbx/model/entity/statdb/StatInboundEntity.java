@@ -59,11 +59,12 @@ public class StatInboundEntity extends CommonStatInbound implements StatByTimeUn
         return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
-    //평균
+    //평균 통화시간
     public Long getBillSecAvg() {
         return getSuccess() == 0 ? 0L : getBillsecSum() / getSuccess();
     }
 
+    //평균 대기시간
     public Long getWaitAvg() {
         if (getSuccess() == 0 || getWaitSum() < getWaitCancelSum())
             return 0L;
@@ -71,32 +72,39 @@ public class StatInboundEntity extends CommonStatInbound implements StatByTimeUn
         return (long) ((getWaitSum() - getWaitCancelSum()) / getSuccess());
     }
 
-    public Double getCancelAvg() {
-        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getCancel(), getConnreq())));
-    }
-
+    //호응답률
     public Double getResponseRate() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess(), getConnreq())));
     }
 
+    //콜백포함 응답률
     public Double getCallbackResponseRate() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess() + getCallback(), getConnreq())));
     }
 
+    //서비스레벨 호응답률
+    public Double getSvcLevelAvg() {
+        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getServiceLevelOk(), getConnreq())));
+    }
+
+    //양적개선 응답률
     public Double getQuantitativeResponseRate() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess() + getCancelTimeout() + getCancelCustom(), getConnreq())));
     }
 
+    //질적개선 응답률
     public Double getQualitativeResponseRate() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess() + getCancelNoanswer(), getConnreq())));
     }
 
+    //단순조회율
     public Double getIvrAvg() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getOnlyread(), getTotal())));
     }
 
-    public Double getSvcLevelAvg() {
-        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getServiceLevelOk(), getConnreq())));
+    //호 포기율
+    public Double getCancelAvg() {
+        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getCancel(), getConnreq())));
     }
 
     public Integer getTotalSum() {

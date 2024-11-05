@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class StatOutboundTimeResponse<T> {
-    private T timeInformation;
+    private T timeInformation;  //날짜/시간
 
     private StatOutboundResponse statOutboundResponse;
 

@@ -9,9 +9,9 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class StatCategoryResponse<T> {
-    private T timeInformation;
-    private String svcName;
-    private Integer maxLevel;
+    private T       timeInformation;    //날짜/시간
+    private String  svcName;            //서비스명
+    private Integer maxLevel;           //IVR 최대 레벨
 
     private List<StatCategoryIvrResponse> recordList = new ArrayList<>();
 }

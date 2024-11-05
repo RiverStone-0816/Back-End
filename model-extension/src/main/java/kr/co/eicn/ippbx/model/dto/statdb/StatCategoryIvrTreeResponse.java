@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class StatCategoryIvrTreeResponse {
-    private String treeName; // IVR TREE
-    private String name; // IVR정보명
+    private String treeName;    //IVR TREE
+    private String name;        //IVR 정보명
 }
