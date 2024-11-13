@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import io.jsonwebtoken.lang.Collections;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.DashboardInfoDashboardType;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
@@ -37,7 +36,6 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMB
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
 import static org.apache.commons.lang3.StringUtils.*;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Getter
 @Repository
@@ -166,18 +164,24 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
         queueTableRecord.setRinginuse(false);
         queueTableRecord.setSetinterfacevar(true);
 
-        number.setStatus((byte) 1);
-        number.setType((byte) 0);
+        number.setStatus(Number070Status.USE.getCode());
+        number.setType(NumberType.HUNT.getCode());
+        number.setGroupCode(EMPTY);
+        number.setGroupTreeName(EMPTY);
+        number.setGroupLevel(0);
 
         if (companyTree != null) {
             queueNameRecord.setGroupCode(companyTree.getGroupCode());
             queueNameRecord.setGroupTreeName(companyTree.getGroupTreeName());
             queueNameRecord.setGroupLevel(companyTree.getGroupLevel());
+
+            number.setGroupCode(companyTree.getGroupCode());
+            number.setGroupTreeName(companyTree.getGroupTreeName());
+            number.setGroupLevel(companyTree.getGroupLevel());
         }
 
         queueNameRepository.insert(dsl, queueNameRecord);
         queueTableRepository.insert(dsl, queueTableRecord);
-        numberRepository.updateByKey(dsl, number, number.getNumber());
 
         dashboardInfoRepository.insert(form.getHanName().concat(" 모니터링"), DashboardInfoDashboardType.hunt_monitor, form.getNumber(), 4);
 
@@ -194,11 +198,12 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
             DSLContext pbxDsl = pbxServerInterface.using(optionalPbxServer.get().getHost());
             queueNameRepository.insert(pbxDsl, queueNameRecord);
             queueTableRepository.insert(pbxDsl, queueTableRecord);
-            numberRepository.updateByKey(pbxDsl, number, number.getNumber());
             huntOldMembers = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName))
                     .stream()
                     .collect(toMap(QueueMemberTable::getMembername, member -> member));
         }
+
+        numberRepository.updateByKeyAllPbxServers(number, number.getNumber());
 
         final List<QueuePersonFormRequest> addPersons = form.getAddPersons();
         for (QueuePersonFormRequest addPerson : addPersons) {
@@ -345,32 +350,44 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
             modQueueTable.setAnnounceHoldtime("no");
             modQueueTable.setLeavewhenempty(form.getMaxlen() > 0 ? "no" : "inuse,ringing,paused,invalid,unavailable");
 
+            number.setStatus(Number070Status.USE.getCode());
+            number.setType(NumberType.HUNT.getCode());
+            number.setGroupCode(EMPTY);
+            number.setGroupTreeName(EMPTY);
+            number.setGroupLevel(0);
+
             if (companyTree != null) {
                 modQueueName.setGroupCode(companyTree.getGroupCode());
                 modQueueName.setGroupTreeName(companyTree.getGroupTreeName());
                 modQueueName.setGroupLevel(companyTree.getGroupLevel());
+
+                number.setGroupCode(companyTree.getGroupCode());
+                number.setGroupTreeName(companyTree.getGroupTreeName());
+                number.setGroupLevel(companyTree.getGroupLevel());
             }
 
             queueNameRepository.updateByKey(modQueueName, modQueueEntity.getName());
             queueTableRepository.updateByKey(modQueueTable, modQueueEntity.getName());
 
-            dashboardInfoRepository.updateByValue(form.getHanName().concat(" 모니터링"), form.getNumber(), modQueueEntity.getNumber());
-
-            if (!number.getNumber().equals(originalNumber.getNumber())) {
-                number.setStatus(Number070Status.USE.getCode());
-                number.setType(NumberType.HUNT.getCode());
-                // Number_070 상태 업데이트
-                numberRepository.updateByKey(number, number.getNumber());
-                numberRepository.updateStatusAllPbxServers(originalNumber.getNumber(), Number070Status.NON_USE.getCode());
-            }
-
             optionalPbxServer.ifPresent(server -> {
                 DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
                 queueNameRepository.updateByKey(pbxDsl, modQueueName, modQueueEntity.getName());
                 queueTableRepository.updateByKey(pbxDsl, modQueueTable, modQueueEntity.getName());
-                // Number_070 상태 업데이트
-                numberRepository.updateByKey(pbxDsl, number, number.getNumber());
             });
+
+            dashboardInfoRepository.updateByValue(form.getHanName().concat(" 모니터링"), form.getNumber(), modQueueEntity.getNumber());
+
+            // Number_070 상태 업데이트
+            numberRepository.updateByKeyAllPbxServers(number, number.getNumber());
+
+            if (!number.getNumber().equals(originalNumber.getNumber())) {
+                final Number_070 originalNumber070 = numberRepository.findOneIfNullThrow(originalNumber.getNumber());
+                originalNumber070.setStatus(Number070Status.NON_USE.getCode());
+                originalNumber070.setGroupCode(EMPTY);
+                originalNumber070.setGroupTreeName(EMPTY);
+                originalNumber070.setGroupLevel(0);
+                numberRepository.updateByKeyAllPbxServers(originalNumber070, originalNumber.getNumber());
+            }
         }
 
         // Todo - CallDistributionStrategy.FEWESTCALLS.getCode() 아닐경우 update 방식 변경

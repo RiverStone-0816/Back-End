@@ -77,6 +77,15 @@ public class Number070Repository extends EicnBaseRepository<Number_070, kr.co.ei
                 });
     }
 
+    public void updateByKeyAllPbxServers(final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070 record, final String number) {
+        super.updateByKey(record, number);
+
+        cacheService.pbxServerList(getCompanyId()).forEach(e -> {
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.updateByKey(pbxDsl, record, number);
+        });
+    }
+
     public void updateStatusAllPbxServers(final String number, final byte status) {
         updateStatus(dsl, number, status);
 
