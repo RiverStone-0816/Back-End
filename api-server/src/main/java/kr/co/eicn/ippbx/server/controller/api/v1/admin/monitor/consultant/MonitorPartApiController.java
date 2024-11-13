@@ -232,9 +232,9 @@ public class MonitorPartApiController extends ApiBaseController {
      */
     @GetMapping("hunt-stat")
     public ResponseEntity<JsonResult<List<HuntStatMonitorResponse>>> getHuntStat() {
+        final List<HuntStatMonitorResponse> huntStatList = new ArrayList<>();
         final List<QueueName> queueNameList = queueNameRepository.findAll();
         final Map<String, MonitorMajorStatusResponse> huntStatMap = statInboundService.getRepository().findAllByHunt();
-        List<HuntStatMonitorResponse> huntStatList = new ArrayList<>();
 
         queueNameList.forEach(queue -> {
             HuntStatMonitorResponse response = new HuntStatMonitorResponse();
@@ -245,7 +245,7 @@ public class MonitorPartApiController extends ApiBaseController {
             response.setConnectionRequest(data.getConnreq());
             response.setSuccess(data.getSuccess());
             response.setCancel(data.getCancel());
-            response.setCallback(data.getCallbackSuccess());
+            response.setCallback(data.getCallback());
             response.setResponseRate();
 
             huntStatList.add(response);
