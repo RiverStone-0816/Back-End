@@ -505,11 +505,12 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
             queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName));
         });
         // 070내선전화번호 상태 업데이트
-        numberRepository.updateStatus(dsl, queueEntity.getNumber(), (byte) 0);
+        numberRepository.updateStatus(dsl, queueEntity.getNumber(), Number070Status.NON_USE.getCode());
         optionalPbxServer.ifPresent(server -> {
             DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
-            numberRepository.updateStatus(pbxDsl, queueEntity.getNumber(), (byte) 0);
+            numberRepository.updateStatus(pbxDsl, queueEntity.getNumber(), Number070Status.NON_USE.getCode());
         });
+
         // 참조 예비헌트명 초기화
         dsl.update(QUEUE_NAME)
                 .set(QUEUE_NAME.NO_CONNECT_DATA, EMPTY)

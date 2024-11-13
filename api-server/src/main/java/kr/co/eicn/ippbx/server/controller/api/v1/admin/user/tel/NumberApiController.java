@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.user.tel;
 
+import kr.co.eicn.ippbx.model.enums.Number070Status;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
@@ -135,10 +136,12 @@ public class NumberApiController extends ApiBaseController {
         Objects.requireNonNull(NumberType.of(type));
 
         return ResponseEntity.ok(
-                data(repository.findAll((isEmpty(host) ? DSL.noCondition() : NUMBER_070.HOST.eq(host)).and(NUMBER_070.TYPE.eq(type).and(NUMBER_070.STATUS.eq((byte) 0))))
-                        .stream()
-                        .map(number -> convertDto(number, SummaryNumber070Response.class))
-                        .collect(Collectors.toList())
+                data(repository.findAll((isEmpty(host)
+                                ? DSL.noCondition()
+                                : NUMBER_070.HOST.eq(host)).and(NUMBER_070.TYPE.eq(type).and(NUMBER_070.STATUS.eq(Number070Status.NON_USE.getCode()))))
+                             .stream()
+                             .map(number -> convertDto(number, SummaryNumber070Response.class))
+                             .collect(Collectors.toList())
                 )
         );
     }

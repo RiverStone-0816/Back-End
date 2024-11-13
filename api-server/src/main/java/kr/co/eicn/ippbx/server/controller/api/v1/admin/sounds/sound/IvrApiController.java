@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.sounds.sound;
 
+import kr.co.eicn.ippbx.model.enums.Number070Status;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ConfRoom;
@@ -192,7 +193,7 @@ public class IvrApiController extends ApiBaseController {
 	@GetMapping("add-number-list")
 	public ResponseEntity<JsonResult<List<SummaryNumber070Response>>> addNumber070List() {
 		return ResponseEntity.ok(data(
-				number070Repository.findAll(DSL.and(NUMBER_070.STATUS.eq((byte) 1).and(NUMBER_070.TYPE.ne((byte) 2))).or(NUMBER_070.TYPE.eq((byte) 2)))
+				number070Repository.findAll(DSL.and(NUMBER_070.STATUS.eq(Number070Status.USE.getCode()).and(NUMBER_070.TYPE.ne((byte) 2))).or(NUMBER_070.TYPE.eq((byte) 2)))
 				.stream()
 				.sorted(comparing(Number_070::getType).reversed().thenComparing(Number_070::getNumber))
 				.map(e -> {

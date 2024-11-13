@@ -220,7 +220,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         queueTableRepository.insertAllPbxServers(queueTableEntity);
 
         // 070전화번호 업데이트
-        numberRepository.updateStatusAllPbxServers(number.getNumber(), (byte) 1);
+        numberRepository.updateStatusAllPbxServers(number.getNumber(), Number070Status.USE.getCode());
 
         webSecureHistoryRepository.insert(form.getExtension(), WebSecureActionType.PHONE, WebSecureActionSubType.ADD, form.getExtension());
     }
@@ -251,11 +251,13 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         }
 
         final Number_070 oldNumber070 = numberRepository.findOne(old.getVoipTel());
+
         // number_070번호가 바꼈다면 number_070 사용유무 변경
         if (oldNumber070 != null)
-            numberRepository.updateStatusAllPbxServers(old.getVoipTel(), (byte) 0);
+            numberRepository.updateStatusAllPbxServers(old.getVoipTel(), Number070Status.NON_USE.getCode());
+
         // 신규 number_070 사용으로 상태변경
-        numberRepository.updateStatusAllPbxServers(form.getNumber(), (byte) 1);
+        numberRepository.updateStatusAllPbxServers(form.getNumber(), Number070Status.USE.getCode());
 
         // 신규 연락처 등록
         final PhoneInfoRecord insertRecord = new PhoneInfoRecord();
@@ -582,7 +584,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         final Number_070 numberEntity = numberRepository.findOne(phoneInfoEntity.getVoipTel());
         final List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(getCompanyId());
 
-        numberRepository.updateStatusAllPbxServers(numberEntity.getNumber(), (byte) 0);
+        numberRepository.updateStatusAllPbxServers(numberEntity.getNumber(), Number070Status.NON_USE.getCode());
 
         sipBuddiesRepository.deleteAndNameAllPbxServers(peer);
 
