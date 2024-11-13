@@ -3,8 +3,11 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.exception.DuplicateKeyException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueNameResponse;
+import kr.co.eicn.ippbx.model.enums.NoConnectKind;
 import kr.co.eicn.ippbx.model.search.StatHuntSearchRequest;
 import kr.co.eicn.ippbx.model.search.search.SearchQueueNameRequest;
+import kr.co.eicn.ippbx.server.service.CacheService;
+import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Data;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +33,13 @@ import static org.jooq.impl.DSL.noCondition;
 public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName, String> {
     protected final Logger logger = LoggerFactory.getLogger(QueueNameRepository.class);
 
-    public QueueNameRepository() {
+    private final PBXServerInterface pbxServerInterface;
+    private final CacheService       cacheService;
+
+    public QueueNameRepository(PBXServerInterface pbxServerInterface, CacheService cacheService) {
         super(QUEUE_NAME, QUEUE_NAME.NAME, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName.class);
+        this.pbxServerInterface = pbxServerInterface;
+        this.cacheService = cacheService;
 
         orderByFields.add(QUEUE_NAME.HAN_NAME.asc());
     }
@@ -99,17 +107,17 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
      * 헌트별 멤버상태 수
      */
     public List<QueueMemberStatus> memberStatusByQueues() {
-        return dsl.select(QUEUE_NAME.NAME
-                    , QUEUE_NAME.NUMBER
-                    , QUEUE_NAME.HAN_NAME
-                    , QUEUE_MEMBER_TABLE.PAUSED
-                    , QUEUE_MEMBER_TABLE.IS_LOGIN
-                    , DSL.count().as("cnt")
+        return dsl.select(QUEUE_NAME.NAME,
+                          QUEUE_NAME.NUMBER,
+                          QUEUE_NAME.HAN_NAME,
+                          QUEUE_MEMBER_TABLE.PAUSED,
+                          QUEUE_MEMBER_TABLE.IS_LOGIN,
+                          DSL.count().as("cnt")
                 )
                 .from(QUEUE_NAME)
                 .leftJoin(QUEUE_MEMBER_TABLE)
                 .on(QUEUE_NAME.NAME.eq(QUEUE_MEMBER_TABLE.QUEUE_NAME)
-                    .and(QUEUE_MEMBER_TABLE.COMPANY_ID.eq(getCompanyId())))
+                            .and(QUEUE_MEMBER_TABLE.COMPANY_ID.eq(getCompanyId())))
                 .where(compareCompanyId())
                 .groupBy(QUEUE_NAME.NAME, QUEUE_NAME.NUMBER, QUEUE_NAME.HAN_NAME, QUEUE_MEMBER_TABLE.PAUSED, QUEUE_MEMBER_TABLE.IS_LOGIN)
                 .fetchInto(QueueMemberStatus.class);
@@ -119,18 +127,18 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
      * 서비스별 멤버상태
      */
     public List<QueueMemberStatus> memberStatusByServices() {
-        return dsl.select(QUEUE_NAME.NAME
-                    , QUEUE_NAME.NUMBER
-                    , QUEUE_NAME.SVC_NUMBER
-                    , QUEUE_NAME.HAN_NAME
-                    , QUEUE_MEMBER_TABLE.PAUSED
-                    , QUEUE_MEMBER_TABLE.IS_LOGIN
-                    , DSL.count().as("cnt")
+        return dsl.select(QUEUE_NAME.NAME,
+                          QUEUE_NAME.NUMBER,
+                          QUEUE_NAME.SVC_NUMBER,
+                          QUEUE_NAME.HAN_NAME,
+                          QUEUE_MEMBER_TABLE.PAUSED,
+                          QUEUE_MEMBER_TABLE.IS_LOGIN,
+                          DSL.count().as("cnt")
                 )
                 .from(QUEUE_NAME)
                 .leftJoin(QUEUE_MEMBER_TABLE)
                 .on(QUEUE_NAME.NAME.eq(QUEUE_MEMBER_TABLE.QUEUE_NAME)
-                    .and(QUEUE_MEMBER_TABLE.COMPANY_ID.eq(getCompanyId())))
+                            .and(QUEUE_MEMBER_TABLE.COMPANY_ID.eq(getCompanyId())))
                 .where(compareCompanyId())
                 .and(QUEUE_NAME.SVC_NUMBER.notEqual(EMPTY))
                 .groupBy(QUEUE_NAME.NAME, QUEUE_NAME.NUMBER, QUEUE_NAME.SVC_NUMBER, QUEUE_NAME.HAN_NAME, QUEUE_MEMBER_TABLE.PAUSED, QUEUE_MEMBER_TABLE.IS_LOGIN)
@@ -163,14 +171,23 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
         }
     }
 
+    public void resetHunt(DSLContext dslContext, String queueName) {
+        dslContext.update(QUEUE_NAME)
+                .set(QUEUE_NAME.NO_CONNECT_DATA, EMPTY)
+                .where(compareCompanyId())
+                .and(QUEUE_NAME.NO_CONNECT_KIND.eq(NoConnectKind.HUNT.getCode()))
+                .and(QUEUE_NAME.NO_CONNECT_DATA.eq(queueName))
+                .execute();
+    }
+
     @Data
     public static class QueueMemberStatus {
-        private String name;
-        private String number;
-        private String svcNumber;
-        private String hanName;
+        private String  name;
+        private String  number;
+        private String  svcNumber;
+        private String  hanName;
         private Integer paused;
-        private String isLogin;
+        private String  isLogin;
         private Integer cnt;
     }
 }
