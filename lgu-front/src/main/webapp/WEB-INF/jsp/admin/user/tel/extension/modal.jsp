@@ -79,7 +79,7 @@
                 </div>
             </div>
             </c:if>
-            <c:if test="${g.usingServices.contains('DUSTT')}">
+            <c:if test="${g.usingServices.contains('RSTT') || g.usingServices.contains('DUSTT') || g.usingServices.contains('DUTA')}">
             <div class="row">
                 <div class="four wide column"><label class="control-label">STT사용여부</label></div>
                 <div class="four wide column">

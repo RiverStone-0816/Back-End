@@ -88,7 +88,7 @@
                             <th>지역번호</th>
                             <th>CID</th>
                             <th>녹취여부(${licenseInfo.currentLicence} / ${licenseInfo.licence})</th>
-                            <c:if test="${g.usingServices.contains('DUSTT')}">
+                            <c:if test="${g.usingServices.contains('RSTT') || g.usingServices.contains('DUSTT') || g.usingServices.contains('DUTA')}">
                             <th>STT(${sttLicenseInfo.currentLicence} / ${sttLicenseInfo.licence})</th>
                             </c:if>
                             <c:if test="${g.usingServices.contains('SPHONE')}">
@@ -109,7 +109,7 @@
                                         <td>${g.htmlQuote(e.localPrefix)}</td>
                                         <td>${g.htmlQuote(e.cid)}</td>
                                         <td>${g.htmlQuote(g.messageOf('RecordType', e.recordType))}</td>
-                                        <c:if test="${g.usingServices.contains('DUSTT')}">
+                                        <c:if test="${g.usingServices.contains('RSTT') || g.usingServices.contains('DUSTT') || g.usingServices.contains('DUTA')}">
                                         <td>${g.htmlQuote(g.messageOf('SttType', e.stt))}</td>
                                         </c:if>
                                         <c:if test="${g.usingServices.contains('SPHONE')}">
