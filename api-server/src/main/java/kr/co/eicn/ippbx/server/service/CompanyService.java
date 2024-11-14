@@ -94,19 +94,19 @@ public class CompanyService extends ApiBaseService {
 		);
 		licence.setAstinLicense(
 				LicenseInfo.builder()
-						.licence(company.getSttLicense())
+						.licence(company.getAssistLicense())
 						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.ASTIN.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setAstoutLicense(
 				LicenseInfo.builder()
-						.licence(company.getSttLicense())
+						.licence(company.getAssistLicense())
 						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.ASTOUT.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setAststtLicense(
 				LicenseInfo.builder()
-						.licence(company.getSttLicense())
+						.licence(company.getAssistLicense())
 						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.ASTSTT.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
