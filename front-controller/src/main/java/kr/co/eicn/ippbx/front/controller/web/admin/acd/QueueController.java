@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.acd;
 
+import kr.co.eicn.ippbx.model.enums.NumberType;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
@@ -59,26 +60,28 @@ public class QueueController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") QueueFormRequest form) throws IOException, ResultFailException {
-        if (model.getAttribute("numbers") == null)
-            model.addAttribute("numbers", numberApiInterface.typeNumbers((byte) 0, "").stream().map(SummaryNumber070Response::getNumber).distinct().sorted().collect(Collectors.toList()));
+        if (!model.containsAttribute("numbers"))
+            model.addAttribute("numbers", numberApiInterface.typeNumbers(NumberType.HUNT.getCode(), "").stream().map(SummaryNumber070Response::getNumber).distinct().sorted().collect(Collectors.toList()));
+
         model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.services().stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName))));
 
-        final Map<String, String> strategyOptions;
-        if (g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2"))
-            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS, CallDistributionStrategy.LEASTRECENT,
-                                                      CallDistributionStrategy.RANDOM, CallDistributionStrategy.RINGALL, CallDistributionStrategy.RRMEMORY);
-        else
-            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
+        final Map<String, String> strategyOptions =
+                g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2")
+                        ? FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS, CallDistributionStrategy.LEASTRECENT,
+                                                  CallDistributionStrategy.RANDOM, CallDistributionStrategy.RINGALL, CallDistributionStrategy.RRMEMORY)
+                        : FormUtils.optionsOfCode(CallDistributionStrategy.class);
         model.addAttribute("strategyOptions", new MapToLinkedHashMap().toLinkedHashMapByValue(strategyOptions));
 
-        if (model.getAttribute("ringBackTones") == null)
+        if (!model.containsAttribute("ringBackTones"))
             model.addAttribute("ringBackTones", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName))));
 
         model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName))));
         model.addAttribute("contexts", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName))));
         model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.addQueueNames().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName))));
-        model.addAttribute("addOnPersons", apiInterface.addOnPersons(null));
         model.addAttribute("subGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.subGroups().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName))));
+
+        if (!model.containsAttribute("addOnPersons"))
+            model.addAttribute("addOnPersons", apiInterface.addOnPersons(null));
 
         return "admin/acd/queue/modal";
     }
@@ -90,7 +93,7 @@ public class QueueController extends BaseController {
         ReflectionUtils.copy(form, entity);
         model.addAttribute("entity", entity);
 
-        final List<String> numbers = numberApiInterface.typeNumbers((byte) 0, entity.getHost()).stream().map(SummaryNumber070Response::getNumber).distinct().collect(Collectors.toList());
+        final List<String> numbers = numberApiInterface.typeNumbers(NumberType.HUNT.getCode(), entity.getHost()).stream().map(SummaryNumber070Response::getNumber).distinct().collect(Collectors.toList());
         model.addAttribute("numbers", numbers);
 
         if (StringUtils.isNotEmpty(entity.getNumber()) && !numbers.contains(entity.getNumber()))
@@ -101,6 +104,9 @@ public class QueueController extends BaseController {
 
         if (StringUtils.isNotEmpty(entity.getMusiconhold()) && !ringBackTones.containsKey(entity.getMusiconhold()))
             ringBackTones.put(entity.getMusiconhold(), entity.getMusiconholdName());
+
+        final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(entity.getName());
+        model.addAttribute("addOnPersons", addOnPersons);
 
         return modal(model, form);
     }

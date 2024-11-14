@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.user.tel;
 
+import kr.co.eicn.ippbx.model.enums.NumberType;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -53,7 +54,7 @@ public class ServiceController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") ServiceListFormRequest form) throws IOException, ResultFailException {
-        final List<SummaryNumber070Response> numbers = numberApiInterface.typeNumbers((byte)2, "");
+        final List<SummaryNumber070Response> numbers = numberApiInterface.typeNumbers(NumberType.SERVICE.getCode(), "");
         final ServiceListSearchRequest serviceSearch = new ServiceListSearchRequest();
         final List<ServiceListSummaryResponse> services = serviceApiInterface.list(serviceSearch);
         model.addAttribute("numbers", numbers.stream().filter(e -> services.stream().noneMatch(service -> service.getSvcNumber().equals(e.getNumber()))).collect(toList()));
