@@ -13,6 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
@@ -226,6 +227,11 @@
                                                         </button>
                                                     </c:when>
                                                 </c:choose>
+                                                <c:if test="${usingServices.contains('LGUCB')}">
+                                                    <button class="ui icon button mini compact translucent" title="콜봇" onclick="popupCallBot('${e.seq}')">
+                                                        <i class="tty alternate icon"></i>
+                                                    </button>
+                                                </c:if>
                                             </div>
                                         </td>
 
@@ -508,6 +514,10 @@
         <script>
             function consultingHistoryTalkView(roomId) {
                 popupReceivedHtml('/admin/wtalk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
+            }
+
+            function popupCallBot(seq) {
+                popupReceivedHtml('/admin/record/history/history/modal-call-bot/'+seq, 'modal-call-bot');
             }
 
             const codeMapInfo = {

@@ -1,11 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroup;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ContextInfo;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
 import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupListEntity;
 import kr.co.eicn.ippbx.model.enums.ScheduleKind;
@@ -31,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ContextInfo.CONTEXT_INFO;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.IvrTree.IVR_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.LguCallbotInfo.LGU_CALLBOT_INFO;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroupList.SCHEDULE_GROUP_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendMessageTemplate.SEND_MESSAGE_TEMPLATE;
@@ -67,6 +64,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
         final Map<String, String> ivrTreeMap = getIvrRootTree().stream().collect(Collectors.toMap(e -> String.valueOf(e.getCode()), IvrTree::getName));
         final Map<String, String> contextInfoMap = getContextInfo().stream().collect(Collectors.toMap(ContextInfo::getContext, ContextInfo::getName));
         final Map<String, String> sendMessageTemplateMap = getSendMessageTemplate().stream().collect(Collectors.toMap(e -> String.valueOf(e.getId()), SendMessageTemplate::getContent));
+        final Map<String, String> lguCallbotInfoMap = getLguCallbotInfo().stream().collect(Collectors.toMap(LguCallbotInfo::getCallbotKey, LguCallbotInfo::getServiceName));
 
         recordResultMap.forEach((record, records) -> {
             final ScheduleGroupEntity scheduleGroupEntity = record.into(ScheduleGroupEntity.class);
@@ -97,6 +95,8 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                             into.setKindDataName(context.concat(" | ").concat(data));
                         } else if (ScheduleKind.SMS.getCode().equals(into.getKind())) {
                             into.setKindDataName(sendMessageTemplateMap.getOrDefault(into.getKindData(), "미확인 SMS 템플릿"));
+                        } else if (ScheduleKind.CALLBOT.getCode().equals(into.getKind())) {
+                            into.setKindDataName(lguCallbotInfoMap.getOrDefault(into.getKindData(), EMPTY));
                         }
                         return into;
                     })
@@ -247,5 +247,12 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                 .where(SCHEDULE_GROUP.PARENT.eq(parent))
                 .and(compareCompanyId())
                 .execute();
+    }
+
+    public List<LguCallbotInfo> getLguCallbotInfo() {
+        return dsl.select()
+                .from(LGU_CALLBOT_INFO)
+                .where(LGU_CALLBOT_INFO.COMPANY_ID.eq(getCompanyId()))
+                .fetchInto(LguCallbotInfo.class);
     }
 }

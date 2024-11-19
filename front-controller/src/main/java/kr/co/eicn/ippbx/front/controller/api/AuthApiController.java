@@ -7,7 +7,9 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.ArsAuthInfo;
 import kr.co.eicn.ippbx.front.model.CurrentUserMenu;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
+import kr.co.eicn.ippbx.front.service.LguCallBotApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.kms.KmsGraphQLInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.LguCallBotInfoResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.AuthApiInterface;
@@ -77,6 +79,8 @@ public class AuthApiController extends BaseController {
     private PhoneApiInterface phoneApiInterface;
     @Autowired
     private KmsGraphQLInterface kmsGraphQLInterface;
+    @Autowired
+    private LguCallBotApiInterface lguCallBotApiInterface;
 
     @Value("${eicn.admin.socket.id}")
     private String adminSocketId;
@@ -183,6 +187,14 @@ public class AuthApiController extends BaseController {
         g.setBaseUrl(doubUri + "/api/user/session-check");
         g.setSSORequestSiteUrl();
         g.setSTTSocketUrl();
+
+        if (g.getUsingServices().contains("LGUCB")) {
+            final List<LguCallBotInfoResponse> lguCallBotInfoResponse = lguCallBotApiInterface.getCallBotApiUrl();
+            if (lguCallBotInfoResponse == null)
+                throw new IllegalArgumentException("콜봇 URL 이 등록되지 않았습니다.\nmaster 에서 등록해주세요.");
+
+            g.setLguCallBotApiUrl(lguCallBotInfoResponse.stream().collect(Collectors.toMap(LguCallBotInfoResponse::getCallbotKey, LguCallBotInfoResponse::getConvApiUrl)));
+        }
 
         if ("J|A".contains(g.getUser().getIdType()) && (g.getUsingServices().contains("ASTIN") || g.getUsingServices().contains("ASTOUT") || g.getUsingServices().contains("BSTT"))) {
             // 전체관리자 이상의 권한이 있으면서 회사가 서비스도 가지고 있음. (A조건)

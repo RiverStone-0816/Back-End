@@ -105,6 +105,8 @@ kr:
                 REDIRECTOUT_TRANSFERER: "외부돌려줌"
                 SPY: "엿듣기"
                 TRANS_BACK: "되돌려받음"
+                CALLBOT_TRANSFEREE: "콜봇돌려받기"
+                CALLBOT_TRANSFERER: "콜봇돌려주기"
 messages:
   company:
     notfound: "회사 아이디를 확인할 수 없습니다."

@@ -62,7 +62,9 @@ eicn:
   realapiserver: http://211.43.218.10/api-server
   webchat:
     image:
-      url: http://localhost:8100/webchat_bot_image
+      url: http://211.43.218.10:8100/webchat_bot_image
+  callbot:
+    url: http://211.43.218.10:9300/callbot_conv
   admin:
     socket:
       id: monitor_connector

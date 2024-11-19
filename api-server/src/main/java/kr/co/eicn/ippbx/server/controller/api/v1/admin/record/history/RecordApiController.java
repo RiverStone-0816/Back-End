@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.history;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonEicnCdr;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
@@ -8,16 +9,15 @@ import kr.co.eicn.ippbx.model.RecordFile;
 import kr.co.eicn.ippbx.model.dto.customdb.CommonEicnCdrResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEvaluationEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CurrentEICNCdrEntity;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
 import kr.co.eicn.ippbx.model.form.RecordDownFormRequest;
 import kr.co.eicn.ippbx.model.search.RecordCallSearch;
+import kr.co.eicn.ippbx.model.search.ResultRecordSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.customdb.EicnCdrRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.GradeListRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.WebSecureHistoryRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.EicnCdrService;
 import kr.co.eicn.ippbx.server.service.RecordDownService;
 import kr.co.eicn.ippbx.server.service.RecordFileService;
@@ -40,10 +40,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -69,6 +66,7 @@ public class RecordApiController extends ApiBaseController {
     private final RecordFileService          recordFileService;
     private final RecordDownService          recordDownService;
     private final StorageService             fileSystemStorageService;
+    private final CurrentEICNCdrRepository   currentEICNCdrRepository;
     private final Period                     LIMIT_INQUIRY_PERIOD = Period.ofMonths(6);
 
     /**
@@ -161,9 +159,50 @@ public class RecordApiController extends ApiBaseController {
         return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));
     }
 
+    @GetMapping("result-record")
+    public ResponseEntity<JsonResult<List<CommonEicnCdrResponse>>> resultRecord(ResultRecordSearchRequest search) {
+        List<CommonEicnCdrResponse> rows = new ArrayList<>();
+        if (search.getUniqueIds() != null && !search.getUniqueIds().isEmpty()) {
+            final List<EicnCdrEntity> list = eicnCdrService.getRepository().findAll(new CommonEicnCdr(g.getUser().getCompanyId()).UNIQUEID.in(search.getUniqueIds()));
+            rows = list.stream().map((e) -> convertDto(e, CommonEicnCdrResponse.class)).collect(toList());
+        }
+
+        return ResponseEntity.ok(data(rows));
+    }
+
     @GetMapping("{seq}")
     public ResponseEntity<JsonResult<CommonEicnCdrResponse>> get(@PathVariable Integer seq) {
         final CommonEicnCdrResponse detail = convertDto(eicnCdrService.getRepository().findOneIfNullThrow(seq), CommonEicnCdrResponse.class);
+
+        final Map<String, PersonList> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, e -> e));
+        final Map<String, ServiceList> serviceListMap = serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(ServiceList::getSvcNumber))
+                .collect(Collectors.toMap(ServiceList::getSvcNumber, e -> e));
+
+        if (Objects.nonNull(personListMap.get(detail.getUserid())))
+            detail.setPersonList(personListMap.get(detail.getUserid()));
+        if (isNotEmpty(detail.getIniNum()))
+            if (Objects.nonNull(serviceListMap.get(detail.getIniNum())))
+                detail.setService(serviceListMap.get(detail.getIniNum()));
+
+        return ResponseEntity.ok().body(data(detail));
+    }
+
+    @GetMapping("call-bot/{uniqueId}/bot")
+    public ResponseEntity<JsonResult<CommonEicnCdrResponse>> getCallBot(@PathVariable String uniqueId) {
+        CurrentEICNCdrEntity cdrEntity = null;
+        try {
+            cdrEntity = currentEICNCdrRepository.callBot(uniqueId);
+        } catch (Exception e) {
+            log.error("error", "CurrentEicnCdr 데이터 없음");
+        }
+
+        if (ObjectUtils.isEmpty(cdrEntity))
+            cdrEntity = eicnCdrService.getRepository().callBot(uniqueId);
+
+        if (ObjectUtils.isEmpty(cdrEntity))
+            return ResponseEntity.ok().body(data(null));
+
+        final CommonEicnCdrResponse detail = convertDto(cdrEntity, CommonEicnCdrResponse.class);
 
         final Map<String, PersonList> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, e -> e));
         final Map<String, ServiceList> serviceListMap = serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(ServiceList::getSvcNumber))

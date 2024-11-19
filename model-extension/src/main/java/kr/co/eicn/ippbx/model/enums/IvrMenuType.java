@@ -15,7 +15,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  * 9:예외처리후헌트번호연결
  * 10:내선직접연결
  * 13:SMS 발송
- *
+ * <p>
  * 20:메뉴다시듣기
  * 21:음원연결후종료
  * 22:이전메뉴
@@ -32,15 +32,16 @@ public enum IvrMenuType implements CodeHasable<Byte> {
     CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION((byte) 8, false, false, ImageType.EXCEPTION),
     CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION((byte) 9, false, false, ImageType.EXCEPTION),
     CONNECT_INNER_NUMBER_DIRECTLY((byte) 10, false, false, ImageType.CONNECT),
+    CONNECT_INNER_CALLBOT((byte) 12, false, false, ImageType.CONNECT),
     SEND_SMS((byte) 13, false, false, ImageType.FINISH),
     RETRY_MENU((byte) 20, false, false, ImageType.SOUND),
     FINISH_AFTER_CONNECT_SOUND((byte) 21, false, false, ImageType.SOUND),
     TO_PREVIOUS_MENU((byte) 22, false, false, ImageType.MOVE),
     TO_FIRST_MENU((byte) 23, false, false, ImageType.MOVE);
 
-    private final byte code;
-    private final boolean rootable;
-    private final boolean menu;
+    private final byte      code;
+    private final boolean   rootable;
+    private final boolean   menu;
     private final ImageType imageType;
 
     IvrMenuType(byte code, boolean rootable, boolean menu, ImageType imageType) {
@@ -67,8 +68,8 @@ public enum IvrMenuType implements CodeHasable<Byte> {
         return imageType;
     }
 
-    public static IvrMenuType of (byte value) {
-        for (IvrMenuType type : IvrMenuType.values()){
+    public static IvrMenuType of(byte value) {
+        for (IvrMenuType type : IvrMenuType.values()) {
             if (type.getCode().equals(value))
                 return type;
         }

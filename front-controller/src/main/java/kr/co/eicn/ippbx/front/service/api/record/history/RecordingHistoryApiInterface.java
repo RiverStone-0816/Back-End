@@ -88,6 +88,10 @@ public class RecordingHistoryApiInterface extends ApiServerInterface {
         return getData(subUrl + seq, null, CommonEicnCdrResponse.class).getData();
     }
 
+    public CommonEicnCdrResponse getCallBot(String uniqueId) throws IOException, ResultFailException {
+        return getData(subUrl + "call-bot/" + uniqueId + "/bot", null, CommonEicnCdrResponse.class).getData();
+    }
+
     public List<RecordFile> getFiles(Integer seq) throws IOException, ResultFailException {
         return getList(subUrl + seq + "/record-files", null, RecordFile.class).getData();
     }

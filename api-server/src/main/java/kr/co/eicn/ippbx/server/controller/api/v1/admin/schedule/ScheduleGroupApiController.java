@@ -54,6 +54,7 @@ public class ScheduleGroupApiController extends ApiBaseController {
 	private final ServiceRepository serviceRepository;
 	private final ConfRoomRepository confRoomRepository;
 	private final ScheduleInfoRepository scheduleInfoRepository;
+	private final LguCallbotInfoRepository lguCallbotInfoRepository;
 
 	/**
 	 * 스케쥴유형 목록조회
@@ -232,5 +233,10 @@ public class ScheduleGroupApiController extends ApiBaseController {
 	@GetMapping("add-context-list")
 	public ResponseEntity<JsonResult<List<SummaryContextInfoResponse>>> addContextList() {
 		return ResponseEntity.ok(data(contextInfoRepository.findAll().stream().map(e -> convertDto(e, SummaryContextInfoResponse.class)).collect(Collectors.toList())));
+	}
+
+	@GetMapping("add-callbot-list")
+	public ResponseEntity<JsonResult<List<SummaryCallbotResponse>>> callbotList() {
+		return ResponseEntity.ok(data(lguCallbotInfoRepository.findAll().stream().map(e -> convertDto(e, SummaryCallbotResponse.class)).collect(Collectors.toList())));
 	}
 }

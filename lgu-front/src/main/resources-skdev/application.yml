@@ -68,6 +68,8 @@ eicn:
   webchat:
     image:
       url: https://dev.eicn.co.kr:8200/webchat_bot_image
+  callbot:
+    url: https://dev.eicn.co.kr:9300/callbot_conv
   admin:
     socket:
       id: monitor_connector

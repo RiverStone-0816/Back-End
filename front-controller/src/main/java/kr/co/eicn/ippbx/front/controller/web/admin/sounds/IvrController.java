@@ -117,6 +117,8 @@ public class IvrController extends BaseController {
         model.addAttribute("webVoiceYn", FormUtils.optionsOfCode(IsWebVoiceYn.class));
         final Map<Integer, String> smsTemplate = smsMessageTemplateApiInterface.list().stream().collect(Collectors.toMap(SendMessageTemplateResponse::getId, SendMessageTemplateResponse::getContent));
         model.addAttribute("smsTemplate", new MapToLinkedHashMap().toLinkedHashMapByValue(smsTemplate));
+        final Map<String, String> callbots = scheduleGroupApiInterface.addCallbotList().stream().collect(Collectors.toMap(SummaryCallbotResponse::getCallbotKey, SummaryCallbotResponse::getServiceName));
+        model.addAttribute("callbots", callbots);
 
         return "admin/sounds/ivr/modal";
     }

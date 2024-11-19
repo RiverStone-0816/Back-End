@@ -21,7 +21,9 @@
                 <div class="panel call-info">
                     <div class="panel-heading">
                         <label class="control-label">수발신정보</label>
-                        <button type="button" class="ui button mini right floated compact" onclick="clearCustomerAndCounselingInput()">초기화</button>
+                        <button type="button" class="ui button mini right floated compact"
+                                onclick="clearCustomerAndCounselingInput()">초기화
+                        </button>
                     </div>
                     <div class="panel-body">
                         <table class="ui table celled definition">
@@ -30,9 +32,16 @@
                                 <td class="three wide">전화상태</td>
                                 <td>
                                     <text id="call-status"></text>
-                                    <button class="ui right floated button mini compact blue" id="partial-recoding-stt" style="display: none;">
+                                    <button class="ui right floated button mini compact blue" id="partial-recoding-stt"
+                                            style="display: none;">
                                         <i class="fa fa-play"></i>&ensp;<text>부분녹취</text>
                                     </button>
+                                    <c:if test="${usingServices.contains('LGUCB')}">
+                                        <button class="ui icon button mini compact translucent" id="call-bot" title="콜봇"
+                                                onclick="popupCounselCallBot()" style="display: none;">
+                                            <i class="tty alternate icon"></i>
+                                        </button>
+                                    </c:if>
                                 </td>
                             </tr>
                             <tr>
@@ -68,8 +77,10 @@
                                             </div>
                                             <div class="field remove-pr">
                                                 <div class="ui action input fluid">
-                                                    <input style="width: 115px !important;" type="text" id="calling-number-stt" class="-calling-number"/>
-                                                    <button type="button" class="ui icon button" onclick="tryDial('MAINDB')">
+                                                    <input style="width: 115px !important;" type="text"
+                                                           id="calling-number-stt" class="-calling-number"/>
+                                                    <button type="button" class="ui icon button"
+                                                            onclick="tryDial('MAINDB')">
                                                         <i class="phone icon"></i>
                                                     </button>
                                                 </div>
@@ -81,9 +92,15 @@
                             <tr>
                                 <td>퀵메뉴</td>
                                 <td>
-                                    <button type="button" class="ui mini button compact" onclick="popupSearchMaindbCustomModal()"> 고객DB</button>
-                                    <button type="button" class="ui mini button compact" onclick="popupSearchCounselingHistoryModal()"> 상담이력</button>
-                                    <button type="button" class="ui mini button compact" onclick="popupSearchCallHistoryModal()"> 통화이력</button>
+                                    <button type="button" class="ui mini button compact"
+                                            onclick="popupSearchMaindbCustomModal()"> 고객DB
+                                    </button>
+                                    <button type="button" class="ui mini button compact"
+                                            onclick="popupSearchCounselingHistoryModal()"> 상담이력
+                                    </button>
+                                    <button type="button" class="ui mini button compact"
+                                            onclick="popupSearchCallHistoryModal()"> 통화이력
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
@@ -107,7 +124,9 @@
             <div class="panel call-info">
                 <div class="panel-heading">
                     <label class="control-label">수발신정보</label>
-                    <button type="button" class="ui button mini right floated compact" onclick="clearCustomerAndCounselingInput()">초기화</button>
+                    <button type="button" class="ui button mini right floated compact"
+                            onclick="clearCustomerAndCounselingInput()">초기화
+                    </button>
                 </div>
                 <div class="panel-body">
                     <table class="ui table celled definition">
@@ -116,7 +135,8 @@
                             <td class="three wide">전화상태</td>
                             <td>
                                 <text id="call-status"></text>
-                                <button class="ui right floated button mini compact blue" id="partial-recoding" style="display: none;">
+                                <button class="ui right floated button mini compact blue" id="partial-recoding"
+                                        style="display: none;">
                                     <i class="fa fa-play"></i>&ensp;<text>부분녹취</text>
                                 </button>
                             </td>
@@ -187,9 +207,15 @@
                         <tr>
                             <td>퀵메뉴</td>
                             <td>
-                                <button type="button" class="ui mini button compact" onclick="popupSearchMaindbCustomModal()"> 고객DB</button>
-                                <button type="button" class="ui mini button compact" onclick="popupSearchCounselingHistoryModal()"> 상담이력</button>
-                                <button type="button" class="ui mini button compact" onclick="popupSearchCallHistoryModal()"> 통화이력</button>
+                                <button type="button" class="ui mini button compact"
+                                        onclick="popupSearchMaindbCustomModal()"> 고객DB
+                                </button>
+                                <button type="button" class="ui mini button compact"
+                                        onclick="popupSearchCounselingHistoryModal()"> 상담이력
+                                </button>
+                                <button type="button" class="ui mini button compact"
+                                        onclick="popupSearchCallHistoryModal()"> 통화이력
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -218,11 +244,11 @@
             ipccCommunicator.clickByCampaign(cid, number, type, $('#call-custom-input [name=groupSeq]').val(), $('#call-custom-input .-custom-id').text());
 
             // 키워드 차트 초기화
-            if(window.keywordChart != null) window.keywordChart.initialize()
+            if (window.keywordChart != null) window.keywordChart.initialize()
         }
 
         function clearCustomerAndCounselingInput(isResultSave = false) {
-            if(!isResultSave && ipccCommunicator.status.cMemberStatus === 1)
+            if (!isResultSave && ipccCommunicator.status.cMemberStatus === 1)
                 return alert('상담 중에는 초기화할 수 없습니다.');
 
             audioId = null;
@@ -239,16 +265,19 @@
             $('#user-call-history').empty().val('');
             $('#counsel-list').empty().val('');
 
+            <c:if test="${usingServices.contains('LGUCB')}">
+            $('#call-bot').hide();
+            </c:if>
 
             loadCustomInput();
             loadUserCustomInfo();
             loadUserCallHistory();
             <c:if test="${g.usingServices.contains('ASTIN') && g.user.isAstIn eq 'Y'}">
-                sttClear();
+            sttClear();
             </c:if>
 
             // 키워드 차트 초기화
-            if(window.keywordChart != null) window.keywordChart.initialize()
+            if (window.keywordChart != null) window.keywordChart.initialize()
         }
 
         function submitCallCustomInput() {
@@ -260,14 +289,14 @@
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 phoneNumber: phoneNumber || '',
-                maindbResultSeq : maindbResultSeq || ''
+                maindbResultSeq: maindbResultSeq || ''
             }), '#call-custom-input').done(() => {
                 if (uniqueId)
                     audioId = uniqueId;
                 if (inOut)
                     callType = inOut;
                 if (callSeq)
-                    callUnique =  callSeq;
+                    callUnique = callSeq;
             });
         }
 
@@ -276,7 +305,7 @@
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 phoneNumber: phoneNumber || '',
-                maindbResultSeq : maindbResultSeq
+                maindbResultSeq: maindbResultSeq
             }), '#call-counseling-input');
         }
 
@@ -295,12 +324,12 @@
             console.log('loadUserCallHistory 실행 @@@')
 
             <c:if test="${activeStt}">
-                if(phoneNumber) replaceReceivedHtmlInSilence('/counsel/call/user-call-stt-history?phoneNumber=' + phoneNumber, '#user-call-stt-history');
-                else replaceReceivedHtmlInSilence('/counsel/call/user-call-stt-history', '#user-call-stt-history');
+            if (phoneNumber) replaceReceivedHtmlInSilence('/counsel/call/user-call-stt-history?phoneNumber=' + phoneNumber, '#user-call-stt-history');
+            else replaceReceivedHtmlInSilence('/counsel/call/user-call-stt-history', '#user-call-stt-history');
             </c:if>
 
             <c:if test="${!activeStt}">
-                replaceReceivedHtmlInSilence('/counsel/call/user-call-history', '#user-call-history');
+            replaceReceivedHtmlInSilence('/counsel/call/user-call-history', '#user-call-history');
             </c:if>
         }
 

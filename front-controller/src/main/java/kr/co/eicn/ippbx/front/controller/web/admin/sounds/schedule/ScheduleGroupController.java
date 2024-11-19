@@ -57,6 +57,8 @@ public class ScheduleGroupController extends BaseController {
         model.addAttribute("soundList", soundList);
         final List<SendMessageTemplateResponse> smsMessageTemplateList = smsMessageTemplateApiInterface.list();
         model.addAttribute("smsMessageTemplateList", smsMessageTemplateList);
+        final List<SummaryCallbotResponse> callbotList = apiInterface.addCallbotList();
+        model.addAttribute("callbotList", callbotList);
 
         form.setParent(parent);
         return "admin/sounds/schedule/schedule-group/modal-schedule-item";

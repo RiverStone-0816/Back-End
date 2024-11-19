@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.customdb.MainInOutInfoResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEvaluationEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CurrentEICNCdrEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.EicnCdrEvaluationResultEntity;
 import kr.co.eicn.ippbx.model.enums.AdditionalState;
 import kr.co.eicn.ippbx.model.enums.CallStatus;
@@ -362,5 +363,17 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
                 .set(TABLE.RECORD_FILE, "")
                 .where(TABLE.SEQ.eq(seq))
                 .execute();
+    }
+
+    public CurrentEICNCdrEntity callBot(String uniqueId) {
+        return dsl.select()
+                .from(TABLE)
+                .where(compareCompanyId())
+                .and(TABLE.UNIQUEID.eq(uniqueId))
+                .and(
+                        (TABLE.DCONTEXT.eq("lgu_in_callbot").and(TABLE.IN_OUT.eq("I")))
+                                .or(TABLE.DCONTEXT.eq("outbound").and(TABLE.IN_OUT.eq("O")).and(TABLE.CMP_CLICK_FROM.eq("LGUCALLBOT")))
+                )
+                .fetchOneInto(CurrentEICNCdrEntity.class);
     }
 }

@@ -59,4 +59,14 @@ public class CurrentEICNCdrRepository extends EicnBaseRepository<CurrentEicnCdr,
 	public List<CurrentEICNCdrEntity> findAllByUniqueId(final String uniqueId) {
 		return findAll(CURRENT_EICN_CDR.UNIQUEID.eq(uniqueId));
 	}
+
+	public CurrentEICNCdrEntity callBot(String uniqueId) {
+		return dsl.select()
+				.from(CURRENT_EICN_CDR)
+				.where(compareCompanyId())
+				.and(CURRENT_EICN_CDR.UNIQUEID.eq(uniqueId))
+				.and(CURRENT_EICN_CDR.DCONTEXT.eq("lgu_in_callbot"))
+				.limit(1)
+				.fetchOneInto(CurrentEICNCdrEntity.class);
+	}
 }

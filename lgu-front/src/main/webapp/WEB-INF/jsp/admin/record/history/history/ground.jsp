@@ -14,6 +14,7 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
@@ -260,6 +261,9 @@
                             <th>IVR</th>
                             <th>종료</th>
                             <th>녹취</th>
+                            <c:if test="${usingServices.contains('LGUCB')}">
+                                <th>콜봇</th>
+                            </c:if>
                         </tr>
                         </thead>
                         <tbody>
@@ -267,6 +271,7 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <c:set var="isFile" value="${g.htmlQuote(e.callStatusValue.contains('정상통화')) && fn:length(g.htmlQuote(e.recordFile)) > 0 && e.recordInfo != 'S'}"/>
+                                    <c:set var="isCallBot" value="${(e.inOut eq 'I' and e.dcontext eq 'lgu_in_callbot') or (e.inOut eq 'O' and e.dcontext eq 'outbound' and e.cmpClickFrom eq 'LGUCALLBOT') }"/>
                                     <tr data-id="${e.seq}" data-file="${isFile}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.service.svcName)}</td>
@@ -324,6 +329,15 @@
                                                 </c:if>
                                             </div>
                                         </td>
+                                        <c:if test="${usingServices.contains('LGUCB') and isCallBot and e.billsec > 0}">
+                                            <td>
+                                                <div class="popup-element-wrap">
+                                                    <button class="ui icon button mini compact translucent" title="콜봇" onclick="popupCallBot('${e.seq}')">
+                                                        <i class="tty alternate icon"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </c:if>
                                     </tr>
                                 </c:forEach>
                             </c:when>
@@ -497,6 +511,10 @@
                 if (seq.length === 0)
                     return alert('데이터를 선택해주세요');
                 popupReceivedHtml($.addQueryString('/admin/record/history/history/modal-batch-evaluation', {seq: seq}), 'modal-batch-evaluation');
+            }
+
+            function popupCallBot(seq) {
+                popupReceivedHtml('/admin/record/history/history/modal-call-bot/'+seq, 'modal-call-bot');
             }
 
             function showActionButton() {
