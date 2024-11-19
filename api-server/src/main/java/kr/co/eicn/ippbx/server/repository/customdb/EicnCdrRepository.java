@@ -73,6 +73,11 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
         addField(TABLE.HANGUP_CAUSE);
         addField(TABLE.TURN_OVER_KIND);
         addField(TABLE.TURN_OVER_NUMBER);
+        addField(TABLE.ETC1);
+        addField(TABLE.ETC2);
+        addField(TABLE.ETC3);
+        addField(TABLE.ETC4);
+        addField(TABLE.ETC5);
 
         orderByFields.add(TABLE.RING_DATE.desc());
     }
