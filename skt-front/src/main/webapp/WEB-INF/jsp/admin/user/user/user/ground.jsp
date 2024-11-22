@@ -128,7 +128,8 @@
                             </th>
                             <th rowspan="2">녹취권한[듣기][다운][삭제]</th>
                             <c:set var="cols" value="0"/>
-                            <c:set var="cols" value="${services.contains('APP') || services.contains('API') ? cols + 1 : cols}"/>
+                            <c:set var="cols"
+                                   value="${services.contains('APP') || services.contains('API') ? cols + 2 : cols}"/>
                             <c:set var="cols" value="${services.contains('TALK') ? cols + 1 : cols}"/>
                             <c:set var="cols" value="${services.contains('EMAIL') ? cols + 1 : cols}"/>
                             <c:set var="cols" value="${services.contains('CHATT') || services.contains('CHATWIN') || services.contains('CHATMEMO') ? cols + 1 : cols}"/>
@@ -138,11 +139,19 @@
                         </tr>
                         <tr>
                             <c:if test="${services.contains('APP') || services.contains('API')}">
-                            <th data-sortable-value="CTI">CTI<br>(라이센스:${license.ctiLicence.currentLicence}/${license.ctiLicence.licence})
-                                <c:if test="${search.sort.name() == 'CTI'}">
-                                    <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
-                                </c:if>
-                            </th>
+                                <th data-sortable-value="STAT">통계,모니터링 여부<br>(라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})
+                                    <c:if test="${search.sort.name() == 'STAT'}">
+                                        <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i>
+                                        </button>
+                                    </c:if>
+                                </th>
+                                <th data-sortable-value="CTI">상담원연결
+                                    여부<br>(라이센스:${license.ctiLicence.currentLicence}/${license.ctiLicence.licence})
+                                    <c:if test="${search.sort.name() == 'CTI'}">
+                                        <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i>
+                                        </button>
+                                    </c:if>
+                                </th>
                             </c:if>
                             <c:if test="${services.contains('TALK')}">
                             <th data-sortable-value="TALK">채팅상담<br>(라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})
@@ -202,6 +211,7 @@
                                             <span>${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.removeRecordingAuthority))}</span>
                                         </td>
                                         <c:if test="${services.contains('APP') || services.contains('API')}">
+                                            <td>${e.isStat == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         <td>${e.isCti == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
                                         <c:if test="${services.contains('TALK')}">

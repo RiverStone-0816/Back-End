@@ -139,7 +139,29 @@
             </div>
             <c:if test="${services.contains('APP') || services.contains('API')}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">CTI</label></div>
+                    <div class="four wide column"><label class="control-label">통계, 모니터링 여부</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isStat" value="Y"/>
+                                        <label>사용</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isStat" value="N"/>
+                                        <label>사용안함
+                                            (라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">상담원연결 여부</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <div class="inline fields">
@@ -152,7 +174,8 @@
                                 <div class="field">
                                     <div class="ui radio checkbox">
                                         <form:radiobutton path="isCti" value="N"/>
-                                        <label>사용안함 (라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})</label>
+                                        <label>사용안함
+                                            (라이센스:${license.ctiLicence.currentLicence}/${license.ctiLicence.licence})</label>
                                     </div>
                                 </div>
                             </div>
