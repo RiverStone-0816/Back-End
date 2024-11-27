@@ -216,6 +216,11 @@
             forwardNumber.show();
     }).change();
 
+    modal.find('[name=extension]').on('input', (event) => {
+        const input = event.target;
+        input.value = input.value.replace(/[^0-9]/g, '');
+    })
+
     modal.find('[name=forwardKind]').change(function () {
         const kind = $(this).val();
         modal.find('.-forwarding-value').hide().filter(function () {

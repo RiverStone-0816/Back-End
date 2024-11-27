@@ -253,6 +253,11 @@
         }
     }).change();
 
+    modal.find('[name=extension]').on('input', (event) => {
+        const input = event.target;
+        input.value = input.value.replace(/[^0-9]/g, '');
+    });
+
     modal.find('[name=forwardWhen]').change(function () {
         const forwardData = modal.find('[name=forwardWhen]:checked').val();
         const forwardNumber = modal.find('.-forward-number');
