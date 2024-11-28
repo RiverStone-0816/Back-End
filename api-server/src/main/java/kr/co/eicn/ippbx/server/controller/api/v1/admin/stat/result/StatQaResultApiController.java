@@ -8,8 +8,7 @@ import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultCodeResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultFieldResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultIndividualResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.IndividualCodeResponse;
-import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
+import kr.co.eicn.ippbx.model.dto.eicn.FieldCodeResponse;
 import kr.co.eicn.ippbx.model.search.StatQaResultSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonCodeRepository;
@@ -83,12 +82,12 @@ public class StatQaResultApiController extends ApiBaseController {
     }
 
     @GetMapping("individual")
-    public ResponseEntity<JsonResult<List<StatQaResultIndividualResponse>>> getIndividualResult(StatQaResultIndividualSearchRequest search) {
+    public ResponseEntity<JsonResult<List<StatQaResultIndividualResponse>>> getIndividualResult(StatQaResultSearchRequest search) {
         return ResponseEntity.ok(data(statQaResultService.convertIndividualResult(search)));
     }
 
     @GetMapping("individual/field-list")
-    public ResponseEntity<JsonResult<List<IndividualCodeResponse>>> getIndividualList() {
-        return ResponseEntity.ok(data(commonFieldRepository.individualFieldList().stream().map(e -> convertDto(e, IndividualCodeResponse.class)).collect(Collectors.toList())));
+    public ResponseEntity<JsonResult<List<FieldCodeResponse>>> getIndividualList() {
+        return ResponseEntity.ok(data(commonFieldRepository.individualFieldList().stream().map(e -> convertDto(e, FieldCodeResponse.class)).collect(Collectors.toList())));
     }
 }

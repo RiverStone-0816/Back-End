@@ -6,7 +6,6 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
 import kr.co.eicn.ippbx.model.dto.customdb.QaResultResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultCodeResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultIndividualResponse;
-import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatQaResultSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.StatQaResultRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonCodeRepository;
@@ -94,7 +93,7 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
         return codeResponse;
     }
 
-    public List<StatQaResultIndividualResponse> convertIndividualResult(StatQaResultIndividualSearchRequest search) {
+    public List<StatQaResultIndividualResponse> convertIndividualResult(StatQaResultSearchRequest search) {
         final List<CommonCode> codeList = commonCodeRepository.individualCodeList(search);
         final Map<Integer, List<CommonField>> collect = commonFieldRepository.findAllCodeField().stream().collect(Collectors.groupingBy(CommonField::getType));
         final Map<Integer, List<CommonResultCustomInfo>> resultMap = this.getRepository().findAllIndividualResult(search);
@@ -102,10 +101,12 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
 
         return codeList.stream().filter(code -> collect.get(code.getType()) != null && collect.get(code.getType()).stream().anyMatch(field -> field.getFieldId().equals(code.getFieldId()))).map(code -> {
             final StatQaResultIndividualResponse response = convertDto(code, StatQaResultIndividualResponse.class);
+            response.setFieldInfo(collect.get(code.getType()).stream().filter(e -> e.getFieldId().equals(code.getFieldId())).map(CommonField::getFieldInfo).findFirst().orElse(""));
+
             final String[] splitCode = code.getFieldId().split("_");
 
             final long dateDiff = (search.getEndDate().getTime() - search.getStartDate().getTime()) / (1000 * 60 * 60 * 24);
-            Calendar startDate = Calendar.getInstance();
+            final Calendar startDate = Calendar.getInstance();
             startDate.setTime(search.getStartDate());
 
             for (int i = 0; i <= dateDiff; i++) {
@@ -117,7 +118,7 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
                                     return code.getCodeId().equals(e.getClass().getMethod("getRsCode_" + splitCode[splitCode.length - 1]).invoke(e)) && e.getResultDate().after(startDate.getTime())
                                             && e.getResultDate().before(Timestamp.valueOf(dateFormat.format(startDate.getTime()) + " 23:59:59"));
                                 } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-                                    logger.error("Exception!", ex);
+                                    logger.error("Exception! {}", e);
                                 }
                                 return false;
                             }).count();

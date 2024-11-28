@@ -2,16 +2,19 @@ package kr.co.eicn.ippbx.front.controller.web.admin.stat;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.FieldCodeResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupSummaryResponse;
+import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.stat.QaResultStatApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.QaResultIndividualStatExcel;
 import kr.co.eicn.ippbx.front.service.excel.QaResultLinkStatExcel;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.model.dto.customdb.*;
-import kr.co.eicn.ippbx.model.dto.eicn.IndividualCodeResponse;
-import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatQaResultSearchRequest;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -36,6 +39,7 @@ public class QaResultStatController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(QaResultStatController.class);
 
     private final QaResultStatApiInterface apiInterface;
+    private final MaindbGroupApiInterface  maindbGroupApiInterface;
 
     @GetMapping("")
     public String page() {
@@ -75,11 +79,25 @@ public class QaResultStatController extends BaseController {
     }
 
     @GetMapping("individual")
-    public String individualPage(Model model, @ModelAttribute("search") StatQaResultIndividualSearchRequest search) throws IOException, ResultFailException {
+    public String individualPage(Model model, @ModelAttribute("search") StatQaResultSearchRequest search) throws IOException, ResultFailException {
+        final List<MaindbGroupSummaryResponse> maindbGroups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
+
+        if (CollectionUtils.isEmpty(maindbGroups))
+            throw new IllegalStateException("고객DB그룹이 존재하지 않습니다.");
+
+        model.addAttribute("maindbGroups", maindbGroups);
+
+        if (search.getGroupSeq() == null) {
+            search.setGroupSeq(maindbGroups.get(0).getSeq());
+            search.setFieldId("");
+        }
+
+        maindbGroups.stream().filter(e -> e.getSeq().equals(search.getGroupSeq())).findFirst().ifPresent(e -> search.setResultType(e.getResultType()));
+
         final List<StatQaResultIndividualResponse> list = apiInterface.getIndividualResult(search);
         model.addAttribute("list", list);
 
-        final List<IndividualCodeResponse> fieldList = apiInterface.getFieldList();
+        final List<FieldCodeResponse> fieldList = apiInterface.getIndividualFieldList();
         model.addAttribute("fieldList", fieldList);
 
         final Map<String, String> sendReceiveTypes = FormUtils.options(false, StatQaResultSearchRequest.SendReceiveType.class);
@@ -100,8 +118,8 @@ public class QaResultStatController extends BaseController {
     }
 
     @GetMapping("individual/_excel")
-    public void downloadIndividualExcel(StatQaResultIndividualSearchRequest search, HttpServletResponse response) throws IOException, ResultFailException {
+    public void downloadIndividualExcel(StatQaResultSearchRequest search, HttpServletResponse response) throws IOException, ResultFailException {
         final List<StatQaResultIndividualResponse> list = apiInterface.getIndividualResult(search);
-        new QaResultIndividualStatExcel(list).generator(response, "상담결과통계[개인]");
+        new QaResultIndividualStatExcel(list).generator(response, "상담코드통계[개별형]");
     }
 }

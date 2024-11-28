@@ -61,13 +61,23 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">필드선택</label></div>
+                                <div class="one wide column"><label class="control-label">고객DB그룹</label></div>
+                                <div class="two wide column">
+                                    <div class="ui form">
+                                        <form:select path="groupSeq">
+                                            <c:forEach var="e" items="${maindbGroups}">
+                                                <form:option value="${e.seq}" label="${e.name}" data-result-type="${e.resultType}"/>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </div>
+                                <div class="one wide column"><label class="control-label">필드선택</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
                                         <form:select path="fieldId">
                                             <form:option value="" label="선택안함" data-type=""/>
                                             <c:forEach var="e" items="${fieldList}">
-                                                <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}"/>
+                                                <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}" data-type="${g.htmlQuote(e.type)}"/>
                                             </c:forEach>
                                         </form:select>
                                     </div>
@@ -97,7 +107,8 @@
                             <table class="ui celled table compact unstackable">
                                 <thead>
                                 <tr>
-                                    <th>문의유형</th>
+                                    <th>상담필드</th>
+                                    <th>코드</th>
                                     <c:forEach var="date" items="${dates}">
                                         <th>${g.htmlQuote(date)}</th>
                                     </c:forEach>
@@ -108,6 +119,7 @@
                                     <c:when test="${list.size() > 0}">
                                         <c:forEach var="e" items="${list}">
                                             <tr>
+                                                <td>${g.htmlQuote(e.fieldInfo)}</td>
                                                 <td>${g.htmlQuote(e.codeName)}</td>
                                                 <c:forEach var="date" items="${dates}">
                                                     <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
@@ -117,7 +129,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <tr>
-                                            <td colspan="${1 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                            <td colspan="${2 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
                                         </tr>
                                     </c:otherwise>
                                 </c:choose>
@@ -132,6 +144,41 @@
 
     <tags:scripts>
         <script>
+            const searchForm = $('#search-form');
+            const groupSelect = searchForm.find('#groupSeq');
+            const fieldSelect = searchForm.find('#fieldId');
+
+            groupSelect.change(function () {
+                const resultType = $(this).find(':selected').attr('data-result-type');
+                fieldSelect.val('').prop("selected", true);
+                fieldSelect.find('option').show();
+
+                fieldSelect.find('option[value!=""]').each(function () {
+                    const type = $(this).attr('data-type');
+
+                    if (type !== resultType)
+                        $(this).hide();
+                });
+
+            });
+
+            (function () {
+                const resultType = groupSelect.find(':selected').attr('data-result-type');
+
+                if (!resultType) {
+                    return;
+                }
+
+                fieldSelect.find('option[value!=""]').each(function () {
+                    const type = $(this).attr('data-type');
+
+                    if (type !== resultType)
+                        $(this).hide();
+                });
+
+                fieldSelect.find('option[data-type="${search.resultType}"][value="${search.fieldId}"]').prop("selected", true);
+            })();
+
             function downloadExcel() {
                 window.open(contextPath + '/admin/stat/result/individual/_excel?${g.escapeQuote(search.query)}', '_blank');
             }

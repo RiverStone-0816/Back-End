@@ -24,12 +24,12 @@ public class QaResultIndividualStatExcel extends AbstractExcel {
         for (StatQaResultIndividualResponse e : list)
             codeToDateToCountMap.put(e, e.getQaResultStat().stream().collect(Collectors.toMap(QaResultResponse::getStatDate, QaResultResponse::getCount)));
 
-        final List<String> headers = new ArrayList<>(Collections.singletonList("유형"));
+        final List<String> headers = new ArrayList<>(Arrays.asList("상담필드", "코드"));
         headers.addAll(dates);
         addRow(sheetHeadStyle, headers.toArray());
 
         for (StatQaResultIndividualResponse e : list) {
-            final List<String> row = new ArrayList<>(Collections.singletonList(e.getCodeName()));
+            final List<Object> row = new ArrayList<>(Arrays.asList(niceFormat(e.getFieldInfo()), niceFormat(e.getCodeName())));
             dates.forEach(date -> row.add(niceFormat(codeToDateToCountMap.get(e).getOrDefault(date, 0))));
             addRow(defaultStyle, row.toArray());
         }

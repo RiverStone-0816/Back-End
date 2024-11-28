@@ -10,6 +10,7 @@ public class StatQaResultIndividualResponse {
     private Integer seq;
     private String codeId;
     private String codeName;
+    private String fieldInfo;
 
     private List<QaResultResponse> qaResultStat = new ArrayList<>();
 }

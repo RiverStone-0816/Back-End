@@ -1,18 +1,22 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonCode;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonField;
 import kr.co.eicn.ippbx.model.form.CommonCodeFormRequest;
-import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatQaResultSearchRequest;
 import lombok.Getter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonCode.COMMON_CODE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonField.COMMON_FIELD;
 
 @Getter
 @Repository
@@ -40,10 +44,6 @@ public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.e
                 .execute();
     }
 
-    public void insertCodes(Integer type, String fieldId, List<CommonCodeFormRequest> codes) {
-        insertCodes(type, fieldId, "", codes);
-    }
-
     public void insertCodes(Integer type, String fieldId, String relatedFieldId, List<CommonCodeFormRequest> codes) {
         for (CommonCodeFormRequest code : codes) {
             dsl.insertInto(COMMON_CODE)
@@ -60,24 +60,57 @@ public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.e
         }
     }
 
-    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> individualCodeList(StatQaResultIndividualSearchRequest search) {
-        final CommonCode a = COMMON_CODE.as("A");
-        final CommonCode b = COMMON_CODE.as("B");
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> individualCodeList(StatQaResultSearchRequest search) {
+        final CommonCode codeTableA = COMMON_CODE.as("A");
+        final CommonCode codeTableB = COMMON_CODE.as("B");
+        final CommonField fieldTable = COMMON_FIELD.as("C");
 
-        Condition condition = a.RELATED_FIELD_ID.eq("");
+        final List<Condition> conditions = new ArrayList<>();
+        conditions.add(codeTableA.COMPANY_ID.eq(g.getUser().getCompanyId()));
+        conditions.add(codeTableA.RELATED_FIELD_ID.eq(""));
 
         if (StringUtils.isNotEmpty(search.getFieldId()))
-            condition = condition.and(a.FIELD_ID.eq(search.getFieldId()));
+            conditions.add(codeTableA.FIELD_ID.eq(search.getFieldId()));
 
-        return dsl.select(a.fields())
-                .from(a)
-                .where(a.COMPANY_ID.eq(g.getUser().getCompanyId()))
-                .and((dsl.selectCount()
-                        .from(b)
-                        .where(b.COMPANY_ID.eq(g.getUser().getCompanyId()))
-                        .and(b.TYPE.eq(a.TYPE))
-                        .and(b.RELATED_FIELD_ID.eq(a.FIELD_ID))).asField().eq(0))
-                .and(condition)
+        if (ObjectUtils.isNotEmpty(search.getResultType()))
+            conditions.add(codeTableA.TYPE.eq(search.getResultType()));
+
+        conditions.add(codeTableA.FIELD_ID.like("RS_CODE_%"));
+        conditions.add((dsl.selectCount()
+                .from(codeTableB)
+                .where(codeTableB.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                .and(codeTableB.TYPE.eq(codeTableA.TYPE))
+                .and(codeTableB.RELATED_FIELD_ID.eq(codeTableA.FIELD_ID))).asField().eq(0));
+
+        return dsl.select(codeTableA.fields())
+                .from(codeTableA)
+                .join(fieldTable)
+                .on(fieldTable.TYPE.eq(codeTableA.TYPE).and(fieldTable.FIELD_ID.eq(codeTableA.FIELD_ID)))
+                .where(conditions)
+                .orderBy(codeTableA.TYPE, fieldTable.DISPLAY_SEQ, codeTableA.SEQUENCE)
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode.class);
+    }
+
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> individualFieldList(StatQaResultSearchRequest search) {
+        final CommonCode codeTableA = COMMON_CODE.as("A");
+        final CommonCode codeTableB = COMMON_CODE.as("B");
+
+        final List<Condition> conditions = new ArrayList<>();
+        conditions.add(codeTableA.COMPANY_ID.eq(g.getUser().getCompanyId()));
+        conditions.add(codeTableA.RELATED_FIELD_ID.eq(""));
+        conditions.add(codeTableA.FIELD_ID.like("RS_CODE_%"));
+
+        conditions.add((dsl.selectCount()
+                .from(codeTableB)
+                .where(codeTableB.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                .and(codeTableB.TYPE.eq(codeTableA.TYPE))
+                .and(codeTableB.RELATED_FIELD_ID.eq(codeTableA.FIELD_ID))).asField().eq(0));
+
+        return dsl.select(codeTableA.fields())
+                .from(codeTableA)
+                .where(conditions)
+                .groupBy(codeTableA.TYPE, codeTableA.FIELD_ID)
+                .orderBy(codeTableA.TYPE, codeTableA.FIELD_ID, codeTableA.SEQUENCE)
                 .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode.class);
     }
 }

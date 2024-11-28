@@ -54,13 +54,25 @@
                                         </form:select>
                                     </div>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>고객DB그룹</th>
+                                <td>
+                                    <div class="ui form">
+                                        <form:select path="groupSeq">
+                                            <c:forEach var="group" items="${maindbGroups}">
+                                                <form:option value="${group.seq}" label="${group.name}" data-result-type="${group.resultType}"/>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </td>
                                 <th>필드선택</th>
                                 <td>
                                     <div class="ui form">
                                         <form:select path="fieldId">
                                             <form:option value="" label="선택안함" data-type=""/>
                                             <c:forEach var="e" items="${fieldList}">
-                                                <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}"/>
+                                                <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}" data-type="${g.htmlQuote(e.type)}"/>
                                             </c:forEach>
                                         </form:select>
                                     </div>
@@ -85,36 +97,39 @@
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
-                        <table class="ui celled table compact unstackable">
-                            <thead>
-                            <tr>
-                                <th colspan="1">문의유형</th>
-                                <c:forEach var="date" items="${dates}">
-                                    <th>${g.htmlQuote(date)}</th>
-                                </c:forEach>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:choose>
-                                <c:when test="${list.size() > 0}">
-                                    <c:forEach var="e" items="${list}">
-                                        <tr>
-                                            <td>${g.htmlQuote(e.codeName)}</td>
-                                            <%--<td class="-code-sum" data-code="${g.escapeQuote(e.codeId)}"></td>--%>
-                                            <c:forEach var="date" items="${dates}">
-                                                <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
-                                            </c:forEach>
-                                        </tr>
+                        <div class="overflow-auto">
+                            <table class="ui celled table compact unstackable">
+                                <thead>
+                                <tr>
+                                    <th>상담필드</th>
+                                    <th>코드</th>
+                                    <c:forEach var="date" items="${dates}">
+                                        <th>${g.htmlQuote(date)}</th>
                                     </c:forEach>
-                                </c:when>
-                                <c:otherwise>
-                                    <tr>
-                                        <td colspan="${2 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
-                                    </tr>
-                                </c:otherwise>
-                            </c:choose>
-                            </tbody>
-                        </table>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:choose>
+                                    <c:when test="${list.size() > 0}">
+                                        <c:forEach var="e" items="${list}">
+                                            <tr>
+                                                <td>${g.htmlQuote(e.fieldInfo)}</td>
+                                                <td>${g.htmlQuote(e.codeName)}</td>
+                                                <c:forEach var="date" items="${dates}">
+                                                    <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
+                                                </c:forEach>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tr>
+                                            <td colspan="${2 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                        </tr>
+                                    </c:otherwise>
+                                </c:choose>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,6 +138,24 @@
 
     <tags:scripts>
         <script>
+            const searchForm = $('#search-form');
+            const groupSelect = searchForm.find('#groupSeq');
+            const fieldSelect = searchForm.find('#fieldId');
+
+            groupSelect.change(function () {
+                const resultType = $(this).find(':selected').attr('data-result-type');
+                fieldSelect.val('').prop("selected", true);
+                fieldSelect.find('option').show();
+
+                fieldSelect.find('option[value!=""]').each(function () {
+                    const type = $(this).attr('data-type');
+
+                    if (type !== resultType)
+                        $(this).hide();
+                });
+
+            });
+
             (function () {
                 const stat = {
                     <c:forEach var="e" items="${list}">
@@ -141,6 +174,21 @@
                     });
                     $(this).text(sum);
                 });
+
+                const resultType = groupSelect.find(':selected').attr('data-result-type');
+
+                if (!resultType) {
+                    return;
+                }
+
+                fieldSelect.find('option[value!=""]').each(function () {
+                    const type = $(this).attr('data-type');
+
+                    if (type !== resultType)
+                        $(this).hide();
+                });
+
+                fieldSelect.find('option[data-type="${search.resultType}"][value="${search.fieldId}"]').prop("selected", true);
             })();
 
             function downloadExcel() {

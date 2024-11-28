@@ -20,6 +20,12 @@ public class StatQaResultSearchRequest extends PageQueryableForm {
     private Date endDate = new Date(System.currentTimeMillis());
     @PageQueryable
     private SendReceiveType type;
+    @PageQueryable
+    private Integer groupSeq;
+    @PageQueryable
+    private String fieldId;
+    @PageQueryable
+    private Integer resultType;
 
     public enum SendReceiveType {
         SEND, RECEIVE;
