@@ -1,5 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.UserDetails;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonListSummary;
@@ -27,6 +30,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 
+@Tag(name = "로그인 토큰 확인", description = "")
 @Slf4j
 @CrossOrigin
 @RestController
@@ -46,6 +50,7 @@ public class JwtAuthenticationController extends ApiBaseController {
 		this.g = g;
 	}
 
+	@Operation(summary = "토큰 발행", description = "IPCC 로그인 정보를 입력 시, 해당하는 토큰을 발행합니다. 해당 토큰값은 API 테스트 전 인증키(Authorize Value)로 사용됩니다.")
 	@PostMapping(value = "authenticate")
 	public ResponseEntity<JsonResult<String>> loginWithCreateAuthenticationToken(@Valid @RequestBody LoginRequest authenticationRequest, BindingResult bindingResult, HttpSession session) {
 		if (!authenticationRequest.validate(bindingResult))
@@ -62,6 +67,7 @@ public class JwtAuthenticationController extends ApiBaseController {
 		return ResponseEntity.ok(data(token));
 	}
 
+	@Hidden
 	@PostMapping(value = "mc-only")
 	public ResponseEntity<JsonResult<String>> loginWithCreateAuthenticationToken(@RequestBody PersonListSummary data, HttpSession session) {
 		if (StringUtils.isEmpty(data.getId()))

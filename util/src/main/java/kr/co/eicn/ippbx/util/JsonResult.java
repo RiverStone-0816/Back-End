@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.ToString;
 import org.springframework.validation.BindingResult;
 
@@ -15,9 +16,16 @@ import java.util.Objects;
  */
 @ToString
 public class JsonResult<T> implements Serializable {
+    @Schema(description = "성공 여부")
     private Result result;
+
+    @Schema(description = "실패 이유")
     private String reason;
+
+    @Schema(description = "데이터")
     private T data;
+
+    @Schema(description = "실패 로그")
     private List<FieldError> fieldErrors;
 
     public JsonResult() {
@@ -162,8 +170,8 @@ public class JsonResult<T> implements Serializable {
     }
 
     public static class FieldError {
-        private String defaultMessage;
-        private String field;
+        private String  defaultMessage;
+        private String  field;
         private Boolean typeMatchError;
 
         public FieldError(String field, Boolean typeMatchError, String defaultMessage) {
