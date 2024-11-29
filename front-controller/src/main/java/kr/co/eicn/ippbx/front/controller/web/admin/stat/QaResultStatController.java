@@ -83,7 +83,7 @@ public class QaResultStatController extends BaseController {
         final List<MaindbGroupSummaryResponse> maindbGroups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
 
         if (CollectionUtils.isEmpty(maindbGroups))
-            throw new IllegalStateException("고객DB그룹이 존재하지 않습니다.");
+            return "admin/stat/result/individual/ground";
 
         model.addAttribute("maindbGroups", maindbGroups);
 
