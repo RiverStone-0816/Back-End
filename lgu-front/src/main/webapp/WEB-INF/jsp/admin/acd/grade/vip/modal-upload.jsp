@@ -41,7 +41,7 @@
                 <div class="four wide column"><label class="control-label">인입방법</label></div>
                 <div class="twelve wide column">
                     <div class="twelve wide column">
-                        <text style="display: inline-block; margin-right: 1em;">차단[A]</text>
+                        <text style="display: inline-block; margin-right: 1em;">우선순위 부여[A]</text>
                         <text style="display: inline-block; margin-right: 1em;">특정큐(그룹) 선택[B]</text>
                     </div>
                 </div>
