@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.acd.grade;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.GradeFileForm;
+import kr.co.eicn.ippbx.front.service.excel.example.RoutingUploadExampleExcel;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -80,9 +83,14 @@ public class VipRoutingController extends BaseController {
     }
 
     @GetMapping("modal-upload")
-    public String modalUpload(Model model, @ModelAttribute("form") GradeFileForm form) throws IOException, ResultFailException {
+    public String modalUpload(@ModelAttribute("form") GradeFileForm form) {
         form.setGradeType("VIP");
 
         return "admin/acd/grade/vip/modal-upload";
+    }
+
+    @GetMapping("_excel/example")
+    public void downloadExcel(HttpServletResponse response) throws IOException, ResultFailException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        new RoutingUploadExampleExcel().generator(response, "라우팅_업로드_예시");
     }
 }

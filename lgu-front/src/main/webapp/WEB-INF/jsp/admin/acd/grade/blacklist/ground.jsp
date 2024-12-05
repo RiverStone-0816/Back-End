@@ -122,6 +122,10 @@
                 popupReceivedHtml('/admin/acd/grade/blacklist/' + (seq || 'new') + '/modal', 'modal-gradelist');
             }
 
+            function downloadExampleExcel() {
+                window.open(contextPath + '/admin/acd/grade/blacklist/_excel/example', '_blank');
+            }
+
             function deleteEntity(seq) {
                 confirm('정말 삭제하시겠습니까?').done(function () {
                     restSelf.delete('/api/gradelist/' + seq).done(function () {
