@@ -30,14 +30,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">인입방법</label></div>
+                <div class="four wide column"><label class="control-label">인입 방법</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <div class="inline fields">
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="routeType" class="hidden" value="A"/>
-                                    <label>${entity.type.literal.equals("VIP") ? '우선순위 부여' : '차단'}</label>
+                                    <label>${entity.type eq 'VIP' ? '우선순위 부여' : '차단'}</label>
                                 </div>
                             </div>
                             <div class="field">

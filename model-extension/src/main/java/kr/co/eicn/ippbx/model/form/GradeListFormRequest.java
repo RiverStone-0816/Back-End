@@ -18,6 +18,8 @@ public class GradeListFormRequest extends BaseForm {
     @NotNull("전화번호")
     private String gradeNumber;
     private String grade;
+    private String etc;
+
     /**
      * @see kr.co.eicn.ippbx.model.enums.RouteType
      */

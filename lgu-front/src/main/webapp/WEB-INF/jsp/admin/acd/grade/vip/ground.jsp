@@ -63,10 +63,11 @@
                     <table class="ui celled table compact unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="VipRouting">
                         <thead>
                         <tr>
-                            <th>번호</th>
-                            <th>전화번호</th>
-                            <th>인입 방법</th>
-                            <th>선택 큐</th>
+                            <th class="one wide">번호</th>
+                            <th class="two wide">전화번호</th>
+                            <th class="three wide">인입 방법</th>
+                            <th class="two wide">선택 큐</th>
+                            <th class="eight wide">사유</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -91,12 +92,13 @@
                                                 <td></td>
                                             </c:otherwise>
                                         </c:choose>
+                                        <td class="show-break">${g.htmlQuote(e.etc)}</td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="4" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="5" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>

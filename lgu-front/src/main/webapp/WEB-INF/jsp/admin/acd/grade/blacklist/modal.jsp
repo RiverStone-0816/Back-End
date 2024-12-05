@@ -39,6 +39,12 @@
                 </div>
             </div>
             <div class="row">
+                <div class="four wide column"><label class="control-label">사유</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid"><form:textarea path="etc" rows="4" maxlength="500" placeholder="500자 제한" /></div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="four wide column"><label class="control-label">인입 방법</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">

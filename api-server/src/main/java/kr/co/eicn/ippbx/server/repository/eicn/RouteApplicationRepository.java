@@ -108,6 +108,7 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
         gradeListForm.setGrade(String.valueOf(routeApplication.getType()));
         gradeListForm.setType(form.getRouteType());
         gradeListForm.setQueueNumber(form.getRouteQueueNumber());
+        gradeListForm.setEtc(routeApplication.getMemo());
 
         gradeListRepository.insertOnGeneratedKey(gradeListForm);
 
@@ -121,13 +122,6 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
             DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
             super.updateByKey(pbxDsl, routeApplication, seq);
         });
-
-//        dsl.update(ROUTE_APPLICATION)
-//                .set(ROUTE_APPLICATION.RESULT_DATE, DSL.now())
-//                .set(ROUTE_APPLICATION.RST_USERID, g.getUser().getId())
-//                .set(ROUTE_APPLICATION.RESULT, RouteApplicationResult.ACCEPT)
-//                .where(ROUTE_APPLICATION.SEQ.eq(seq))
-//                .execute();
     }
 
     public void reject(Integer seq) {

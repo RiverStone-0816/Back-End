@@ -72,6 +72,7 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
         record.setType(form.getType());
         record.setHuntNumber(form.getQueueNumber());
         record.setCompanyId(getCompanyId());
+        record.setEtc(form.getEtc());
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
             DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
@@ -87,6 +88,7 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
         record.setGradeNumber(form.getGradeNumber());
         record.setType(form.getType());
         record.setHuntNumber(form.getQueueNumber());
+        record.setEtc(form.getEtc());
 
         super.updateByKey(record, seq);
 
