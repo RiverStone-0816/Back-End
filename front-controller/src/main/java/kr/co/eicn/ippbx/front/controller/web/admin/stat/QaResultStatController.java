@@ -120,6 +120,6 @@ public class QaResultStatController extends BaseController {
     @GetMapping("individual/_excel")
     public void downloadIndividualExcel(StatQaResultSearchRequest search, HttpServletResponse response) throws IOException, ResultFailException {
         final List<StatQaResultIndividualResponse> list = apiInterface.getIndividualResult(search);
-        new QaResultIndividualStatExcel(list).generator(response, "상담코드통계[개별형]");
+        new QaResultIndividualStatExcel(list).generator(response, "상담결과통계[개별]");
     }
 }
