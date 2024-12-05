@@ -15,6 +15,7 @@ import org.jooq.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,9 +115,10 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
 
         if (StringUtils.isNotEmpty(search.getGradeNumber()))
             numberCondition = numberCondition.or(GRADE_LIST.GRADE_NUMBER.eq(search.getGradeNumber()));
-        for (String gradeNumber : search.getGradeNumbers()) {
-            numberCondition = numberCondition.or(GRADE_LIST.GRADE_NUMBER.eq(gradeNumber));
-        }
+        if (!CollectionUtils.isEmpty(search.getGradeNumbers()))
+            for (String gradeNumber : search.getGradeNumbers()) {
+                numberCondition = numberCondition.or(GRADE_LIST.GRADE_NUMBER.eq(gradeNumber));
+            }
 
         conditions.add(numberCondition);
 

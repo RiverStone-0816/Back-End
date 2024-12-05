@@ -41,6 +41,7 @@ public class VipRoutingController extends BaseController {
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") GradeListSearchRequest search) throws IOException, ResultFailException {
         search.setGrade("VIP");
+        search.setGradeNumbers(null);
         final Pagination<GradeListEntity> pagination = apiInterface.pagination(search);
         model.addAttribute("pagination", pagination);
 

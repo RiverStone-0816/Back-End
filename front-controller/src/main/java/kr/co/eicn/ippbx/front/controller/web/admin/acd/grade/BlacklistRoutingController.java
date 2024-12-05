@@ -41,6 +41,7 @@ public class BlacklistRoutingController extends BaseController {
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") GradeListSearchRequest search) throws IOException, ResultFailException {
         search.setGrade("BLACK");
+        search.setGradeNumbers(null);
         final Pagination<GradeListEntity> pagination = apiInterface.pagination(search);
         model.addAttribute("pagination", pagination);
 
