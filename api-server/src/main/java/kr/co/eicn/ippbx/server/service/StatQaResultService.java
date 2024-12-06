@@ -94,10 +94,10 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
     }
 
     public List<StatQaResultIndividualResponse> convertIndividualResult(StatQaResultSearchRequest search) {
+        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         final List<CommonCode> codeList = commonCodeRepository.individualCodeList(search);
         final Map<Integer, List<CommonField>> collect = commonFieldRepository.findAllCodeField().stream().collect(Collectors.groupingBy(CommonField::getType));
-        final Map<Integer, List<CommonResultCustomInfo>> resultMap = this.getRepository().findAllIndividualResult(search);
-        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final Map<Integer, Map<Date, List<CommonResultCustomInfo>>> resultMap = this.getRepository().findAllIndividualResult(search).stream().collect(Collectors.groupingBy(CommonResultCustomInfo::getResultType, Collectors.groupingBy(CommonResultCustomInfo::getResultDate)));
 
         return codeList.stream().filter(code -> collect.get(code.getType()) != null && collect.get(code.getType()).stream().anyMatch(field -> field.getFieldId().equals(code.getFieldId()))).map(code -> {
             final StatQaResultIndividualResponse response = convertDto(code, StatQaResultIndividualResponse.class);
@@ -111,12 +111,11 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
 
             for (int i = 0; i <= dateDiff; i++) {
                 final QaResultResponse stat = new QaResultResponse();
-                if (Objects.nonNull(resultMap.get(code.getType()))) {
-                    long count = resultMap.get(code.getType()).stream()
+                if (Objects.nonNull(resultMap.get(code.getType())) && resultMap.get(code.getType()).containsKey(startDate.getTime())) {
+                    long count = resultMap.get(code.getType()).get(startDate.getTime()).stream()
                             .filter(e -> {
                                 try {
-                                    return code.getCodeId().equals(e.getClass().getMethod("getRsCode_" + splitCode[splitCode.length - 1]).invoke(e)) && e.getResultDate().after(startDate.getTime())
-                                            && e.getResultDate().before(Timestamp.valueOf(dateFormat.format(startDate.getTime()) + " 23:59:59"));
+                                    return code.getCodeId().equals(e.getClass().getMethod("getRsCode_" + splitCode[splitCode.length - 1]).invoke(e));
                                 } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
                                     logger.error("Exception! {}", e);
                                 }

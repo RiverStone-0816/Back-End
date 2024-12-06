@@ -38,11 +38,11 @@ public class StatQaResultRepository extends CustomDBBaseRepository<CommonResultC
                 .fetchInto(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo.class);
     }
 
-    public Map<Integer, List<kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo>> findAllIndividualResult(StatQaResultSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo> findAllIndividualResult(StatQaResultSearchRequest search) {
         return dsl.select(TABLE.RESULT_DATE, TABLE.RESULT_TYPE, TABLE.RS_CODE_1, TABLE.RS_CODE_2, TABLE.RS_CODE_3, TABLE.RS_CODE_4, TABLE.RS_CODE_5, TABLE.RS_CODE_6, TABLE.RS_CODE_7, TABLE.RS_CODE_8, TABLE.RS_CODE_9, TABLE.RS_CODE_10)
                 .from(TABLE)
                 .where(conditions(search))
-                .fetchGroups(TABLE.RESULT_TYPE, kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo.class);
     }
 
     private List<Condition> conditions(StatQaResultSearchRequest search) {
