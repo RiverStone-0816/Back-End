@@ -410,6 +410,14 @@ public abstract class BaseRepository<TABLE extends TableImpl<? extends Record>, 
                 .fetchOne(0, int.class);
     }
 
+    public Integer fetchCount(List<Condition> conditions) {
+        return dsl().select(DSL.count())
+                .from(table)
+                .where(conditions)
+                .and(compareCompanyId())
+                .fetchOne(0, int.class);
+    }
+
     protected SelectHavingStep<Record> fetchCount(SelectJoinStep<Record> joinQuery) {
         return fetchCount(joinQuery, Collections.emptyList());
     }

@@ -6,7 +6,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  * 암호환된 연결방식
  */
 public enum SendAuthConnType implements CodeHasable<String> {
-    TLS("T"), SSL("S");
+    TLS("TLS"), SSL("SSL");
 
     private final String code;
 

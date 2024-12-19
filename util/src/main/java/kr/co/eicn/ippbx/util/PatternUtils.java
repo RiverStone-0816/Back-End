@@ -10,11 +10,15 @@ public class PatternUtils {
 	public static boolean isEncKey(String key) { return Pattern.matches("^[a-zA-Z0-9]*$", key); }
 
 	public static boolean isEmail(String string) {
-		return Pattern.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$", string);
+		return Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,})+$", string);
 	}
 
 	public static boolean isIp(final String ip) {
 		return Pattern.matches("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b", ip);
+	}
+
+	public static boolean isIpOrDomain(final String host) {
+		return Pattern.matches("\\b(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\\b|\\b([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}\\b", host);
 	}
 
 	public static boolean isDate(final String date) {

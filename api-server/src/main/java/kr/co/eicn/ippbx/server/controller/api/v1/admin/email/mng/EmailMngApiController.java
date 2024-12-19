@@ -60,19 +60,38 @@ public class EmailMngApiController extends ApiBaseController {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
+        if (repository.isDuplicateServiceName(form.getServiceName().trim(), null))
+            throw new IllegalArgumentException("이미 등록된 서비스명입니다.");
+
+        if (repository.isDuplicateMailUserName(form.getMailUserName().trim(), null))
+            throw new IllegalArgumentException("이미 등록된 수신 접속 계정입니다.");
+
+        form.setMailViewEmail(form.getMailUserName());
+        form.setMailAttachPath("/data/EMAIL/" + g.getUser().getCompanyId() + "/");
         form.setCompanyId(g.getUser().getCompanyId());
+
         repository.insert(form);
+
         return ResponseEntity.created(URI.create("api/v1/admin/email/mng")).body(create());
     }
 
     @PutMapping(value = "{seq}")
-    public ResponseEntity<JsonResult<Void>> put(@Valid @RequestBody EmailMngFormRequest form, BindingResult bindingResult,
-                                                @PathVariable Integer seq) {
+    public ResponseEntity<JsonResult<Void>> put(@Valid @RequestBody EmailMngFormRequest form, BindingResult bindingResult, @PathVariable Integer seq) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
+        if (repository.isDuplicateServiceName(form.getServiceName().trim(), seq))
+            throw new IllegalArgumentException("이미 등록된 서비스명입니다.");
+
+        if (repository.isDuplicateMailUserName(form.getMailUserName().trim(), seq))
+            throw new IllegalArgumentException("이미 등록된 수신 접속 계정입니다.");
+
+        form.setMailViewEmail(form.getMailUserName());
+        form.setMailAttachPath("/data/EMAIL/" + g.getUser().getCompanyId() + "/");
         form.setCompanyId(g.getUser().getCompanyId());
+
         repository.updateByKey(form, seq);
+
         return ResponseEntity.ok(create());
     }
 

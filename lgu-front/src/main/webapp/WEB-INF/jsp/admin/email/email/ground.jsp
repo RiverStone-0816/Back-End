@@ -23,20 +23,27 @@
                     </div>
                     <div class="pull-right">
                         <button type="button" class="ui basic button" onclick="popupModal()">추가</button>
-                        <button type="button" class="ui basic button -control-entity" data-entity="Email" style="display: none;" onclick="popupModal(getEntityId('Email'))">수정</button>
-                        <button type="button" class="ui basic button -control-entity" data-entity="Email" style="display: none;" onclick="deleteEntity(getEntityId('Email'))">삭제</button>
+                        <button type="button" class="ui basic button -control-entity" data-entity="Email"
+                                style="display: none;" onclick="popupModal(getEntityId('Email'))">
+                            수정
+                        </button>
+                        <button type="button" class="ui basic button -control-entity" data-entity="Email"
+                                style="display: none;" onclick="deleteEntity(getEntityId('Email'))">
+                            삭제
+                        </button>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact structured unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Email">
+                    <table class="ui celled table compact structured unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}"
+                           data-entity="Email">
                         <thead>
                         <tr>
                             <th>번호</th>
                             <th>서비스명</th>
-                            <th>대표메일계정</th>
-                            <th>프로토콜</th>
-                            <th>보내는메일</th>
-                            <th>보내는메일명</th>
+                            <th>수신 접속 계정</th>
+                            <th>수신 메일 프로토콜</th>
+                            <th>발신 시 메일</th>
+                            <th>발신 시 메일명</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -63,7 +70,8 @@
                     </table>
                 </div>
                 <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/email/" pageForm="${search}"/>
+                    <tags:pagination navigation="${pagination.navigation}" pageForm="${search}"
+                                     url="${pageContext.request.contextPath}/admin/email/"/>
                 </div>
             </div>
         </div>

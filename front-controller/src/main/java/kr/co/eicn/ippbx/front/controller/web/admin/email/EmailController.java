@@ -1,5 +1,8 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.email;
 
+import kr.co.eicn.ippbx.model.enums.MailProtocolType;
+import kr.co.eicn.ippbx.model.enums.SendAuthConnType;
+import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -43,6 +46,9 @@ public class EmailController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") EmailMngFormRequest form) throws IOException, ResultFailException {
+        model.addAttribute("MailProtocolTypes", FormUtils.options(MailProtocolType.class));
+        model.addAttribute("SendAuthConnTypes", FormUtils.options(SendAuthConnType.class));
+
         return "admin/email/email/modal";
     }
 
