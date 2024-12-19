@@ -534,7 +534,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
                 .set(SIP_BUDDIES.CANREINVITE, "no")
                 .set(SIP_BUDDIES.CONTEXT, "outbound")
                 .set(SIP_BUDDIES.HOST, "dynamic")
-                .set(SIP_BUDDIES.NAT, "yes")
+                .set(SIP_BUDDIES.NAT, "force_rport,comedia")
                 .set(SIP_BUDDIES.QUALIFY, "yes")
                 .set(SIP_BUDDIES.SECRET, isNotEmpty(record.getMd5secret()) ? getSHA512(record.getMd5secret()) : EMPTY)
                 .set(SIP_BUDDIES.DISALLOW, "all")
