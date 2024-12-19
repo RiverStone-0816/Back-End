@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
+import kr.co.eicn.ippbx.model.entity.eicn.CurrentEICNCdrEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
 import kr.co.eicn.ippbx.model.enums.LicenseListType;
@@ -53,6 +54,7 @@ public class MonitorQueueApiController extends ApiBaseController {
     private final CmpMemberStatusCodeRepository cmpMemberStatusCodeRepository;
     private final CurrentMemberStatusRepository currentMemberStatusRepository;
     private final PhoneInfoRepository phoneInfoRepository;
+    private final CurrentEICNCdrRepository currentEICNCdrRepository;
 
     /**
      * 요약 보기
@@ -185,9 +187,10 @@ public class MonitorQueueApiController extends ApiBaseController {
         final Map<String, StatUserInboundEntity> individualInboundStat = statUserInboundService.getRepository().findAllUserIndividualStat();
         final Map<String, StatUserOutboundEntity> individualOutboundStat = statUserOutboundService.getRepository().findAllUserIndividualStat();
         final Map<String, String> phoneInfoMap = phoneInfoRepository.findAllPhoneStatus();
-        final Map<String, String> queueNameMap = queueNameRepository.getHuntNameMap();
+        final Map<String, String> queueNameMap = queueNameRepository.getHanNameByQueueNumber();
         final List<PersonList> personList = personListRepository.findAll().stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
         final Map<String, QueueMemberTable> queueMemberMap = queueMemberRepository.findAllQueueMember();
+        final Map<String, CurrentEICNCdrEntity> currentCdrByPeer = currentEICNCdrRepository.findAllCurrentCdrByPeer();
 
 
 
@@ -205,7 +208,15 @@ public class MonitorQueueApiController extends ApiBaseController {
                     row.setPerson(person);
                     row.setIsPhone(PhoneInfoStatus.REGISTERED.getCode().equals(phoneInfoMap.get(person.getPeer())) ? "Y" : "N");
                     row.setQueueName(queueMemberMap2.get(key).getQueueName());
-                    row.setQueueHanName(queueNameMap.get(queueMemberMap2.get(key).getQueueName()));
+                    row.setQueueHanName(queueNameMap.get(queueMemberMap2.get(key).getQueueNumber()));
+
+                    if (currentCdrByPeer.containsKey(person.getPeer())) {
+                        CurrentEICNCdrEntity cdr = currentCdrByPeer.get(person.getPeer());
+
+                        row.setInOut(cdr.getInOut());
+                        row.setCustomNumber("O".equals(cdr.getInOut()) ? cdr.getDst() : cdr.getSrc());
+                        row.setCurrentQueueHanName("O".equals(cdr.getInOut()) ? "발신" : queueNameMap.get(cdr.getSecondNum()));
+                    }
 
                     final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
                     final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());

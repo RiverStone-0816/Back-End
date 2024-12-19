@@ -9,6 +9,7 @@ public class MonitorQueuePersonStatResponse {
     private String  isPhone;  //전화기상태(Y,N)
     private String  queueName;    //인입헌트
     private String  queueHanName;    //인입헌트
+    private String currentQueueHanName;
     private Long statusTime;
     private String  inOut;    //수/발신(I,O)
     private String  customNumber;    //고객번호

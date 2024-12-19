@@ -183,7 +183,7 @@
                                                         <td class="-consultant-status -consultant-status-with-color bcolor-bar${e.paused + 1}" data-peer="${g.escapeQuote(e.peer)}">
                                                                 ${memberStatuses.get(e.paused)}
                                                         </td>
-                                                        <td class="-consultant-queue-name" data-peer="${g.escapeQuote(e.peer)}"></td>
+                                                        <td class="-consultant-queue-name" data-peer="${g.escapeQuote(e.peer)}">${g.htmlQuote(e.currentQueueHanName)}</td>
                                                         <td>
                                                             수신:
                                                             <text class="-inbound-success" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.inboundSuccess}</text>

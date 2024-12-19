@@ -77,6 +77,7 @@ public class ConstantStatusMonitoringController extends BaseController {
             personStatus.setPaused(personStat.getPerson().getPaused());
             personStatus.setIsLogin(personStat.getPerson().getIsLogin());
             personStatus.setCustomNumber(personStat.getCustomNumber());
+            personStatus.setCurrentQueueHanName(personStat.getQueueHanName());
 
             personStatus.setInboundTotal(e.getInboundStat().getTotal());
             personStatus.setInboundSuccess(e.getInboundStat().getSuccess());
@@ -136,6 +137,7 @@ public class ConstantStatusMonitoringController extends BaseController {
             personStatus.setPaused(e.getPerson().getPaused());
             personStatus.setIsLogin(e.getPerson().getIsLogin());
             personStatus.setCustomNumber(e.getCustomNumber());
+            personStatus.setCurrentQueueHanName(e.getCurrentQueueHanName());
 
             personStatus.setInboundTotal(stat.getInboundStat().getTotal());
             personStatus.setInboundSuccess(stat.getInboundStat().getSuccess());
@@ -177,5 +179,6 @@ public class ConstantStatusMonitoringController extends BaseController {
         private Integer outboundSuccess = 0;
 
         private String customNumber;
+        private String currentQueueHanName;
     }
 }

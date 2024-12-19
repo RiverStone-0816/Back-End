@@ -224,11 +224,11 @@
                                                 <td>
                                                     <i class="key icon ${e.person.isLogin != 'Y' ? 'translucent' : ''} -consultant-login" data-peer="${g.htmlQuote(e.person.peer)}" data-logon-class="blue" data-logout-class="translucent"></i>
                                                 </td>
-                                                <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
+                                                <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}" data-default="${e.queueHanName}">${e.queueHanName}</td>
                                                 <td class="-consultant-status" data-peer="${g.htmlQuote(e.person.peer)}">${memberStatuses.get(e.person.paused)}</td>
                                                 <td class="-consultant-status-time" data-peer="${g.htmlQuote(e.person.peer)}">00:00</td>
                                                 <td class="-consultant-send-receive-status" data-peer="${g.htmlQuote(e.person.peer)}" data-default="${e.inOut == 'I' ? '수신' : e.inOut == 'O' ? '발신' : ''}"></td>
-                                                <td class="-consultant-calling-custom-number" data-peer="${g.htmlQuote(e.person.peer)}" data-default="${e.customNumber}" colspan="2"></td>
+                                                <td class="-consultant-calling-custom-number" data-peer="${g.htmlQuote(e.person.peer)}" data-default="${e.customNumber}" colspan="2">${e.customNumber}</td>
                                                 <td>${e.inboundSuccess}</td>
                                                 <td>${e.outboundSuccess}</td>
                                                 <td>${e.statTotal}</td>

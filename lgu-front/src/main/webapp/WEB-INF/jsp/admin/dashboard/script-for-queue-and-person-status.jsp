@@ -242,15 +242,11 @@
                 const defaultValue = $(this).data('default');
                 if (!peerStatus) return;
 
-                if (peerStatus.status !== MEMBER_STATUS_CALLING)
-                    return $(this).text('');
-
                 if (defaultValue) {
                     $(this).text(defaultValue)
                     $(this).removeAttr('data-default');
                 } else {
-                    $(this).text(peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD' ? peerStatus.calledNumber
-                        : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' || peerStatus.callStatus === 'PICKUP' ? peerStatus.callingNumber : '');
+                    $(this).text(peerStatus.status === MEMBER_STATUS_CALLING ? peerStatus.inoutNumber : '');
                 }
             });
 
@@ -291,11 +287,13 @@
                 if (defaultValue) {
                     $(this).text(defaultValue)
                     $(this).removeAttr('data-default');
-                } else {
+                } else if (peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID') {
                     const queue = getQueueFromNumber(peerStatus.queueNumber);
                     if (!queue) return;
 
-                    $(this).text(peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? queue.hanName : '');
+                    $(this).text(queue.hanName);
+                } else if (peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD') {
+                    $(this).text('발신');
                 }
             });
 
@@ -382,14 +380,12 @@
             })
             .on("ADMCALLEVENT", function (message, kind /*[OR|OD|IR|ID|PICKUP]*/, peer, callingNumber, calledNumber, value1 /*발신시 CID, 수신시 인입번호*/, value2 /*발신시 과금번호, 수신시 큐(그룹)번호*/, ivrKey, recordFile, startTime, uniqueId, isPds) {
                 peerStatuses[peer].callStatus = kind;
-                peerStatuses[peer].callingNumber = callingNumber;
-                peerStatuses[peer].calledNumber = calledNumber;
+                peerStatuses[peer].inoutNumber = (kind === 'IR' || kind === 'ID' || kind === 'PICKUP') ? callingNumber : (kind === 'OR' || kind === 'OD') ? calledNumber : '';
 
                 if (kind === 'IR' || kind === 'ID')
                     peerStatuses[peer].queueNumber = value2;
 
                 restSelf.get('/api/part-monitoring/grade/'+ (['OR','OD'].includes(kind) ? calledNumber : callingNumber)).done(function (response) {
-                    console.log(response.data);
                     peerStatuses[peer].grade = response.data
                     updatePersonStatus();
                 });

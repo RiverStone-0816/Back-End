@@ -322,7 +322,7 @@ public class MonitorPartApiController extends ApiBaseController {
                 if (currentCdrByPeer.containsKey(person.getPeer())) {
                     CurrentEICNCdrEntity cdr = currentCdrByPeer.get(person.getPeer());
 
-                    row.setQueueHanName(queueNameMap.get(cdr.getSecondNum()));
+                    row.setQueueHanName("O".equals(cdr.getInOut()) ? "발신" : queueNameMap.get(cdr.getSecondNum()));
                     row.setInOut(cdr.getInOut());
                     row.setCustomNumber("O".equals(cdr.getInOut()) ? cdr.getDst() : cdr.getSrc());
 
