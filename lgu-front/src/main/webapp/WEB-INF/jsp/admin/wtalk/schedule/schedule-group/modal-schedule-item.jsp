@@ -58,24 +58,26 @@
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="kind" value="A" class="hidden"/>
-                                    <label>자동멘트전송</label>
+                                    <label>${g.messageOf('TalkScheduleKind', 'A')}</label>
                                 </div>
                             </div>
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="kind" value="G" class="hidden"/>
-                                    <label>서비스별그룹연결</label>
+                                    <label>${g.messageOf('TalkScheduleKind', 'G')}</label>
                                 </div>
                             </div>
-                            <c:if test="${g.usingServices.contains('CHBOT') && isChatbot}">
+                        </div>
+                        <c:if test="${(g.usingServices.contains('ECHBT') || g.usingServices.contains('EICNCH')) && isChatbot}">
+                            <div class="inline fields">
                                 <div class="field -channel-data" data-channel="eicn">
                                     <div class="ui radio checkbox">
                                         <form:radiobutton path="kind" value="B" class="hidden"/>
-                                        <label>챗봇</label>
+                                        <label>${g.messageOf('TalkScheduleKind', 'B')}</label>
                                     </div>
                                 </div>
-                            </c:if>
-                        </div>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -88,7 +90,7 @@
                 </div>
             </div>
             <div class="row -kind-data" data-kind="G">
-                <div class="four wide column"><label class="control-label">채팅상담그룹</label></div>
+                <div class="four wide column"><label class="control-label">상담톡그룹</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <form:select path="talkGroup" items="${talkGroupList}"/>
@@ -96,8 +98,8 @@
                 </div>
             </div>
             <div class="row -kind-data" data-kind="B">
-                <div class="four wide column"><label class="control-label">챗봇선택</label></div>
-                <div class="four wide column">
+                <div class="four wide column"><label class="control-label">시나리오</label></div>
+                <div class="twelve wide column">
                     <div class="ui form">
                         <form:select path="chatBot">
                             <form:options items="${chatbotList}"/>

@@ -54,9 +54,7 @@
                                                         ~
                                                         <fmt:formatNumber value="${(s.tohour / 60).intValue()}" pattern="00"/>:<fmt:formatNumber value="${s.tohour % 60}" pattern="00"/>
                                                     </td>
-                                                    <td>
-                                                            ${g.messageOf('TalkScheduleKind', s.kind)}
-                                                    </td>
+                                                    <td>${g.messageOf('TalkScheduleKind', s.kind)}</td>
                                                     <td>${g.htmlQuote(s.kindDataName)}</td>
                                                     <td>
                                                         <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, ${s.child}, '${e.channelType}')">수정</button>
