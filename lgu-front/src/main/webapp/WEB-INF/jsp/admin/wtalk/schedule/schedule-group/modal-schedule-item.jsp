@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                         </div>
-                        <c:if test="${(g.usingServices.contains('ECHBT') || g.usingServices.contains('EICNCH')) && isChatbot}">
+                        <c:if test="${g.usingServices.contains('EICNCH') && isChatbot}">
                             <div class="inline fields">
                                 <div class="field -channel-data" data-channel="eicn">
                                     <div class="ui radio checkbox">
