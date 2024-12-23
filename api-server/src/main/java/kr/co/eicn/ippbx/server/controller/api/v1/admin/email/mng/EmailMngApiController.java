@@ -67,7 +67,7 @@ public class EmailMngApiController extends ApiBaseController {
             throw new IllegalArgumentException("이미 등록된 수신 접속 계정입니다.");
 
         form.setMailViewEmail(form.getMailUserName());
-        form.setMailAttachPath("/data/EMAIL/" + g.getUser().getCompanyId() + "/");
+        form.setMailAttachPath("/data/EMAIL/" + g.getUser().getCompanyId());
         form.setCompanyId(g.getUser().getCompanyId());
 
         repository.insert(form);
@@ -87,7 +87,7 @@ public class EmailMngApiController extends ApiBaseController {
             throw new IllegalArgumentException("이미 등록된 수신 접속 계정입니다.");
 
         form.setMailViewEmail(form.getMailUserName());
-        form.setMailAttachPath("/data/EMAIL/" + g.getUser().getCompanyId() + "/");
+        form.setMailAttachPath("/data/EMAIL/" + g.getUser().getCompanyId());
         form.setCompanyId(g.getUser().getCompanyId());
 
         repository.updateByKey(form, seq);
