@@ -98,7 +98,8 @@
                                                 data-value="${field.isneed}">
                                             <option value=""></option>
                                             <c:forEach var="e" items="${field.codes}">
-                                                <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                                <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}
+                                                        style="display: ${e.hide ne 'N' ? 'none':'block'}">${g.htmlQuote(e.codeName)}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -237,7 +238,8 @@
         <c:if test="${field.codes != null && field.codes.size() > 0}">
         '${g.escapeQuote(field.fieldId)}': [<c:forEach var="code" items="${field.codes}">{
             value: '${g.escapeQuote(code.codeId)}',
-            text: '${g.escapeQuote(code.codeName)}'
+            text: '${g.escapeQuote(code.codeName)}',
+            hide: '${g.escapeQuote(code.hide)}',
         }, </c:forEach>],
         </c:if>
         </c:forEach>
@@ -271,7 +273,7 @@
             if (o.value.indexOf(parentValue) !== 0)
                 return;
 
-            relatedField.append($('<option/>', {value: o.value, text: o.text}).prop('selected', o.value === preValue));
+            relatedField.append($('<option/>', {value: o.value, text: o.text, style: 'display:' + (o.hide !== 'N' ? 'none' : 'block')}).prop('selected', o.value === preValue));
         });
         relatedField.change();
     });

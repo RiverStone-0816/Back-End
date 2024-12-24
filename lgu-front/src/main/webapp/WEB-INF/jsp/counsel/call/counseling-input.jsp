@@ -90,10 +90,9 @@
                                                         data-value="${field.isneed}">
                                                     <option value=""></option>
                                                     <c:forEach var="e" items="${field.codes}">
-                                                        <c:if test="${e.hide == 'N'}">
-                                                            <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}
+                                                        <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}
+                                                                style="display: ${e.hide ne 'N' ? 'none':'block'}"
                                                                 data-related="${e.relatedFieldId != '' ? e.relatedFieldId : ''}">${g.htmlQuote(e.codeName)}</option>
-                                                        </c:if>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -318,12 +317,11 @@
     const fields = {
         <c:forEach var="field" items="${resultType.fields}">
         <c:if test="${field.codes != null && field.codes.size() > 0}">
-        '${g.escapeQuote(field.fieldId)}': [<c:forEach var="code" items="${field.codes}">
-            <c:if test="${code.hide == 'N'}">{
+        '${g.escapeQuote(field.fieldId)}': [<c:forEach var="code" items="${field.codes}">{
             value: '${g.escapeQuote(code.codeId)}',
-            text: '${g.escapeQuote(code.codeName)}'
-            },</c:if>
-            </c:forEach>],
+            text: '${g.escapeQuote(code.codeName)}',
+            hide: '${g.escapeQuote(code.hide)}',
+        }, </c:forEach>],
         </c:if>
         </c:forEach>
     };
@@ -357,7 +355,7 @@
             if (o.value.indexOf(parentValue) !== 0)
                 return;
 
-            relatedField.append($('<option/>', {value: o.value, text: o.text}).prop('selected', o.value === preValue));
+            relatedField.append($('<option/>', {value: o.value, text: o.text, style: 'display:' + (o.hide !== 'N' ? 'none' : 'block')}).prop('selected', o.value === preValue));
         });
         relatedField.change();
     });
