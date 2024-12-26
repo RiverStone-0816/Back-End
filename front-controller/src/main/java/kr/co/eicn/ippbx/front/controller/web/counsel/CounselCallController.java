@@ -356,7 +356,7 @@ public class CounselCallController extends BaseController {
 
     @GetMapping("modal-counseling-transfer")
     public String modalCounselingTransfer(Model model) throws IOException, ResultFailException {
-        model.addAttribute("users", searchApiInterface.persons().stream().collect(Collectors.toMap(SearchPersonListResponse::getId, SearchPersonListResponse::getIdName)));
+        model.addAttribute("users", new MapToLinkedHashMap().toLinkedHashMapByValue(searchApiInterface.persons().stream().collect(Collectors.toMap(SearchPersonListResponse::getId, SearchPersonListResponse::getIdName))));
         return "counsel/call/modal-counseling-transfer";
     }
 

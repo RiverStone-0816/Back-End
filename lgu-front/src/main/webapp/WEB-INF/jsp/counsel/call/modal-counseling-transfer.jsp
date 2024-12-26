@@ -17,17 +17,6 @@
     <div class="header">상담이관</div>
     <div class="content rows scrolling">
         <div class="ui grid">
-            <%--<div class="row">
-                <div class="four wide column"><label class="control-label">이관대상</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        <select>
-                            <option>개인</option>
-                            <option>그룹</option>
-                        </select>
-                    </div>
-                </div>
-            </div>--%>
             <div class="row">
                 <div class="four wide column"><label class="control-label">담당지정</label></div>
                 <div class="twelve wide column">
