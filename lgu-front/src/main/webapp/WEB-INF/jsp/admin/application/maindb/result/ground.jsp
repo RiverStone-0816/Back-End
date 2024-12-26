@@ -314,25 +314,25 @@
                                         </c:forEach>
 
                                         <c:set var="value" value="${''}"/>
-                                        <c:forEach var="field" items="${e.multichannelList}">
-                                            <c:if test="${field.channelType == 'PHONE'}">
-                                                <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
+                                        <c:forEach var="channel" items="${e.multichannelList}">
+                                            <c:if test="${channel.channelType == 'PHONE'}">
+                                                <c:set var="value" value="${value.concat(channel.channelData).concat(' ')}"/>
                                             </c:if>
                                         </c:forEach>
                                         <td>${g.htmlQuote(value)}</td>
 
                                         <c:set var="value" value="${''}"/>
-                                        <c:forEach var="field" items="${e.multichannelList}">
-                                            <c:if test="${field.channelType == 'EMAIL'}">
-                                                <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
+                                        <c:forEach var="channel" items="${e.multichannelList}">
+                                            <c:if test="${channel.channelType == 'EMAIL'}">
+                                                <c:set var="value" value="${value.concat(channel.channelData).concat(' ')}"/>
                                             </c:if>
                                         </c:forEach>
                                         <td>${g.htmlQuote(value)}</td>
 
                                         <c:set var="value" value="${''}"/>
-                                        <c:forEach var="field" items="${e.multichannelList}">
-                                            <c:if test="${field.channelType == 'TALK'}">
-                                                <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
+                                        <c:forEach var="channel" items="${e.multichannelList}">
+                                            <c:if test="${channel.channelType == 'TALK'}">
+                                                <c:set var="value" value="${value.concat(channel.channelData).concat(' ').split('_|-')[1]}"/>
                                             </c:if>
                                         </c:forEach>
                                         <td>${g.htmlQuote(value)}</td>

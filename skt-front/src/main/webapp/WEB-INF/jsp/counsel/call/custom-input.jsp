@@ -279,8 +279,8 @@
                     <div class="ui labels multi-list-wrap -channel-container">
                         <c:forEach var="channel" items="${entity.multichannelList}">
                             <div class="ui label -channel" data-value="${g.escapeQuote(channel.channelData)}" data-type="${g.escapeQuote(channel.channelType)}">
-                                [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
-                                    ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
+                                [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_|-]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
+                                    ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_|-]')[1] : channel.channelData)}
                                 <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
                             </div>
                         </c:forEach>

@@ -137,10 +137,10 @@
                 <div class="twelve wide column">
                     <div class="ui form">
                         <select name="channels" multiple="multiple" class="one-multiselect">
-                            <c:forEach var="c" items="${entity.multichannelList}">
-                                <option value="${c.channelData}" data-type="${g.htmlQuote(c.channelType)}">
-                                    [${c.channelType == 'TALK' ? g.htmlQuote(talkServices.get(c.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(c.channelType))}]
-                                        ${g.htmlQuote(c.channelType == 'TALK' ? c.channelData.split('[_]')[1] : c.channelData)}
+                            <c:forEach var="channel" items="${entity.multichannelList}">
+                                <option value="${channel.channelData}" data-type="${g.htmlQuote(channel.channelType)}">
+                                    [${c.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_|-]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
+                                        ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_|-]')[1] : channel.channelData)}
                                 </option>
                             </c:forEach>
                         </select>

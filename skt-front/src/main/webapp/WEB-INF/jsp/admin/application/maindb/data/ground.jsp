@@ -207,7 +207,7 @@
                                             <td>
                                                 <c:forEach var="channel" items="${e.multichannelList}">
                                                     <c:if test="${channel.channelType == 'TALK'}">
-                                                        ${g.htmlQuote(channel.channelData)}&ensp;
+                                                        ${g.htmlQuote(channel.channelData.split('_|-')[1])}&ensp;
                                                     </c:if>
                                                 </c:forEach>
                                             </td>

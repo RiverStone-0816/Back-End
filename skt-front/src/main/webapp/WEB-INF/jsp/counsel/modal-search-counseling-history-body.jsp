@@ -299,7 +299,7 @@
                                 <c:set var="value" value="${''}"/>
                                 <c:forEach var="channel" items="${e.multichannelList}">
                                     <c:if test="${channel.channelType == 'TALK'}">
-                                        <c:set var="value" value="${value.concat(channel.channelData).concat(' ').split('_')[1]}"/>
+                                        <c:set var="value" value="${value.concat(channel.channelData).concat(' ').split('_|-')[1]}"/>
                                     </c:if>
                                 </c:forEach>
                                 <td>${g.htmlQuote(value)}</td>

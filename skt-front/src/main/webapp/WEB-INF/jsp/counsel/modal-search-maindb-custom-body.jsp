@@ -173,24 +173,24 @@
                                 </c:forEach>
 
                                 <td>
-                                    <c:forEach var="field" items="${e.multichannelList}">
-                                        <c:if test="${field.channelType == 'PHONE'}">
-                                            <text class="-phone-channel-data" style="cursor: pointer;" onclick="ipccCommunicator.clickDial('', '${g.escapeQuote(field.channelData)}')">${g.htmlQuote(field.channelData)}</text>
+                                    <c:forEach var="channel" items="${e.multichannelList}">
+                                        <c:if test="${channel.channelType == 'PHONE'}">
+                                            <text class="-phone-channel-data" style="cursor: pointer;" onclick="ipccCommunicator.clickDial('', '${g.escapeQuote(channel.channelData)}')">${g.htmlQuote(channel.channelData)}</text>
                                             &ensp;
                                         </c:if>
                                     </c:forEach>
                                 </td>
                                 <td>
-                                    <c:forEach var="field" items="${e.multichannelList}">
-                                        <c:if test="${field.channelType == 'EMAIL'}">
-                                            ${g.htmlQuote(field.channelData)}&ensp;
+                                    <c:forEach var="channel" items="${e.multichannelList}">
+                                        <c:if test="${channel.channelType == 'EMAIL'}">
+                                            ${g.htmlQuote(channel.channelData)}&ensp;
                                         </c:if>
                                     </c:forEach>
                                 </td>
                                 <td>
-                                    <c:forEach var="field" items="${e.multichannelList}">
-                                        <c:if test="${field.channelType == 'TALK'}">
-                                            ${g.htmlQuote(field.channelData.split('_')[1])}&ensp;
+                                    <c:forEach var="channel" items="${e.multichannelList}">
+                                        <c:if test="${channel.channelType == 'TALK'}">
+                                            ${g.htmlQuote(channel.channelData.split('_|-')[1])}&ensp;
                                         </c:if>
                                     </c:forEach>
                                 </td>

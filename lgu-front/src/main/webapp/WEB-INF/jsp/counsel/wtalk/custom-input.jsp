@@ -170,14 +170,14 @@
                         <div class="ui form">
                             <select name="channels" multiple="multiple" class="one-multiselect channels" data-channel="${channel}">
                                 <c:set var="existRoomIdInMultichannelList" value="${false}"/>
-                                <c:forEach var="channel" items="${entity.multichannelList}">
-                                    <c:set var="existRoomIdInMultichannelList" value="${existRoomIdInMultichannelList || channel.channelData == senderKey.concat('_').concat(userKey)}"/>
-                                    <option value="${channel.channelData}" data-type="${g.htmlQuote(channel.channelType)}">
-                                        [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[-]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
-                                            ${g.htmlQuote(channel.channelData)}
+                                <c:forEach var="multichannel" items="${entity.multichannelList}">
+                                    <c:set var="existRoomIdInMultichannelList" value="${existRoomIdInMultichannelList || multichannel.channelData == senderKey.concat('-').concat(userKey)}"/>
+                                    <option value="${multichannel.channelData}" data-type="${g.htmlQuote(multichannel.channelType)}">
+                                        [${multichannel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(multichannel.channelData.split('[_|-]')[0])) : g.htmlQuote(channelTypes.get(multichannel.channelType))}]
+                                            ${g.htmlQuote(multichannel.channelType == 'TALK' ? multichannel.channelData.split('[_|-]')[1] : multichannel.channelData)}
                                     </option>
                                 </c:forEach>
-                                <c:if test="${channel == 'kakao' && senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
+                                <c:if test="${channel eq 'kakao' && not empty senderKey && not empty userKey && not empty talkServices && not empty  talkServices.get(senderKey) && !existRoomIdInMultichannelList}">
                                     <option value="${g.htmlQuote(senderKey.concat('-').concat(userKey))}" data-type="TALK">
                                         [${g.htmlQuote(talkServices.get(senderKey))}] ${g.htmlQuote(userKey)}
                                     </option>
