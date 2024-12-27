@@ -130,7 +130,7 @@
                             <c:set var="cols" value="0"/>
                             <c:set var="cols"
                                    value="${services.contains('APP') || services.contains('API') ? cols + 2 : cols}"/>
-                            <c:set var="cols" value="${services.contains('TALK') ? cols + 1 : cols}"/>
+                            <c:set var="cols" value="${services.contains('TALK') || services.contains('KATLK') || services.contains('ECHBT') ? cols + 1 : cols}"/>
                             <c:set var="cols" value="${services.contains('EMAIL') ? cols + 1 : cols}"/>
                             <c:set var="cols" value="${services.contains('CHATT') || services.contains('CHATWIN') || services.contains('CHATMEMO') ? cols + 1 : cols}"/>
                             <c:set var="cols" value="${services.contains('PDS') ? cols + 1 : cols}"/>
@@ -153,7 +153,7 @@
                                     </c:if>
                                 </th>
                             </c:if>
-                            <c:if test="${services.contains('TALK')}">
+                            <c:if test="${services.contains('TALK') || services.contains('KATLK') || services.contains('ECHBT')}">
                             <th data-sortable-value="TALK">채팅상담<br>(라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})
                                 <c:if test="${search.sort.name() == 'TALK'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
@@ -214,7 +214,7 @@
                                             <td>${e.isStat == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         <td>${e.isCti == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
-                                        <c:if test="${services.contains('TALK')}">
+                                        <c:if test="${services.contains('TALK') || services.contains('KATLK') || services.contains('ECHBT')}">
                                         <td>${e.isTalk == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
                                         <c:if test="${!serviceKind.equals('CC')}">

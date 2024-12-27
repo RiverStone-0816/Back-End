@@ -183,7 +183,7 @@
                     </div>
                 </div>
             </c:if>
-            <c:if test="${services.contains('TALK')}">
+            <c:if test="${services.contains('TALK') || services.contains('KATLK') || services.contains('ECHBT')}">
                 <div class="row">
                     <div class="four wide column"><label class="control-label">채팅상담</label></div>
                     <div class="twelve wide column">
