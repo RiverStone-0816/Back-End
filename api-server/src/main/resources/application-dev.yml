@@ -1,0 +1,126 @@
+# server config
+server:
+  schema: http
+  host: localhost
+  port: 8080
+
+# jdbc config
+jdbc:
+  host: MAIN_DB_VIP
+  port: 3306
+  dialect: mysql
+  username: eicn
+  password: eicnrw
+  driver-class-name: com.mysql.jdbc.Driver
+  options: useUnicode=yes&characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Seoul
+
+# hikaricp config
+hikari:
+  eicn:
+    maximum-pool-size: 300
+  customdb:
+    maximum-pool-size: 200
+  configdb:
+    maximum-pool-size: 100
+  statdb:
+    maximum-pool-size: 200
+  pds:
+    maximum-pool-size: 100
+  max-lifetime: 3600000
+  connection-timeout: 5000
+
+# datasource config
+spring:
+  datasource:
+    hikari:
+      eicn:
+        driver-class-name: ${jdbc.driver-class-name}
+        jdbc-url: jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/eicn?${jdbc.options}
+        username: ${jdbc.username}
+        password: ${jdbc.password}
+        maximum-pool-size: ${hikari.eicn.maximum-pool-size}
+        max-lifetime: ${hikari.max-lifetime}
+        connection-timeout: ${hikari.connection-timeout}
+      customdb:
+        driver-class-name: ${jdbc.driver-class-name}
+        jdbc-url: jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/CUSTOMDB?${jdbc.options}
+        username: ${jdbc.username}
+        password: ${jdbc.password}
+        maximum-pool-size: ${hikari.customdb.maximum-pool-size}
+        max-lifetime: ${hikari.max-lifetime}
+        connection-timeout: ${hikari.connection-timeout}
+      configdb:
+        driver-class-name: ${jdbc.driver-class-name}
+        jdbc-url: jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/CONFIGDB?${jdbc.options}
+        username: ${jdbc.username}
+        password: ${jdbc.password}
+        maximum-pool-size: ${hikari.configdb.maximum-pool-size}
+        max-lifetime: ${hikari.max-lifetime}
+        connection-timeout: ${hikari.connection-timeout}
+      statdb:
+        driver-class-name: ${jdbc.driver-class-name}
+        jdbc-url: jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/STATDB?${jdbc.options}
+        username: ${jdbc.username}
+        password: ${jdbc.password}
+        maximum-pool-size: ${hikari.statdb.maximum-pool-size}
+        max-lifetime: ${hikari.max-lifetime}
+        connection-timeout: ${hikari.connection-timeout}
+      pds:
+        driver-class-name: ${jdbc.driver-class-name}
+        jdbc-url: jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/PDS?${jdbc.options}
+        username: ${jdbc.username}
+        password: ${jdbc.password}
+        maximum-pool-size: ${hikari.pds.maximum-pool-size}
+        max-lifetime: ${hikari.max-lifetime}
+        connection-timeout: ${hikari.connection-timeout}
+  config:
+    activate:
+      on-profile: dev
+  sql:
+    init:
+      mode: always
+      platform: mysql
+
+# file path config
+file:
+  path:
+    data: /data
+    asterisk: /var/lib/asterisk
+    tts: ${file.path.data}/{0}/tts_temp
+    stt: /stt/transcribe/write/{0}/{1}
+    send: /data
+    notice: ${file.path.data}/{0}/notice/{1}
+    task_script: ${file.path.data}/{0}/task_script/{1}
+    manual: ${file.path.data}/{0}/manual/{1}
+    upload: /data
+    chatt: ${file.path.data}/CHATT/{0}/{1}/{2}
+    moh: ${file.path.asterisk}/moh
+    ars: ${file.path.asterisk}/sounds/ars
+    record-multi-down: ${file.path.data}/{0}/DOWNDIR
+    conf-minutes-save: /var/log/eicn_log/CONF/{0}
+    talk: ${file.path.data}/TALK/{0}
+    custom: ${file.path.data}/{0}/CUSTOM_DATA
+    profile: ${file.path.data}/{0}/PROFILE_PHOTO
+    chatbot: ${file.path.data}/{0}/CHATBOT
+    temporary:
+      default: /tmp
+      enc: ${file.path.temporary.default}/monit/tmp_enc_{0}
+
+# spring security config
+jwt:
+  secret: ippbx@IX
+
+# etc config
+env:
+  rest-doc:
+    port: 8080
+  enc:
+    master-key: MasterKey@EicnRecordEncryption
+
+# ipcc config
+ipcc:
+  url: http://122.49.74.241/ipcc/cc/remote
+  websocket:
+    protocol: http
+    ip: 122.49.74.241
+    port: 8087

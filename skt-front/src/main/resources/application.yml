@@ -1,11 +1,7 @@
-server:
-  port: 80
-  servlet:
-    session:
-      timeout: 43200
+# spring config
 spring:
   profiles:
-    active: stage
+    active: ${profile}
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
@@ -29,8 +25,12 @@ spring:
       file-size-threshold: 1MB
       max-request-size: 100MB
       max-file-size: 100MB
+
+# log config
 logging:
   config: classpath:logback-spring.xml
+
+# management config
 management:
   metrics:
     tags:
@@ -47,24 +47,14 @@ management:
 security:
   basic:
     enabled: false
-# 정의 설정
+
+# definition config
 eicn:
-  service:
-    base-url: http://122.49.74.103
-    servicekind: SC
   version: 20240912
-  debugging: true
   swagger:
     api-package: kr.co.eicn.ippbx.front.controller.api
-  file:
-    location: /tmp
-  apiserver: http://122.49.74.103/api-server
-  realapiserver: http://122.49.74.103/api-server
-  webchat:
-    image:
-      url: http://221.139.190.40/webchat_bot_image
-  callbot:
-    url: http://221.139.190.40:9300/callbot_conv
+  screen:
+    variation: true
   admin:
     socket:
       id: monitor_connector
@@ -85,37 +75,9 @@ eicn:
       id: chatting_connector
     cipher:
       key: eicn
-  screen:
-    variation: true
   chatbot:
     socket:
       id: webchatcli_connector
-    resource:
-      location: /tmp/chatbot
   message:
     url:
       id: message_connector
-stt:
-  transcribe:
-    dbHost: 122.49.74.102
-assist:
-  kms:
-    auth:
-      url: https://assist.eicn.co.kr:3006/api/assist/graphql
-    api:
-      url: https://assist.eicn.co.kr/kms/graphql
-  stt:
-    socket:
-      url: https://assist.eicn.co.kr:8087
-    request:
-      url: https://assist.eicn.co.kr:8087
-  sso:
-    token:
-      get:
-        url: https://dev.eicn.co.kr:8400/get_assist_token
-    request:
-      site:
-        url: https://assist.eicn.co.kr:3006/login
-  login:
-    record:
-      user: https://dev.eicn.co.kr:8400/login_info

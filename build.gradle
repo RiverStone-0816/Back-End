@@ -88,14 +88,6 @@ subprojects {
         }
     }
 
-    sourceSets {
-        main {
-            resources {
-                srcDirs "src/main/resources", "src/main/resources-${profile}"
-            }
-        }
-    }
-
     test {
         useJUnitPlatform()
     }
@@ -329,6 +321,14 @@ project(':api-server') {
         }
     }
 
+    bootWar {
+        archiveName 'api-server.war'
+    }
+
+    bootRun {
+        jvmArgs = ["-Dprofile=${profile}"]
+    }
+
     dependencies {
         compileOnly project(':util')
         compileOnly project(':jooq-model')
@@ -365,10 +365,6 @@ project(':api-server') {
 
         testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
         testImplementation 'org.springframework.security:spring-security-test'
-    }
-
-    bootWar {
-        archiveName 'api-server.war'
     }
 }
 
@@ -417,6 +413,7 @@ project(':lgu-front') {
     apply plugin: 'war'
 
     apply plugin: 'lesscss'
+
     lesscss {
         source = fileTree('src/main/webapp/resources/less') {
             include 'app.less'
@@ -424,12 +421,18 @@ project(':lgu-front') {
         dest = 'src/main/webapp/resources/compiled'
         compress = true
     }
+
     war {
         dependsOn 'lesscss'
     }
+
     bootWar {
         dependsOn 'lesscss'
         archiveName 'ROOT.war'
+    }
+
+    bootRun {
+        jvmArgs = ["-Dprofile=${profile}"]
     }
 
     dependencies {
@@ -461,6 +464,7 @@ project(':skt-front') {
     apply plugin: 'war'
 
     apply plugin: 'lesscss'
+
     lesscss {
         source = fileTree('src/main/webapp/resources/less') {
             include 'app.less'
@@ -468,12 +472,18 @@ project(':skt-front') {
         dest = 'src/main/webapp/resources/compiled'
         compress = true
     }
+
     war {
         dependsOn 'lesscss'
     }
+
     bootWar {
         dependsOn 'lesscss'
         archiveName 'ROOT.war'
+    }
+
+    bootRun {
+        jvmArgs = ["-Dprofile=${profile}"]
     }
 
     dependencies {
