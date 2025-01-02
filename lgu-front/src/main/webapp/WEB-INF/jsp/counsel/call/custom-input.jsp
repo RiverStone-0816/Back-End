@@ -293,9 +293,9 @@
         });
     });
 
-    <c:if test="${phoneNumberData != ''}">
-    phoneNumber = '${phoneNumberData}';
-    $('#calling-number${(g.usingServices.contains("AST") && g.user.isAstIn eq "Y") || (g.usingServices.contains('BSTT') && g.user.isAstStt eq "Y") ? "-stt" : ""}').val('${phoneNumberData}');
+    <c:if test="${not empty phoneNumberData}">
+    $('#calling-number${(g.usingServices.contains("AST") && g.user.isAstIn eq "Y") || (g.usingServices.contains('BSTT') && g.user.isAstStt eq "Y") ? "-stt" : ""}').val('${not empty phoneNumber ? phoneNumber : phoneNumberData}');
+    phoneNumber = '${not empty phoneNumber ? phoneNumber : phoneNumberData}';
     </c:if>
 
     const DBTYPE_FIELD_PREFIX = 'MAINDB_';
