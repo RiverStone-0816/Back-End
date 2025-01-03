@@ -12,7 +12,7 @@ server:
 # definition config
 eicn:
   service:
-    base-url: https://dev.eicn.co.kr
+    base-url: http://180.210.117.176
     servicekind: SC
   apiserver: ${eicn.service.base-url}/api-server
   realapiserver: ${eicn.service.base-url}/api-server
@@ -32,7 +32,7 @@ eicn:
 
 stt:
   transcribe:
-    dbHost: 122.49.74.102
+    dbHost: 180.210.117.176
 
 assist:
   kms:

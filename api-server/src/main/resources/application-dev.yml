@@ -7,7 +7,7 @@ server:
 # jdbc config
 jdbc:
   host: MAIN_DB_VIP
-  port: 3306
+  port: 13406
   dialect: mysql
   username: eicn
   password: eicnrw
