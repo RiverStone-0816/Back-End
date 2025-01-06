@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                 .authorizeRequests().antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .antMatchers("/error").permitAll()
                 .antMatchers("/api/daemon").permitAll()
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .antMatchers("/api/main-board-notice/before").permitAll()
                 .antMatchers("/api/main-board-notice/before/**").permitAll()
                 .antMatchers("/api/v1/admin/record/history/**").permitAll()

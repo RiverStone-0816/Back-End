@@ -42,3 +42,12 @@ mybatis:
 # log config
 logging:
   config: classpath:logback-spring.xml
+
+# springdoc config
+springdoc:
+  show-login-endpoint: true
+  swagger-ui:
+    use-root-path: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    showExtensions: true
