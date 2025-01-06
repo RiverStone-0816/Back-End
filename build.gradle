@@ -1,7 +1,7 @@
 buildscript {
     def env = { String name -> System.getProperty(name, System.getenv(name)) }
 
-    ext.databaseHost = env("JDBC_HOST") ?: "122.49.74.102"
+    ext.databaseHost = env("JDBC_HOST") ?: "localhost"
     ext.databasePort = env("JDBC_POST") ?: 3306
     ext.databaseUsername = env("JDBC_USERNAME") ?: "eicn"
     ext.databasePassword = env("JDBC_PASSWORD") ?: "eicnrw"

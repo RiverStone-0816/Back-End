@@ -1,12 +1,12 @@
 # server config
 server:
   schema: http
-  host: 122.49.74.102
+  host: localhost
   port: 8080
 
 # jdbc config
 jdbc:
-  host: 122.49.74.102
+  host: localhost
   port: 3306
   dialect: mysql
   username: eicn
