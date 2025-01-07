@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class LoginRequest extends BaseForm {
-    @Schema(description = "회사아이디", example = "globalassistance")
-    @NotNull("회사아아디")
-    private String company;
+	@Schema(description = "회사아이디", example = "atcenter")
+	@NotNull("회사아아디")
+	private String company;
 
     @Schema(description = "아이디", example = " ")
     @NotNull("아이디")
