@@ -32,9 +32,9 @@ public class ProvisionResultRepository extends CustomDBBaseRepository<ResultCust
         .set(RESULT_CUSTOM_INFO.RS_STRING_3, request.getCNSLT_ANS_CONT()) // 상담답변내용
         .set(RESULT_CUSTOM_INFO.RS_STRING_4, CommonRoutines.fnEncStringText(request.getMBR_NM(), ENCRYPTION_KEY_PREFIX+getCompanyId())) // 회원명
         .set(RESULT_CUSTOM_INFO.RS_STRING_5, CommonRoutines.fnEncStringText(request.getMOBL_TELNO(), ENCRYPTION_KEY_PREFIX+getCompanyId())) // 휴대폰번호
-        .set(RESULT_CUSTOM_INFO.RS_CODE_1, request.getCNSLT_ACPT_CHNNL_CD()) // 상담접수채널코드
-        .set(RESULT_CUSTOM_INFO.RS_CODE_2, request.getCNSLT_TYPE_LCLS_CD()) // 상담유형대분류코드
-        .set(RESULT_CUSTOM_INFO.RS_CODE_3, request.getCNSLT_TYPE_MCLS_CD()) // 상담유형중분류코드
+        .set(RESULT_CUSTOM_INFO.RS_CODE_1, request.getCNSLT_TYPE_LCLS_CD()) // 상담유형대분류코드
+        .set(RESULT_CUSTOM_INFO.RS_CODE_2, request.getCNSLT_TYPE_MCLS_CD()) // 상담유형중분류코드
+        .set(RESULT_CUSTOM_INFO.RS_CODE_3, request.getCNSLT_ACPT_CHNNL_CD()) // 상담접수채널코드
         .execute();
   }
 
@@ -44,5 +44,4 @@ public class ProvisionResultRepository extends CustomDBBaseRepository<ResultCust
         .fetchOne(0, Integer.class);
     return (currentMaxSeq == null) ? 1 : currentMaxSeq + 1;
   }
-
 }
