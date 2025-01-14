@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.stat.user;
 
+import java.time.LocalDate;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.statdb.*;
@@ -52,10 +53,20 @@ public class StatUserApiController extends ApiBaseController {
 
     @GetMapping(value = "")
     public ResponseEntity<JsonResult<List<StatUserResponse<?>>>> list(StatUserSearchRequest search) {
-        if (search.getStartDate().after(search.getEndDate()))
+        if (search.getStartDate().after(search.getEndDate())) {
             throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
-        if ((search.getEndDate().getTime() - search.getStartDate().getTime()) / 1000 > 6 * 30 * 24 * 60 * 60)
+        }
+        if ((search.getEndDate().getTime() - search.getStartDate().getTime()) / 1000 > 6 * 30 * 24 * 60 * 60) {
             throw new IllegalArgumentException(message.getText("messages.validator.enddate.indays", "180일"));
+        }
+
+        // 오늘 날짜 가져오기
+        LocalDate today = LocalDate.now();
+        Date todayDate = java.sql.Date.valueOf(today);
+
+        // 오늘 날짜 이후의 데이터를 필터링
+        search.setStartDate(todayDate);
+        search.setEndDate(todayDate);
 
         final List<StatUserResponse<?>> rows = new ArrayList<>();
 
@@ -103,13 +114,13 @@ public class StatUserApiController extends ApiBaseController {
                 final Stream<StatMemberStatusEntity> memberStream = statMemberStatusList.stream().filter(member -> member.getUserid().equals(person.getId()));
 
                 row.setInboundStat(
-                        userInboundStream.map(inbound -> convertDto(inbound, StatUserInboundResponse.class))
-                                .findFirst().orElse(new StatUserInboundResponse())
+                    userInboundStream.map(inbound -> convertDto(inbound, StatUserInboundResponse.class))
+                        .findFirst().orElse(new StatUserInboundResponse())
                 );
 
                 row.setOutboundStat(
-                        userOutboundStream.map(outbound -> convertDto(outbound, StatUserOutboundResponse.class))
-                                .findFirst().orElse(new StatUserOutboundResponse())
+                    userOutboundStream.map(outbound -> convertDto(outbound, StatUserOutboundResponse.class))
+                        .findFirst().orElse(new StatUserOutboundResponse())
                 );
 
                 final StatMemberStatusResponse memberStatus = new StatMemberStatusResponse();
@@ -118,9 +129,9 @@ public class StatUserApiController extends ApiBaseController {
                 memberStream.forEach(i -> {
                     if (i.getStatus() == 2) {
                         memberStatus.setPostProcess(i.getTotal());
-                        memberStatus.setPostProcessTime(i.getDiffSum());
+                        memberStatus.setPostProcessTime(Long.valueOf(i.getTotal()));
                     } else {
-                        statusCountMap.put(i.getStatus(), i.getDiffSum());
+                        statusCountMap.put(i.getStatus(), Long.valueOf(i.getTotal()));
                     }
                 });
 
