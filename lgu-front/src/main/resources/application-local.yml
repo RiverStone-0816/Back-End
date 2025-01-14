@@ -12,7 +12,7 @@ server:
 # definition config
 eicn:
   service:
-    base-url: http://localhost
+    base-url: http://localhost:8081
     servicekind: SC
   apiserver: http://localhost:8080/api-server
   #apache 를  web 서버로 사용할 경우 아래 url 을 http://localhost:8080/api-server 로 변경 하세요.
