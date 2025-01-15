@@ -53,6 +53,97 @@ public class StatUserApiController extends ApiBaseController {
 
     @GetMapping(value = "")
     public ResponseEntity<JsonResult<List<StatUserResponse<?>>>> list(StatUserSearchRequest search) {
+        if (search.getStartDate().after(search.getEndDate()))
+            throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
+        if ((search.getEndDate().getTime() - search.getStartDate().getTime()) / 1000 > 6 * 30 * 24 * 60 * 60)
+            throw new IllegalArgumentException(message.getText("messages.validator.enddate.indays", "180일"));
+
+        final List<StatUserResponse<?>> rows = new ArrayList<>();
+
+        final List<StatUserInboundEntity> userInboundList = statUserInboundService.getRepository().findAllUserStat(search);
+        final List<StatUserOutboundEntity> userOutboundList = statUserOutboundService.getRepository().findAll(search);
+        final List<StatMemberStatusEntity> memberStatusList = StatMemberStatusService.getRepository().findAll(search);
+        final List<PersonList> personList = personListRepository.findAllStatUser(search);
+        final List<CmpMemberStatusCodeEntity> statusCodeList = cmpMemberStatusCodeRepository.findAll();
+        final List<Organization> allOrganization = companyTreeRepository.getAllOrganization();
+
+        final List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
+
+        for (Object timeInformation : dateByTypeList) {
+            StatUserResponse<?> response = null;
+            if (search.getTimeUnit().equals(SearchCycle.DATE)) {
+                response = new StatUserResponse<>((DateResponse) timeInformation);
+            } else if (search.getTimeUnit().equals(SearchCycle.HOUR)) {
+                response = new StatUserResponse<>((HourResponse) timeInformation);
+            } else if (search.getTimeUnit().equals(SearchCycle.WEEK)) {
+                response = new StatUserResponse<>((WeekResponse) timeInformation);
+            } else if (search.getTimeUnit().equals(SearchCycle.MONTH)) {
+                response = new StatUserResponse<>((MonthResponse) timeInformation);
+            } else if (search.getTimeUnit().equals(SearchCycle.DAY_OF_WEEK)) {
+                response = new StatUserResponse<>((DayOfWeekResponse) timeInformation);
+            }
+
+            final List<StatUserInboundEntity> statUserInboundList = SearchCycleUtils.streamFiltering(userInboundList, search.getTimeUnit(), timeInformation);
+            final List<StatUserOutboundEntity> statUserOutboundList = SearchCycleUtils.streamFiltering(userOutboundList, search.getTimeUnit(), timeInformation);
+            final List<StatMemberStatusEntity> statMemberStatusList = SearchCycleUtils.streamFiltering(memberStatusList, search.getTimeUnit(), timeInformation);
+
+            final List<StatUserResponse.UserStat> userStatList = new ArrayList<>();
+            for (PersonList person : personList) {
+                final StatUserResponse.UserStat row = new StatUserResponse.UserStat();
+                row.setUserId(person.getId());
+                row.setIdName(person.getIdName());
+                row.setGroupName(
+                    allOrganization.stream().filter(organization -> organization.getGroupCode().equals(person.getGroupCode()))
+                        .map(CompanyTree::getGroupName).findFirst().orElse("")
+                );
+                row.setGroupCode(person.getGroupCode());
+                row.setGroupTreeName(person.getGroupTreeName());
+
+                final Stream<StatUserInboundEntity> userInboundStream = statUserInboundList.stream().filter(inbound -> inbound.getUserid().equals(person.getId()));
+                final Stream<StatUserOutboundEntity> userOutboundStream = statUserOutboundList.stream().filter(outbound -> outbound.getUserid().equals(person.getId()));
+                final Stream<StatMemberStatusEntity> memberStream = statMemberStatusList.stream().filter(member -> member.getUserid().equals(person.getId()));
+
+                row.setInboundStat(
+                    userInboundStream.map(inbound -> convertDto(inbound, StatUserInboundResponse.class))
+                        .findFirst().orElse(new StatUserInboundResponse())
+                );
+
+                row.setOutboundStat(
+                    userOutboundStream.map(outbound -> convertDto(outbound, StatUserOutboundResponse.class))
+                        .findFirst().orElse(new StatUserOutboundResponse())
+                );
+
+                final StatMemberStatusResponse memberStatus = new StatMemberStatusResponse();
+                final Map<Integer, Long> statusCountMap = new LinkedHashMap<>();
+                statusCodeList.forEach(code -> statusCountMap.put(code.getStatusNumber(), 0L));
+                memberStream.forEach(i -> {
+                    if (i.getStatus() == 2) {
+                        memberStatus.setPostProcess(i.getTotal());
+                        memberStatus.setPostProcessTime(i.getDiffSum());
+                    } else {
+                        statusCountMap.put(i.getStatus(), i.getDiffSum());
+                    }
+                });
+
+                memberStatus.setStatusCountMap(statusCountMap);
+
+                row.setMemberStatusStat(memberStatus);
+                row.setTotalCnt();
+                row.setTotalBillSec();
+                userStatList.add(row);
+            }
+
+            if (response != null) {
+                response.setUserStatList(userStatList);
+                rows.add(response);
+            }
+        }
+
+        return ResponseEntity.ok(data(rows));
+    }
+
+    @GetMapping(value = "agents/today-summary")
+    public ResponseEntity<JsonResult<List<StatUserResponse<?>>>> getTodayAgentActivitySummary(StatUserSearchRequest search) {
         if (search.getStartDate().after(search.getEndDate())) {
             throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
         }
@@ -63,6 +154,11 @@ public class StatUserApiController extends ApiBaseController {
         // 오늘 날짜 가져오기
         LocalDate today = LocalDate.now();
         Date todayDate = java.sql.Date.valueOf(today);
+/*
+        날짜 임의수정
+        LocalDate yesterday = today.minusDays(1);
+        Date todayDate = java.sql.Date.valueOf(yesterday);
+*/
 
         // 오늘 날짜 이후의 데이터를 필터링
         search.setStartDate(todayDate);
@@ -103,8 +199,8 @@ public class StatUserApiController extends ApiBaseController {
                 row.setUserId(person.getId());
                 row.setIdName(person.getIdName());
                 row.setGroupName(
-                        allOrganization.stream().filter(organization -> organization.getGroupCode().equals(person.getGroupCode()))
-                                .map(CompanyTree::getGroupName).findFirst().orElse("")
+                    allOrganization.stream().filter(organization -> organization.getGroupCode().equals(person.getGroupCode()))
+                        .map(CompanyTree::getGroupName).findFirst().orElse("")
                 );
                 row.setGroupCode(person.getGroupCode());
                 row.setGroupTreeName(person.getGroupTreeName());
