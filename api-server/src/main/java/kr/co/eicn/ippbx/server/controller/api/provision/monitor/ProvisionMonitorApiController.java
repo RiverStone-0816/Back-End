@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.provision.monitor;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import kr.co.eicn.ippbx.model.dto.provision.ProvisionStatUserResponse;
@@ -28,6 +30,7 @@ public class ProvisionMonitorApiController {
    * 상담원 상태 정보를 조회
    */
   @GetMapping("")
+  @Operation(summary = "상담사 실시간 상태 조회", description = "상담관리 시스템(IPCC)의 상담사 현재 상태를 조회합니다.", security = {@SecurityRequirement(name = "bearer-key")})
   public ResponseEntity<List<ProvisionStatUserResponse>> getAgentCallStatus() {
     var result = provisionMonitorService.getAgentCallStatus();
     return ResponseEntity.ok(result);
