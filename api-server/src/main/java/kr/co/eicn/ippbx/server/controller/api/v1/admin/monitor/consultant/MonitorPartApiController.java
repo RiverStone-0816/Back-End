@@ -16,7 +16,6 @@ import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
-import kr.co.eicn.ippbx.model.search.RouteApplicationSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
