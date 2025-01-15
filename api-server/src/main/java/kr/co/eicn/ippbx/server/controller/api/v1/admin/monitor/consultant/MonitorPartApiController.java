@@ -309,7 +309,7 @@ public class MonitorPartApiController extends ApiBaseController {
                 final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
                 final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
 
-                allPersonStatusInfo.stream().filter(statusTime -> statusTime.getPhoneName().equals(person.getId()) && person.getPaused().equals(statusTime.getNextStatus()))
+                allPersonStatusInfo.stream().filter(statusTime -> statusTime.getPhonename().equals(person.getId()) && person.getPaused().equals(statusTime.getNextStatus()))
                         .findFirst().ifPresent(statusTime -> row.setStatusTime(statusTime.getEndDate().getTime()));
 
                 row.setInboundSuccess(inboundStat != null ? inboundStat.getInSuccess() : 0);
