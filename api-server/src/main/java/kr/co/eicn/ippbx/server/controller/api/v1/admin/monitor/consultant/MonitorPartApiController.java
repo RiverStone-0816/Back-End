@@ -16,7 +16,6 @@ import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
-import kr.co.eicn.ippbx.model.search.RouteApplicationSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
@@ -310,7 +309,7 @@ public class MonitorPartApiController extends ApiBaseController {
                 final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
                 final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
 
-                allPersonStatusInfo.stream().filter(statusTime -> statusTime.getPhonename().equals(person.getId()) && person.getPaused().equals(statusTime.getNextStatus()))
+                allPersonStatusInfo.stream().filter(statusTime -> statusTime.getPhoneName().equals(person.getId()) && person.getPaused().equals(statusTime.getNextStatus()))
                         .findFirst().ifPresent(statusTime -> row.setStatusTime(statusTime.getEndDate().getTime()));
 
                 row.setInboundSuccess(inboundStat != null ? inboundStat.getInSuccess() : 0);
