@@ -13,7 +13,7 @@ public class ProvisionStatUserResponse {
   private String idName;
 
   @Schema(description = "상담원상태명")
-  private String statUser;
+  private Integer statUser;
 
   @Schema(description = "입입콜수")
   private Integer inboundTotal;
