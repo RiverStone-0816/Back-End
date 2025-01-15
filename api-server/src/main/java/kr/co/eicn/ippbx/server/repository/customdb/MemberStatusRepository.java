@@ -30,6 +30,7 @@ public class MemberStatusRepository extends CustomDBBaseRepository<CommonMemberS
 
     public List<PersonLastStatusInfoResponse> findAllMemberStatusTime() {
         Table<Record2<Timestamp, String>> TIME_TABLE = dsl.select(max(TABLE.END_DATE).as(TABLE.END_DATE), TABLE.PHONENAME)
+//                .from(TABLE).where(TABLE.END_DATE.gt(DSL.cast(dateSub(Date.valueOf(LocalDate.now().minusDays(1)), 30),Timestamp.class))).groupBy(TABLE.PHONENAME).asTable("B");
                 .from(TABLE).where(TABLE.END_DATE.gt(DSL.cast(dateSub(Date.valueOf(LocalDate.now()), 30),Timestamp.class))).groupBy(TABLE.PHONENAME).asTable("B");
 
         return dsl.select(
@@ -43,5 +44,26 @@ public class MemberStatusRepository extends CustomDBBaseRepository<CommonMemberS
                 .on(TABLE.END_DATE.eq(TIME_TABLE.field(TABLE.END_DATE)).and(TABLE.PHONENAME.eq(TIME_TABLE.field(TABLE.PHONENAME))))
                 .where(compareCompanyId())
                 .fetchInto(PersonLastStatusInfoResponse.class);
+    }
+
+    public List<PersonLastStatusInfoResponse> getFilterPersonStatusInfo() {
+        Table<Record2<Timestamp, String>> TIME_TABLE = dsl.select(max(TABLE.END_DATE).as(TABLE.END_DATE), TABLE.PHONENAME)
+            .from(TABLE)
+            .where(TABLE.END_DATE.gt(DSL.cast((Date.valueOf(LocalDate.now().minusDays(1))),Timestamp.class)))
+            .and(TABLE.NEXT_STATUS.ne("R"))
+            .groupBy(TABLE.PHONENAME).asTable("B");
+
+        return dsl.select(
+                TABLE.END_DATE,
+                TABLE.PHONEID,
+                TABLE.PHONENAME,
+                TABLE.NEXT_STATUS,
+                TABLE.IN_OUT
+            ).from(TABLE)
+            .join(TIME_TABLE)
+            .on(TABLE.END_DATE.eq(TIME_TABLE.field(TABLE.END_DATE))
+                .and(TABLE.PHONENAME.eq(TIME_TABLE.field(TABLE.PHONENAME))))
+            .where(compareCompanyId())
+            .fetchInto(PersonLastStatusInfoResponse.class);
     }
 }
