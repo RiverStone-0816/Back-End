@@ -22,7 +22,7 @@ public class ProvisionMonitorService {
   /**
    * 상담원 상태 정보를 조회 및 매핑
    */
-  public List<ProvisionStatUserResponse> getAgentCallStatus() {
+  public Map<String, ProvisionStatUserResponse> getAgentCallStatus() {
     // StatUser 데이터를 가져오기
     var statUserResponse = statUserApiController.getTodayAgentActivitySummary(new StatUserSearchRequest());
     var responseData = Objects.requireNonNull(statUserResponse.getBody()).getData();
@@ -30,22 +30,27 @@ public class ProvisionMonitorService {
     // 상담원 상태 데이터를 가져오기
     List<PersonLastStatusInfoResponse> filterPersonStatusInfo = memberStatusService.getAllPersonStatusInfo();
 
-    // 데이터를 매핑하여 반환
-    return responseData.stream().flatMap(stat ->
-        stat.getUserStatList().stream().map(userStat -> {
-          ProvisionStatUserResponse provisionResponse = new ProvisionStatUserResponse();
-          provisionResponse.setUserId(userStat.getUserId());
-          provisionResponse.setIdName(userStat.getIdName());
-          provisionResponse.setStatUser(getNextStatus(filterPersonStatusInfo, userStat.getUserId()));
-          provisionResponse.setInboundTotal(userStat.getInboundStat().getTotal());
-          provisionResponse.setInboundCancel(userStat.getInboundStat().getCancel());
-          provisionResponse.setTotalCount(userStat.getTotalCnt());
-          Map<Integer, Long> statusCountMap = userStat.getMemberStatusStat().getStatusCountMap();
-          provisionResponse.setPostProcess(Math.toIntExact(statusCountMap.getOrDefault(2, 0L)));
-          provisionResponse.setRest(Math.toIntExact(statusCountMap.getOrDefault(3, 0L)));
-          return provisionResponse;
-        })
-    ).collect(Collectors.toList());
+    // 데이터를 매핑하여 Map으로 반환
+    return responseData.stream()
+        .flatMap(stat -> stat.getUserStatList().stream())
+        .collect(Collectors.toMap(
+            // Map의 키를 userId로 설정
+            userStat -> userStat.getUserId(),
+            // Map의 값을 ProvisionStatUserResponse로 설정
+            userStat -> {
+              ProvisionStatUserResponse provisionResponse = new ProvisionStatUserResponse();
+              provisionResponse.setUserId(userStat.getUserId());
+              provisionResponse.setIdName(userStat.getIdName());
+              provisionResponse.setStatUser(getNextStatus(filterPersonStatusInfo, userStat.getUserId()));
+              provisionResponse.setInboundTotal(userStat.getInboundStat().getTotal());
+              provisionResponse.setInboundCancel(userStat.getInboundStat().getCancel());
+              provisionResponse.setTotalCount(userStat.getTotalCnt());
+              Map<Integer, Long> statusCountMap = userStat.getMemberStatusStat().getStatusCountMap();
+              provisionResponse.setPostProcess(Math.toIntExact(statusCountMap.getOrDefault(2, 0L)));
+              provisionResponse.setRest(Math.toIntExact(statusCountMap.getOrDefault(3, 0L)));
+              return provisionResponse;
+            }
+        ));
   }
 
   /**

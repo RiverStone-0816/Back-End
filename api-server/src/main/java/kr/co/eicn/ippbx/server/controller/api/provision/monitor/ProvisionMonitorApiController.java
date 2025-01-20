@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.provision.monitor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
+import java.util.Map;
 import kr.co.eicn.ippbx.model.dto.provision.ProvisionStatUserResponse;
 import kr.co.eicn.ippbx.server.service.provision.monitor.ProvisionMonitorService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ProvisionMonitorApiController {
    */
   @GetMapping("")
   @Operation(summary = "상담사 실시간 상태 조회", description = "상담관리 시스템(IPCC)의 상담사 현재 상태를 조회합니다.", security = {@SecurityRequirement(name = "bearer-key")})
-  public ResponseEntity<List<ProvisionStatUserResponse>> getAgentCallStatus() {
+  public ResponseEntity<Map<String, ProvisionStatUserResponse>> getAgentCallStatus() {
     var result = provisionMonitorService.getAgentCallStatus();
     return ResponseEntity.ok(result);
   }
