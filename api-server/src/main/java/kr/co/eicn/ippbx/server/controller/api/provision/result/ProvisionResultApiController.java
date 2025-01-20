@@ -10,9 +10,6 @@ import javax.validation.Valid;
 import kr.co.eicn.ippbx.model.form.provision.ProvisionResultCustomInfoFormRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.customdb.ProvisionResultRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
-import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
-import kr.co.eicn.ippbx.server.service.ResultCustomInfoService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "api/provision/result", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProvisionResultApiController extends ApiBaseController {
 
-  private final MaindbGroupRepository maindbGroupRepository;
-  private final MaindbCustomInfoService maindbCustomInfoService;
-  private final ResultCustomInfoService resultCustomInfoService;
   private final ProvisionResultRepository provisionResultRepository;
 
   @Operation(summary = "Q&A (출장) 상담 등록", description = "온라인 거래소에서 등록한 Q&A(출장) 상담내용을 상담관리 시스템(IPCC)에 전송합니다.", security = {
