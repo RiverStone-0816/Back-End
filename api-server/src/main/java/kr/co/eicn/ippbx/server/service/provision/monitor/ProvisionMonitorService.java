@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.service.provision.monitor;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,7 +23,7 @@ public class ProvisionMonitorService {
   /**
    * 상담원 상태 정보를 조회 및 매핑
    */
-  public Map<String, ProvisionStatUserResponse> getAgentCallStatus() {
+  public Map<String, List<ProvisionStatUserResponse>> getAgentCallStatus() {
     // StatUser 데이터를 가져오기
     var statUserResponse = statUserApiController.getTodayAgentActivitySummary(new StatUserSearchRequest());
     var responseData = Objects.requireNonNull(statUserResponse.getBody()).getData();
@@ -30,27 +31,28 @@ public class ProvisionMonitorService {
     // 상담원 상태 데이터를 가져오기
     List<PersonLastStatusInfoResponse> filterPersonStatusInfo = memberStatusService.getAllPersonStatusInfo();
 
-    // 데이터를 매핑하여 Map으로 반환
-    return responseData.stream()
-        .flatMap(stat -> stat.getUserStatList().stream())
-        .collect(Collectors.toMap(
-            // Map의 키를 userId로 설정
-            userStat -> userStat.getUserId(),
-            // Map의 값을 ProvisionStatUserResponse로 설정
-            userStat -> {
-              ProvisionStatUserResponse provisionResponse = new ProvisionStatUserResponse();
-              provisionResponse.setUserId(userStat.getUserId());
-              provisionResponse.setIdName(userStat.getIdName());
-              provisionResponse.setStatUser(getNextStatus(filterPersonStatusInfo, userStat.getUserId()));
-              provisionResponse.setInboundTotal(userStat.getInboundStat().getTotal());
-              provisionResponse.setInboundCancel(userStat.getInboundStat().getCancel());
-              provisionResponse.setTotalCount(userStat.getTotalCnt());
-              Map<Integer, Long> statusCountMap = userStat.getMemberStatusStat().getStatusCountMap();
-              provisionResponse.setPostProcess(Math.toIntExact(statusCountMap.getOrDefault(2, 0L)));
-              provisionResponse.setRest(Math.toIntExact(statusCountMap.getOrDefault(3, 0L)));
-              return provisionResponse;
-            }
-        ));
+    // 데이터를 List로 매핑
+    List<ProvisionStatUserResponse> provisionResponseList = responseData.stream()
+        .flatMap(stat -> stat.getUserStatList().stream().map(userStat -> {
+          ProvisionStatUserResponse provisionResponse = new ProvisionStatUserResponse();
+          provisionResponse.setUserId(userStat.getUserId());
+          provisionResponse.setIdName(userStat.getIdName());
+          provisionResponse.setStatUser(getNextStatus(filterPersonStatusInfo, userStat.getUserId()));
+          provisionResponse.setInboundTotal(userStat.getInboundStat().getTotal());
+          provisionResponse.setInboundCancel(userStat.getInboundStat().getCancel());
+          provisionResponse.setTotalCount(userStat.getTotalCnt());
+          Map<Integer, Long> statusCountMap = userStat.getMemberStatusStat().getStatusCountMap();
+          provisionResponse.setPostProcess(Math.toIntExact(statusCountMap.getOrDefault(2, 0L)));
+          provisionResponse.setRest(Math.toIntExact(statusCountMap.getOrDefault(3, 0L)));
+          return provisionResponse;
+        }))
+        .collect(Collectors.toList());
+
+    // List를 Map에 추가 (키는 고정값 "list"로 설정)
+    Map<String, List<ProvisionStatUserResponse>> resultMap = new HashMap<>();
+    resultMap.put("list", provisionResponseList);
+
+    return resultMap;
   }
 
   /**
