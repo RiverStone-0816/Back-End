@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterf
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbResultApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
+import kr.co.eicn.ippbx.front.service.api.atcenter.AtCenterService;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.voc.VocGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;
@@ -45,6 +46,7 @@ import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
 import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
 import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
+import kr.co.eicn.ippbx.model.search.atcenter.AtCenterSearchRequest;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
@@ -97,6 +99,8 @@ public class CounselCallController extends BaseController {
     private final ConsultantStatApiInterface consultantStatApiInterface;
     private final UserApiInterface userApiInterface;
 
+    private final AtCenterService atCenterService;
+
     @Value("${assist.stt.request.url}")
     private String sttRequestUrl;
 
@@ -105,6 +109,16 @@ public class CounselCallController extends BaseController {
         model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(searchApiInterface.services(new SearchServiceRequest()).stream().filter(e -> !StringUtils.isEmpty(e.getSvcCid())).collect(Collectors.toMap(ServiceList::getSvcCid, ServiceList::getSvcName))));
         model.addAttribute("sttRequestUrl", sttRequestUrl);
         return "counsel/call/panel";
+    }
+
+    @GetMapping("chat-panel")
+    public String chatPanel() {
+        return "counsel/call/chat/chat-panel";
+    }
+
+    @GetMapping("chat")
+    public String chat() {
+        return "counsel/call/chat/chat";
     }
 
     @SneakyThrows
@@ -347,6 +361,22 @@ public class CounselCallController extends BaseController {
         }
 
         return "counsel/call/counseling-input";
+    }
+
+    @GetMapping("faq")
+    public String faq() {
+        return "counsel/call/faq";
+    }
+
+    @GetMapping("counseling-status")
+    public String counselingStatus(@ModelAttribute("form") ResultCustomInfoFormRequest form) {
+        return "counsel/call/counseling-status";
+    }
+
+    @GetMapping("modal-user-list")
+    public String modalUserList(Model model, @ModelAttribute("search") AtCenterSearchRequest searchRequest) {
+        model.addAttribute("list", atCenterService.getMembers(searchRequest));
+        return "counsel/call/modal-user-list";
     }
 
     @GetMapping("modal-counseling-reservation")
