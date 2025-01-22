@@ -1,33 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.CommonRoutines;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonEicnCdr;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbCustomInfo;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonResultCustomInfo;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ResultCustomInfoRecord;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
-import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
-import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
-import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
-import kr.co.eicn.ippbx.model.search.ResultCustomInfoSearchRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.*;
-import kr.co.eicn.ippbx.server.service.EicnCdrService;
-import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
-import kr.co.eicn.ippbx.server.service.MaindbMultichannelInfoService;
-import kr.co.eicn.ippbx.util.page.Pagination;
-import lombok.Getter;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jooq.Record;
-import org.jooq.*;
-import org.jooq.impl.DSL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.MaindbGroup.MAINDB_GROUP;
+import static org.apache.commons.lang3.StringUtils.replace;
+import static org.jooq.impl.DSL.field;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -35,384 +10,482 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
-
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.MaindbGroup.MAINDB_GROUP;
-import static org.apache.commons.lang3.StringUtils.replace;
+import kr.co.eicn.ippbx.meta.jooq.customdb.CommonRoutines;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonResultCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ResultCustomInfoRecord;
+import kr.co.eicn.ippbx.model.dto.customdb.ResultCustomInfoFromResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.ResultCustomInfoSearchRequest;
+import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.CurrentVocCustomListRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.CurrentWtalkRoomRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.TodoListRepository;
+import kr.co.eicn.ippbx.server.service.EicnCdrService;
+import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
+import kr.co.eicn.ippbx.server.service.MaindbMultichannelInfoService;
+import kr.co.eicn.ippbx.util.page.Pagination;
+import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.InsertSetMoreStep;
+import org.jooq.Record;
+import org.jooq.RecordMapper;
+import org.jooq.SelectConditionStep;
+import org.jooq.SelectJoinStep;
+import org.jooq.Table;
+import org.jooq.UpdateSetMoreStep;
+import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 @Getter
-public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonResultCustomInfo, ResultCustomInfoEntity, Integer> {
-    protected final Logger logger = LoggerFactory.getLogger(ResultCustomInfoRepository.class);
+public class ResultCustomInfoRepository extends
+    CustomDBBaseRepository<CommonResultCustomInfo, ResultCustomInfoEntity, Integer> {
 
-    private final CommonResultCustomInfo TABLE;
-    private final CommonMaindbCustomInfo MAINDB_CUSTOM_INFO_TABLE;
-    private final kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo MAINDB_MULTICHANNEL_INFO_TABLE;
+  protected final Logger logger = LoggerFactory.getLogger(ResultCustomInfoRepository.class);
 
-    @Autowired
-    private MaindbMultichannelInfoService maindbMultichannelInfoService;
-    @Autowired
-    private CommonFieldRepository fieldRepository;
-    @Autowired
-    private MaindbGroupRepository maindbGroupRepository;
-    @Autowired
-    private MaindbCustomInfoService maindbCustomInfoService;
-    @Autowired
-    private  PersonListRepository personListRepository;
-    @Autowired
-    private TodoListRepository todoListRepository;
-    @Autowired
-    private CurrentWtalkRoomRepository currentWtalkRoomRepository;
-    @Autowired
-    private CurrentVocCustomListRepository vocCustomListRepository;
-    @Autowired
-    private EicnCdrService eicnCdrService;
-    @Value("${file.path.custom}")
-    private String savePath;
+  private final CommonResultCustomInfo TABLE;
+  private final CommonMaindbCustomInfo MAINDB_CUSTOM_INFO_TABLE;
+  private final kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo MAINDB_MULTICHANNEL_INFO_TABLE;
 
-    public ResultCustomInfoRepository(String companyId) {
-        super(new CommonResultCustomInfo(companyId), new CommonResultCustomInfo(companyId).SEQ, ResultCustomInfoEntity.class);
-        TABLE = new CommonResultCustomInfo(companyId);
-        MAINDB_CUSTOM_INFO_TABLE = new CommonMaindbCustomInfo(companyId);
-        MAINDB_MULTICHANNEL_INFO_TABLE = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
+  @Autowired
+  private MaindbMultichannelInfoService maindbMultichannelInfoService;
+  @Autowired
+  private CommonFieldRepository fieldRepository;
+  @Autowired
+  private MaindbGroupRepository maindbGroupRepository;
+  @Autowired
+  private MaindbCustomInfoService maindbCustomInfoService;
+  @Autowired
+  private PersonListRepository personListRepository;
+  @Autowired
+  private TodoListRepository todoListRepository;
+  @Autowired
+  private CurrentWtalkRoomRepository currentWtalkRoomRepository;
+  @Autowired
+  private CurrentVocCustomListRepository vocCustomListRepository;
+  @Autowired
+  private EicnCdrService eicnCdrService;
+  @Value("${file.path.custom}")
+  private String savePath;
 
-        addField(TABLE.SEQ, TABLE.COMPANY_ID, TABLE.RESULT_DATE, TABLE.UPDATE_DATE, TABLE.UNIQUEID, TABLE.HANGUP_CAUSE, TABLE.HANGUP_MSG,
-                TABLE.BILLSEC, TABLE.CLICK_KEY, TABLE.CUSTOM_NUMBER, TABLE.GROUP_ID, TABLE.USERID, TABLE.USERID_ORG, TABLE.USERID_TR,
-                TABLE.GROUP_KIND, TABLE.RS_STRING_1, TABLE.RS_STRING_2, TABLE.RS_STRING_3, TABLE.RS_CODE_1, TABLE.RS_CODE_2, TABLE.RS_CODE_3,
-                CommonRoutines.fnDecStringText(TABLE.RS_STRING_4, "eicn_atcenter").as(TABLE.RS_STRING_4),
-                CommonRoutines.fnDecStringText(TABLE.RS_STRING_5, "eicn_atcenter").as(TABLE.RS_STRING_5),
-                TABLE.RS_STRING_6
-        );
-        addField(MAINDB_GROUP.GROUP_TREE_NAME);
+  public ResultCustomInfoRepository(String companyId) {
+    super(new CommonResultCustomInfo(companyId), new CommonResultCustomInfo(companyId).SEQ,
+        ResultCustomInfoEntity.class);
+    TABLE = new CommonResultCustomInfo(companyId);
+    MAINDB_CUSTOM_INFO_TABLE = new CommonMaindbCustomInfo(companyId);
+    MAINDB_MULTICHANNEL_INFO_TABLE = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(
+        companyId);
 
-        addOrderingField(TABLE.RESULT_DATE.desc());
+    addField(TABLE.SEQ, TABLE.COMPANY_ID, TABLE.RESULT_DATE, TABLE.UPDATE_DATE, TABLE.UNIQUEID,
+        TABLE.HANGUP_CAUSE, TABLE.HANGUP_MSG, TABLE.BILLSEC, TABLE.CLICK_KEY, TABLE.CUSTOM_NUMBER,
+        TABLE.GROUP_ID, TABLE.USERID, TABLE.USERID_ORG, TABLE.USERID_TR, TABLE.GROUP_KIND,
+        TABLE.RS_STRING_1, TABLE.RS_STRING_2, TABLE.RS_STRING_3, TABLE.RS_CODE_1, TABLE.RS_CODE_2,
+        TABLE.RS_CODE_3,
+        CommonRoutines.fnDecStringText(TABLE.RS_STRING_4, "eicn_atcenter").as(TABLE.RS_STRING_4),
+        CommonRoutines.fnDecStringText(TABLE.RS_STRING_5, "eicn_atcenter").as(TABLE.RS_STRING_5),
+        TABLE.RS_STRING_6);
+    addField(MAINDB_GROUP.GROUP_TREE_NAME);
+
+    addOrderingField(TABLE.RESULT_DATE.desc());
+  }
+
+  @Override
+  protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
+
+    return query.leftJoin(MAINDB_CUSTOM_INFO_TABLE)
+        .on(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID)).join(MAINDB_GROUP)
+        .on(MAINDB_GROUP.SEQ.eq(TABLE.GROUP_ID)).where();
+  }
+
+  @Override
+  protected RecordMapper<Record, ResultCustomInfoEntity> getMapper() {
+    return record -> {
+      final ResultCustomInfoEntity entity = record.into(TABLE).into(ResultCustomInfoEntity.class);
+      entity.setCustomInfo(record.into(MAINDB_CUSTOM_INFO_TABLE)
+          .into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo.class));
+
+      return entity;
+    };
+  }
+
+  @Override
+  protected void postProcedure(List<ResultCustomInfoEntity> entities) {
+    if (entities.size() == 0) {
+      return;
     }
 
-    @Override
-    protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
+    final Map<String, List<MaindbMultichannelInfoEntity>> customIdToChannelInfoList = maindbMultichannelInfoService.getRepository()
+        .findAllByCustomIds(entities.stream().map(
+                kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getCustomId)
+            .distinct().collect(Collectors.toList())).stream()
+        .collect(Collectors.groupingBy(CommonMaindbMultichannelInfo::getMaindbCustomId));
+    entities.forEach(e -> e.setMultichannelList(customIdToChannelInfoList.get(e.getCustomId())));
 
-        return query
-                .leftJoin(MAINDB_CUSTOM_INFO_TABLE).on(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
-                .join(MAINDB_GROUP).on(MAINDB_GROUP.SEQ.eq(TABLE.GROUP_ID))
-                .where();
+    final Map<String, String> userMap = personListRepository.getIdAndNameMap();
+    for (ResultCustomInfoEntity entity : entities) {
+      if (userMap.containsKey(entity.getUserid())) {
+        entity.setUserName(userMap.get(entity.getUserid()));
+      } else {
+        entity.setUserName(entity.getUserid());
+      }
+
+      if (userMap.containsKey(entity.getUseridOrg())) {
+        entity.setUserOrgName(userMap.get(entity.getUseridOrg()));
+      } else {
+        entity.setUserOrgName(entity.getUseridOrg());
+      }
+
+      if (userMap.containsKey(entity.getUseridTr())) {
+        entity.setUserTrName(userMap.get(entity.getUseridTr()));
+      } else {
+        entity.setUserTrName(entity.getUseridTr());
+      }
+    }
+  }
+
+  public Pagination<ResultCustomInfoEntity> pagination(ResultCustomInfoSearchRequest search) {
+    return super.pagination(search, conditions(search));
+  }
+
+  public List<ResultCustomInfoEntity> getOne(ResultCustomInfoSearchRequest search) {
+    return dsl.select().from(TABLE)
+        .where(TABLE.CLICK_KEY.eq(search.getClickKey() == null ? "" : search.getClickKey()))
+        .fetchInto(ResultCustomInfoEntity.class);
+  }
+
+  public List<ResultCustomInfoEntity> getTodo(String userIdTr, String phone) {
+    return dsl.select().from(TABLE)
+        .where(TABLE.USERID_TR.eq(userIdTr).and(TABLE.CUSTOM_NUMBER.eq(phone)))
+        .orderBy(TABLE.RESULT_DATE.desc()).limit(1).fetchInto(ResultCustomInfoEntity.class);
+  }
+
+  private List<Condition> conditions(ResultCustomInfoSearchRequest search) {
+    final List<Condition> conditions = new ArrayList<>();
+
+    if (g.getUser().getDataSearchAuthorityType() != null) {
+      switch (g.getUser().getDataSearchAuthorityType()) {
+        case NONE:
+          conditions.add(DSL.falseCondition());
+          break;
+        case MINE:
+          conditions.add(TABLE.USERID.eq(g.getUser().getId()));
+          break;
+        case GROUP:
+          conditions.add(MAINDB_GROUP.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+          break;
+      }
     }
 
-    @Override
-    protected RecordMapper<Record, ResultCustomInfoEntity> getMapper() {
-        return record -> {
-            final ResultCustomInfoEntity entity = record.into(TABLE).into(ResultCustomInfoEntity.class);
-            entity.setCustomInfo(record.into(MAINDB_CUSTOM_INFO_TABLE).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo.class));
+    conditions.add(TABLE.GROUP_KIND.ne("PHONE_TMP"));
 
-            return entity;
-        };
+    if (StringUtils.isNotBlank(search.getName())) {
+      conditions.add(TABLE.RS_STRING_4.eq(getEncString(search.getName())));
+    }
+    if (StringUtils.isNotBlank(search.getPhone())) {
+      conditions.add(TABLE.RS_STRING_5.eq(getEncString(search.getPhone())));
+    }
+    if (StringUtils.isNotBlank(search.getCompanyNo())) {
+      conditions.add(TABLE.RS_STRING_6.eq(getEncString(search.getCompanyNo())));
     }
 
-    @Override
-    protected void postProcedure(List<ResultCustomInfoEntity> entities) {
-        if (entities.size() == 0) return;
+    if (search.getSeq() != null) {
+      conditions.add(TABLE.GROUP_ID.eq(search.getSeq()));
+    }
+    if (search.getCreatedStartDate() != null) {
+      conditions.add(
+          TABLE.RESULT_DATE.ge(DSL.timestamp(search.getCreatedStartDate() + " 00:00:00")));
+    }
+    if (search.getCreatedEndDate() != null) {
+      conditions.add(TABLE.RESULT_DATE.le(DSL.timestamp(search.getCreatedEndDate() + " 23:59:59")));
+    }
 
-        final Map<String, List<MaindbMultichannelInfoEntity>> customIdToChannelInfoList = maindbMultichannelInfoService.getRepository().findAllByCustomIds(
-                entities.stream()
-                        .map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getCustomId)
-                        .distinct()
-                        .collect(Collectors.toList())
-        ).stream().collect(Collectors.groupingBy(CommonMaindbMultichannelInfo::getMaindbCustomId));
-        entities.forEach(e -> e.setMultichannelList(customIdToChannelInfoList.get(e.getCustomId())));
+    if (StringUtils.isNotEmpty(search.getUserId())) {
+      conditions.add(TABLE.USERID.eq(search.getUserId()));
+    }
 
-        final Map<String, String> userMap = personListRepository.getIdAndNameMap();
-        for (ResultCustomInfoEntity entity : entities) {
-            if (userMap.containsKey(entity.getUserid()))
-                entity.setUserName(userMap.get(entity.getUserid()));
-            else
-                entity.setUserName(entity.getUserid());
+    if (StringUtils.isNotEmpty(search.getChannelData()) && search.getChannelType() != null) {
+      if (search.getChannelType().equals("PHONE")) {
+        conditions.add(TABLE.CUSTOM_ID.in(getMultiChannelInfo(search.getChannelType(),
+            search.getChannelData().replace("-", ""))));
+      } else {
+        conditions.add(TABLE.CUSTOM_ID.in(
+            getMultiChannelInfo(search.getChannelType(), search.getChannelData())));
+      }
+    }
+    if (StringUtils.isNotEmpty(search.getClickKey())) {
+      conditions.add(TABLE.CLICK_KEY.eq(search.getClickKey()));
+    }
 
-            if (userMap.containsKey(entity.getUseridOrg()))
-                entity.setUserOrgName(userMap.get(entity.getUseridOrg()));
-            else
-                entity.setUserOrgName(entity.getUseridOrg());
+    search.getDbTypeFields().forEach((k, v) -> {
+      final Table<?> table = k.startsWith("MAINDB") ? MAINDB_CUSTOM_INFO_TABLE : TABLE;
+      final Field<?> field = table.field(k);
 
-            if (userMap.containsKey(entity.getUseridTr()))
-                entity.setUserTrName(userMap.get(entity.getUseridTr()));
-            else
-                entity.setUserTrName(entity.getUseridTr());
+      if (k.equals("CUSTOM_ID")) {
+        conditions.add(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(v.getKeyword()));
+      } else if (field == null) {
+        logger.warn("invalid type: " + k);
+      } else if (field.getType().equals(Date.class) || field.getType().equals(Timestamp.class)) {
+        if (v.getStartDate() != null) {
+          conditions.add(table.field(k, Date.class).greaterOrEqual(v.getStartDate()));
         }
+        if (v.getEndDate() != null) {
+          conditions.add(table.field(k, Date.class).lessOrEqual(v.getEndDate()));
+        }
+      } else if (k.contains("_INT_") || k.contains("_CONCODE_") || k.contains(
+          "_CSCODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+        if (StringUtils.isNotEmpty(v.getKeyword())) {
+          conditions.add(table.field(k, String.class).eq(v.getKeyword()));
+        }
+      } else if (k.contains("_STRING_") || k.contains(
+          "_NUMBER_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+        if (StringUtils.isNotEmpty(v.getKeyword()) && (k.equals("MAINDB_STRING_16") || k.equals(
+            "MAINDB_STRING_17") || k.equals("MAINDB_STRING_18") || k.equals("MAINDB_STRING_19")
+            || k.equals("MAINDB_STRING_20"))) {
+          conditions.add(table.field(k, String.class).eq(getEncString(v.getKeyword())));
+        } else if (StringUtils.isNotEmpty(v.getKeyword())) {
+          conditions.add(table.field(k, String.class).like("%" + v.getKeyword() + "%"));
+        }
+      } else if (k.contains("_CODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+        if (StringUtils.isNotEmpty(v.getCode())) {
+          conditions.add(table.field(k, String.class).eq(v.getCode()));
+        }
+      } else if (k.contains("_MULTICODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+        if (StringUtils.isNotEmpty(v.getCode())) {
+          conditions.add(table.field(k, String.class).likeRegex("^" + v.getCode() + ",")
+              .or(table.field(k, String.class).likeRegex("^" + v.getCode() + "$"))
+              .or(table.field(k, String.class).likeRegex("," + v.getCode() + "$"))
+              .or(table.field(k, String.class).likeRegex("," + v.getCode() + ",")));
+        }
+      } else {
+        if (StringUtils.isNotEmpty(v.getKeyword())) {
+          conditions.add(table.field(k, String.class).eq(v.getKeyword()));
+        }
+      }
+    });
+    return conditions;
+  }
+
+  public void update(ResultCustomInfoFormRequest form,
+      ResultCustomInfoEntity resultCustomInfoEntity)
+      throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+    final UpdateSetMoreStep<ResultCustomInfoRecord> query = dsl.update(TABLE)
+        //.set(TABLE.MAINDB_SYS_GROUP_ID, form.getGroupSeq())
+        //.set(TABLE.MAINDB_SYS_UPLOAD_DATE, DSL.now())
+        .set(TABLE.RESULT_TYPE, form.getResultType()).set(TABLE.USERID, g.getUser().getId())
+        .set(TABLE.GROUP_KIND,
+            form.getGroupKind().equals("PHONE_TMP") ? "PHONE" : form.getGroupKind())
+        .set(TABLE.UPDATE_DATE, DSL.now()).set(TABLE.CUSTOM_ID, form.getCustomId())
+        .set(TABLE.GROUP_ID, form.getGroupId()).set(TABLE.GROUP_TYPE, form.getMaindbType())
+        .set(TABLE.CLICK_KEY,
+            StringUtils.isEmpty(resultCustomInfoEntity.getClickKey()) ? "nonClickKey"
+                : resultCustomInfoEntity.getClickKey()).set(TABLE.CALL_TYPE,
+            StringUtils.isEmpty(resultCustomInfoEntity.getCallType()) ? form.getCallType()
+                : resultCustomInfoEntity.getCallType());
+
+    if (StringUtils.isNotEmpty(form.getUserIdTr())) {
+      query.set(TABLE.USERID_TR, form.getUserIdTr());
     }
 
-    public Pagination<ResultCustomInfoEntity> pagination(ResultCustomInfoSearchRequest search) {
-        return super.pagination(search, conditions(search));
+    if (StringUtils.isNotEmpty(form.getCustomNumber())) {
+      query.set(TABLE.CUSTOM_NUMBER, form.getCustomNumber());
     }
 
-    public List<ResultCustomInfoEntity> getOne(ResultCustomInfoSearchRequest search) {
-        return dsl.select()
-                .from(TABLE)
-                .where(TABLE.CLICK_KEY.eq(search.getClickKey() == null ? "" : search.getClickKey()))
-                .fetchInto(ResultCustomInfoEntity.class);
+    final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(
+        Date.class, Timestamp.class, Integer.class, String.class);
+    for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
+      if (!insertableFieldTypes.contains(field.getType())) {
+        continue;
+      }
+
+      final String fieldName = field.getName();
+      final Field<?> tableField = TABLE.field("RS_" + fieldName.toUpperCase());
+      if (tableField == null) {
+        continue;
+      }
+
+      final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+      final Object invoked = form.getClass().getMethod("get" + capName).invoke(form);
+
+      if (tableField.getType().equals(Date.class)) {
+        query.set((Field<Date>) tableField, (Date) invoked);
+      } else if (tableField.getType().equals(Timestamp.class)) {
+        query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
+      } else if (tableField.getType().equals(Integer.class)) {
+        query.set((Field<Integer>) tableField, (Integer) invoked);
+      } else { // String.class
+        if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
+          final ResultCustomInfoEntity entity = findOne(
+              TABLE.SEQ.eq(resultCustomInfoEntity.getSeq()));
+          final String oldFileName = fieldName.contains("1") ? entity.getRsImg_1()
+              : (fieldName.contains("2") ? entity.getRsImg_2() : entity.getRsImg_3());
+          final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+          maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
+          query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
+        } else {
+          if (fieldName.contains("string_")
+              && Integer.parseInt(fieldName.replace("string_", "")) == 4
+              || fieldName.contains("string_")
+              && Integer.parseInt(fieldName.replace("string_", "")) == 5) {
+            query.set((Field<String>) tableField,
+                CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
+          } else {
+            query.set((Field<String>) tableField, (String) invoked);
+          }
+        }
+      }
+    }
+    query.where(TABLE.SEQ.eq(resultCustomInfoEntity.getSeq())).execute();
+
+    form.setSeq(resultCustomInfoEntity.getSeq());
+    if (StringUtils.isEmpty(form.getCustomNumber())) {
+      final List<MaindbMultichannelInfoEntity> multichannelInfoList = maindbMultichannelInfoService.getRepository()
+          .findAll(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID.eq(form.getCustomId())
+              .and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq("PHONE")));
+
+      if (CollectionUtils.isNotEmpty(multichannelInfoList)) {
+        form.setCustomNumber(multichannelInfoList.get(0).getChannelData());
+      }
     }
 
-    public List<ResultCustomInfoEntity> getTodo(String userIdTr, String phone) {
-        return dsl.select()
-                .from(TABLE)
-                .where(TABLE.USERID_TR.eq(userIdTr).and(TABLE.CUSTOM_NUMBER.eq(phone)))
-                .orderBy(TABLE.RESULT_DATE.desc())
-                .limit(1)
-                .fetchInto(ResultCustomInfoEntity.class);
+    if (form.getGroupKind() != null && form.getGroupKind().equals("TALK")) {
+      currentWtalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
     }
 
-    private List<Condition> conditions(ResultCustomInfoSearchRequest search) {
-        final List<Condition> conditions = new ArrayList<>();
+    if (StringUtils.isNotEmpty(form.getUserIdTr())) {
+      todoListRepository.insertTransferData(form.getSeq(), form.getUserIdTr(),
+          form.getCustomNumber()/*StringUtils.isNotEmpty(form.getCustomId()) ? form.getCustomId() : form.getCustomNumber()*/);
+    }
+  }
 
-        if (g.getUser().getDataSearchAuthorityType() != null) {
-            switch (g.getUser().getDataSearchAuthorityType()) {
-                case NONE:
-                    conditions.add(DSL.falseCondition());
-                    break;
-                case MINE:
-                    conditions.add(TABLE.USERID.eq(g.getUser().getId()));
-                    break;
-                case GROUP:
-                    conditions.add(MAINDB_GROUP.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
-                    break;
-            }
+  public Integer insert(ResultCustomInfoFormRequest form)
+      throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+    final InsertSetMoreStep<ResultCustomInfoRecord> query = dsl.insertInto(TABLE)
+        .set(TABLE.RESULT_TYPE, form.getResultType()).set(TABLE.CALL_TYPE, form.getCallType())
+        .set(TABLE.UNIQUEID, form.getUniqueId() == null ? "" : form.getUniqueId())
+        .set(TABLE.CUSTOM_NUMBER, form.getCustomNumber() == null ? "" : form.getCustomNumber())
+        .set(TABLE.CLICK_KEY,
+            StringUtils.isEmpty(form.getClickKey()) ? "nonClickKey" : form.getClickKey())
+        .set(TABLE.FROM_ORG, form.getFromOrg()).set(TABLE.GROUP_KIND, form.getGroupKind())
+        .set(TABLE.GROUP_ID, form.getGroupId()).set(TABLE.CUSTOM_ID, form.getCustomId())
+        .set(TABLE.GROUP_TYPE, form.getMaindbType())
+        .set(TABLE.USERID, g.getUser().getId()) // todo:: 접수자 회원번호 저장 필요?!?!?!?
+        .set(TABLE.USERID_ORG, g.getUser().getId()).set(TABLE.USERID_TR, form.getUserIdTr())
+        .set(TABLE.COMPANY_ID, getCompanyId()).set(TABLE.HANGUP_CAUSE, form.getHangupCause())
+        .set(TABLE.HANGUP_MSG, form.getHangupMsg()).set(TABLE.BILLSEC, form.getBillSec())
+        .set(TABLE.RESULT_DATE, DSL.now()).set(TABLE.UPDATE_DATE, DSL.now());
+
+    final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(
+        Date.class, Timestamp.class, Integer.class, String.class);
+    for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
+      if (!insertableFieldTypes.contains(field.getType())) {
+        continue;
+      }
+
+      final String fieldName = field.getName();
+      final Field<?> tableField = TABLE.field("RS_" + fieldName.toUpperCase());
+      if (tableField == null) {
+        continue;
+      }
+
+      final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+      final Object invoked = form.getClass().getMethod("get" + capName).invoke(form);
+
+      if (tableField.getType().equals(Date.class)) {
+        query.set((Field<Date>) tableField, (Date) invoked);
+      } else if (tableField.getType().equals(Timestamp.class)) {
+        query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
+      } else if (tableField.getType().equals(Integer.class)) {
+        query.set((Field<Integer>) tableField, (Integer) invoked);
+      } else { // String.class
+        if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
+          final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+          maindbCustomInfoService.uploadImgWithFileStore((String) invoked, null);
+          query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
+        } else {
+          if (fieldName.contains("string_")
+              && Integer.parseInt(fieldName.replace("string_", "")) == 4
+              || fieldName.contains("string_")
+              && Integer.parseInt(fieldName.replace("string_", "")) == 5) {
+            query.set((Field<String>) tableField,
+                CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
+          } else {
+            query.set((Field<String>) tableField, (String) invoked);
+          }
         }
-
-        conditions.add(TABLE.GROUP_KIND.ne("PHONE_TMP"));
-
-        if (StringUtils.isNotBlank(search.getName()))
-            conditions.add(TABLE.RS_STRING_4.eq(getEncString(search.getName())));
-        if (StringUtils.isNotBlank(search.getPhone()))
-            conditions.add(TABLE.RS_STRING_5.eq(getEncString(search.getPhone())));
-        if (StringUtils.isNotBlank(search.getCompanyNo()))
-            conditions.add(TABLE.RS_STRING_6.eq(getEncString(search.getCompanyNo())));
-
-        if (search.getSeq() != null)
-            conditions.add(TABLE.GROUP_ID.eq(search.getSeq()));
-        if (search.getCreatedStartDate() != null)
-            conditions.add(TABLE.RESULT_DATE.ge(DSL.timestamp(search.getCreatedStartDate() + " 00:00:00")));
-        if (search.getCreatedEndDate() != null)
-            conditions.add(TABLE.RESULT_DATE.le(DSL.timestamp(search.getCreatedEndDate() + " 23:59:59")));
-
-        if (StringUtils.isNotEmpty(search.getUserId()))
-            conditions.add(TABLE.USERID.eq(search.getUserId()));
-
-        if (StringUtils.isNotEmpty(search.getChannelData()) && search.getChannelType() != null) {
-            if (search.getChannelType().equals("PHONE")) {
-                conditions.add(TABLE.CUSTOM_ID.in(getMultiChannelInfo(search.getChannelType(), search.getChannelData().replace("-", ""))));
-            } else {
-                conditions.add(TABLE.CUSTOM_ID.in(getMultiChannelInfo(search.getChannelType(), search.getChannelData())));
-            }
-        }
-        if (StringUtils.isNotEmpty(search.getClickKey()))
-            conditions.add(TABLE.CLICK_KEY.eq(search.getClickKey()));
-
-        search.getDbTypeFields().forEach((k, v) -> {
-            final Table<?> table = k.startsWith("MAINDB") ? MAINDB_CUSTOM_INFO_TABLE : TABLE;
-            final Field<?> field = table.field(k);
-
-            if (k.equals("CUSTOM_ID")) {
-                conditions.add(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(v.getKeyword()));
-            } else if (field == null) {
-                logger.warn("invalid type: " + k);
-            } else if (field.getType().equals(Date.class) || field.getType().equals(Timestamp.class)) {
-                if (v.getStartDate() != null)
-                    conditions.add(table.field(k, Date.class).greaterOrEqual(v.getStartDate()));
-                if (v.getEndDate() != null)
-                    conditions.add(table.field(k, Date.class).lessOrEqual(v.getEndDate()));
-            } else if (k.contains("_INT_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
-                if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(table.field(k, String.class).eq(v.getKeyword()));
-            } else if (k.contains("_STRING_") || k.contains("_NUMBER_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
-                if (StringUtils.isNotEmpty(v.getKeyword()) && (k.equals("MAINDB_STRING_16") || k.equals("MAINDB_STRING_17") || k.equals("MAINDB_STRING_18") || k.equals("MAINDB_STRING_19") || k.equals("MAINDB_STRING_20"))) {
-                    conditions.add(table.field(k, String.class).eq(getEncString(v.getKeyword())));
-                } else if (StringUtils.isNotEmpty(v.getKeyword())) {
-                    conditions.add(table.field(k, String.class).like("%" + v.getKeyword() + "%"));
-                }
-            } else if (k.contains("_CODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
-                if (StringUtils.isNotEmpty(v.getCode()))
-                    conditions.add(table.field(k, String.class).eq(v.getCode()));
-            } else if (k.contains("_MULTICODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
-                if (StringUtils.isNotEmpty(v.getCode()))
-                    conditions.add(
-                            table.field(k, String.class).likeRegex("^" + v.getCode() + ",")
-                                    .or(table.field(k, String.class).likeRegex("^" + v.getCode() + "$"))
-                                    .or(table.field(k, String.class).likeRegex("," + v.getCode() + "$"))
-                                    .or(table.field(k, String.class).likeRegex("," + v.getCode() + ","))
-                    );
-            } else {
-                if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(table.field(k, String.class).eq(v.getKeyword()));
-            }
-        });
-        return conditions;
+      }
     }
 
-    public void update(ResultCustomInfoFormRequest form, ResultCustomInfoEntity resultCustomInfoEntity) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-
-        final UpdateSetMoreStep<ResultCustomInfoRecord> query = dsl.update(TABLE)
-                //.set(TABLE.MAINDB_SYS_GROUP_ID, form.getGroupSeq())
-                //.set(TABLE.MAINDB_SYS_UPLOAD_DATE, DSL.now())
-                .set(TABLE.RESULT_TYPE, form.getResultType())
-                .set(TABLE.USERID, g.getUser().getId())
-                .set(TABLE.GROUP_KIND, form.getGroupKind().equals("PHONE_TMP") ? "PHONE" : form.getGroupKind())
-                .set(TABLE.UPDATE_DATE, DSL.now())
-                .set(TABLE.CUSTOM_ID, form.getCustomId())
-                .set(TABLE.GROUP_ID, form.getGroupId())
-                .set(TABLE.GROUP_TYPE, form.getMaindbType())
-                .set(TABLE.CLICK_KEY, StringUtils.isEmpty(resultCustomInfoEntity.getClickKey()) ? "nonClickKey" : resultCustomInfoEntity.getClickKey())
-                .set(TABLE.CALL_TYPE, StringUtils.isEmpty(resultCustomInfoEntity.getCallType()) ? form.getCallType() : resultCustomInfoEntity.getCallType());
-
-        if (StringUtils.isNotEmpty(form.getUserIdTr()))
-            query.set(TABLE.USERID_TR, form.getUserIdTr());
-
-        if (StringUtils.isNotEmpty(form.getCustomNumber()))
-            query.set(TABLE.CUSTOM_NUMBER, form.getCustomNumber());
-
-        final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(Date.class, Timestamp.class, Integer.class, String.class);
-        for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
-            if (!insertableFieldTypes.contains(field.getType()))
-                continue;
-
-            final String fieldName = field.getName();
-            final Field<?> tableField = TABLE.field("RS_" + fieldName.toUpperCase());
-            if (tableField == null)
-                continue;
-
-            final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            final Object invoked = form.getClass().getMethod("get" + capName).invoke(form);
-
-            if (tableField.getType().equals(Date.class)) {
-                query.set((Field<Date>) tableField, (Date) invoked);
-            } else if (tableField.getType().equals(Timestamp.class)) {
-                query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
-            } else if (tableField.getType().equals(Integer.class)) {
-                query.set((Field<Integer>) tableField, (Integer) invoked);
-            } else { // String.class
-                if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
-                    final ResultCustomInfoEntity entity = findOne(TABLE.SEQ.eq(resultCustomInfoEntity.getSeq()));
-                    final String oldFileName = fieldName.contains("1") ? entity.getRsImg_1() : (fieldName.contains("2") ? entity.getRsImg_2() : entity.getRsImg_3());
-                    final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
-                    maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
-                    query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else {
-                    if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 4
-                            || fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 5)
-                    {
-                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
-                    } else {
-                        query.set((Field<String>) tableField, (String) invoked);
-                    }
-                }
-            }
-        }
-        query
-                .where(TABLE.SEQ.eq(resultCustomInfoEntity.getSeq()))
-                .execute();
-
-        form.setSeq(resultCustomInfoEntity.getSeq());
-        if (StringUtils.isEmpty(form.getCustomNumber())) {
-            final List<MaindbMultichannelInfoEntity> multichannelInfoList = maindbMultichannelInfoService.getRepository()
-                    .findAll(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq("PHONE")));
-
-            if (CollectionUtils.isNotEmpty(multichannelInfoList))
-                form.setCustomNumber(multichannelInfoList.get(0).getChannelData());
-        }
-
-        if (form.getGroupKind() != null && form.getGroupKind().equals("TALK")) {
-            currentWtalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
-        }
-
-        if (StringUtils.isNotEmpty(form.getUserIdTr())) {
-            todoListRepository.insertTransferData(form.getSeq(), form.getUserIdTr(), form.getCustomNumber()/*StringUtils.isNotEmpty(form.getCustomId()) ? form.getCustomId() : form.getCustomNumber()*/);
-        }
+    if (StringUtils.isNotEmpty(form.getUserIdTr())) {
+      todoListRepository.insertTransferData(form.getSeq(), form.getUserIdTr(),
+          form.getCustomNumber());
     }
 
-    public Integer insert(ResultCustomInfoFormRequest form) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-
-        final InsertSetMoreStep<ResultCustomInfoRecord> query = dsl.insertInto(TABLE)
-                .set(TABLE.RESULT_TYPE, form.getResultType())
-                .set(TABLE.CALL_TYPE, form.getCallType())
-                .set(TABLE.UNIQUEID, form.getUniqueId() == null ? "" : form.getUniqueId())
-                .set(TABLE.CUSTOM_NUMBER, form.getCustomNumber() == null ? "" : form.getCustomNumber())
-                .set(TABLE.CLICK_KEY, StringUtils.isEmpty(form.getClickKey()) ? "nonClickKey" : form.getClickKey())
-                .set(TABLE.FROM_ORG, form.getFromOrg())
-                .set(TABLE.GROUP_KIND, form.getGroupKind())
-                .set(TABLE.GROUP_ID, form.getGroupId())
-                .set(TABLE.CUSTOM_ID, form.getCustomId())
-                .set(TABLE.GROUP_TYPE, form.getMaindbType())
-                .set(TABLE.USERID, g.getUser().getId()) // todo:: 접수자 회원번호 저장 필요?!?!?!?
-                .set(TABLE.USERID_ORG, g.getUser().getId())
-                .set(TABLE.USERID_TR, form.getUserIdTr())
-                .set(TABLE.COMPANY_ID, getCompanyId())
-                .set(TABLE.HANGUP_CAUSE, form.getHangupCause())
-                .set(TABLE.HANGUP_MSG, form.getHangupMsg())
-                .set(TABLE.BILLSEC, form.getBillSec())
-                .set(TABLE.RESULT_DATE, DSL.now())
-                .set(TABLE.UPDATE_DATE, DSL.now());
-
-        final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(Date.class, Timestamp.class, Integer.class, String.class);
-        for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
-            if (!insertableFieldTypes.contains(field.getType()))
-                continue;
-
-            final String fieldName = field.getName();
-            final Field<?> tableField = TABLE.field("RS_" + fieldName.toUpperCase());
-            if (tableField == null)
-                continue;
-
-            final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            final Object invoked = form.getClass().getMethod("get" + capName).invoke(form);
-
-            if (tableField.getType().equals(Date.class)) {
-                query.set((Field<Date>) tableField, (Date) invoked);
-            } else if (tableField.getType().equals(Timestamp.class)) {
-                query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
-            } else if (tableField.getType().equals(Integer.class)) {
-                query.set((Field<Integer>) tableField, (Integer) invoked);
-            } else { // String.class
-                if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
-                    final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
-                    maindbCustomInfoService.uploadImgWithFileStore((String) invoked, null);
-                    query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else {
-                    if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 4
-                            || fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 5)
-                    {
-                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
-                    } else {
-                        query.set((Field<String>) tableField, (String) invoked);
-                    }
-                }
-            }
-        }
-
-        if (StringUtils.isNotEmpty(form.getUserIdTr())) {
-            todoListRepository.insertTransferData(form.getSeq(), form.getUserIdTr(), form.getCustomNumber());
-        }
-
-        if (form.getGroupKind().equals("TALK")) {
-            currentWtalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
-        }
-
-        if (Objects.nonNull(form.getVocGroup())) {
-            vocCustomListRepository.insertByVocGroup(form);
-        }
-
-        ResultCustomInfoRecord record = query.returning(TABLE.SEQ)
-                .fetchOne();
-
-        return record != null ? record.getValue(TABLE.SEQ) : 0;
+    if (form.getGroupKind().equals("TALK")) {
+      currentWtalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
     }
 
-    public Set<String> getMultiChannelInfo(String type,String data) {
-        return dsl.select(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID)
-                .from(MAINDB_MULTICHANNEL_INFO_TABLE)
-                .where(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq(type))
-                .and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_DATA.like("%"+data+"%"))
-                .fetchSet(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID);
+    if (Objects.nonNull(form.getVocGroup())) {
+      vocCustomListRepository.insertByVocGroup(form);
     }
 
-    public String getEncString(String text) {
-        return dsl.select(CommonRoutines.fnEncStringText(text, "eicn_" + getCompanyId()))
-                .fetchOneInto(String.class);
-    }
+    ResultCustomInfoRecord record = query.returning(TABLE.SEQ).fetchOne();
 
+    return record != null ? record.getValue(TABLE.SEQ) : 0;
+  }
+
+  public Set<String> getMultiChannelInfo(String type, String data) {
+    return dsl.select(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID)
+        .from(MAINDB_MULTICHANNEL_INFO_TABLE)
+        .where(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq(type))
+        .and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_DATA.like("%" + data + "%"))
+        .fetchSet(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID);
+  }
+
+  public String getEncString(String text) {
+    return dsl.select(CommonRoutines.fnEncStringText(text, "eicn_" + getCompanyId()))
+        .fetchOneInto(String.class);
+  }
+
+  public ResultCustomInfoFromResponse getCombinedResultCustomInfoBySeq(Integer seq) {
+    // 첫 번째 테이블에서 조회
+    ResultCustomInfoFromResponse resultCustomInfo = dsl.select(
+            field("seq").as("seq"),
+            field("result_date").as("result_date"),
+            field("update_date").as("update_date"),
+            field("custom_number").as("custom_number"),
+            field("userid").as("userid")).
+        from("result_custom_info_" + getCompanyId()).
+        where(field("seq").eq(seq)).
+        fetchOneInto(ResultCustomInfoFromResponse.class);
+
+    // 두 번째 테이블에서 id 추가 조회
+    String userid = resultCustomInfo.getUserid();
+    String id = dsl.select(
+            field("id_name").as("id_name")).
+        from("eicn.person_list").
+        where(field("id").eq(userid)).
+        fetchOneInto(String.class);
+    resultCustomInfo.setId_name(id);
+    return resultCustomInfo;
+  }
 }
