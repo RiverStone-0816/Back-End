@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.maindb;
 
+import kr.co.eicn.ippbx.model.dto.customdb.ResultCustomInfoFromResponse;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.record.history.RecordApiController;
 import kr.co.eicn.ippbx.exception.ValidationException;
@@ -236,5 +237,10 @@ public class ResultCustomInfoApiController extends ApiBaseController {
     @GetMapping(value = "file-resource", params = {"token"})
     public ResponseEntity<Resource> specificFileResource(@RequestParam String file) {
         return maindbCustomInfoApiController.specificFileResource(file);
+    }
+
+    @GetMapping("/getAgentConsultationHistory/{seq}")
+    public ResultCustomInfoFromResponse getAgentConsultationHistory(@PathVariable Integer seq) {
+        return service.getCombinedResultCustomInfoBySeq(seq);
     }
 }
