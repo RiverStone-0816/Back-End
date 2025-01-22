@@ -369,7 +369,9 @@ public class CounselCallController extends BaseController {
     }
 
     @GetMapping("counseling-status")
-    public String counselingStatus(@ModelAttribute("form") ResultCustomInfoFormRequest form) {
+    public String counselingStatus(@ModelAttribute("form") ResultCustomInfoFormRequest form)
+        throws IOException, ResultFailException {
+        maindbResultApiInterface.getAgentConsultationHistory(form.getSeq());
         return "counsel/call/counseling-status";
     }
 

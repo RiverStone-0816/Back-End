@@ -88,6 +88,10 @@ public class MaindbResultApiInterface extends ApiServerInterface {
         return getData(subUrl + seq, null, ResultCustomInfoEntity.class).getData();
     }
 
+    public ResultCustomInfoEntity getAgentConsultationHistory(Integer seq) throws IOException, ResultFailException {
+        return getData(subUrl + seq, null, ResultCustomInfoEntity.class).getData();
+    }
+
     public List<ResultCustomInfoEntity> getTodo(String userId, String phone) throws IOException, ResultFailException {
         return getList(subUrl + userId +"/"+ phone, null, ResultCustomInfoEntity.class).getData();
     }
