@@ -1,9 +1,0 @@
-rootProject.name = 'eicn-premium'
-
-include 'util'
-include 'jooq-model'
-include 'model-extension'
-include 'api-server'
-include 'front-controller'
-include 'lgu-front'
-include 'skt-front'
