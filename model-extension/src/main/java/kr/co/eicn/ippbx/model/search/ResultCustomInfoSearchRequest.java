@@ -33,4 +33,8 @@ public class ResultCustomInfoSearchRequest extends PageForm {
     private String clickKey;
 
     private Map<String, MaindbDataSearchRequest.FieldCondition> dbTypeFields = new HashMap<>(); // 타입에 따른 필드 검색 조건
+
+    private String name; // 회원명
+    private String phone; // 휴대폰번호
+    private String companyNo; // 사업자번호
 }

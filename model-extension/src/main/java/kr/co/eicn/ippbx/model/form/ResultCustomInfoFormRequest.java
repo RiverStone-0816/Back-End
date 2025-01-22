@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.model.form;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.model.form.atcenter.CustomResultFormRequest;
 import kr.co.eicn.ippbx.util.spring.BaseForm;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -99,4 +100,6 @@ public class ResultCustomInfoFormRequest extends BaseForm {
     private TodoListTodoStatus todoStatus;
 
     private String roomName;
+
+    private CustomResultFormRequest customResult;
 }

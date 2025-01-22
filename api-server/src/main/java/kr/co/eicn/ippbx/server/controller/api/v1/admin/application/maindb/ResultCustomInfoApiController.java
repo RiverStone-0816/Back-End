@@ -88,6 +88,22 @@ public class ResultCustomInfoApiController extends ApiBaseController {
         search.setSeq(groupSeq);
 
         final Map<String, PersonList> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, e -> e));
+
+        if (search.getDbTypeFields().containsKey("MAINDB_STRING_3")) {
+            search.setCompanyNo(search.getDbTypeFields().get("MAINDB_STRING_3").getKeyword());
+            search.getDbTypeFields().get("MAINDB_STRING_3").setKeyword("");
+        }
+
+        if (search.getDbTypeFields().containsKey("MAINDB_STRING_16")) {
+            search.setName(search.getDbTypeFields().get("MAINDB_STRING_16").getKeyword());
+            search.getDbTypeFields().get("MAINDB_STRING_16").setKeyword("");
+        }
+
+        if (search.getDbTypeFields().containsKey("MAINDB_STRING_18")) {
+            search.setPhone(search.getDbTypeFields().get("MAINDB_STRING_18").getKeyword());
+            search.getDbTypeFields().get("MAINDB_STRING_18").setKeyword("");
+        }
+
         final Pagination<ResultCustomInfoEntity> pagination = service.getRepository().pagination(search);
         final List<ResultCustomInfoEntity> rows = pagination.getRows().stream()
                 .map((e) -> {
@@ -193,12 +209,13 @@ public class ResultCustomInfoApiController extends ApiBaseController {
 
     //추가
     @PostMapping("")
-    public ResponseEntity<JsonResult<Void>> post(@Valid @RequestBody ResultCustomInfoFormRequest form, BindingResult bindingResult) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public ResponseEntity<?> post(@Valid @RequestBody ResultCustomInfoFormRequest form, BindingResult bindingResult) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
         final ResultCustomInfoRepository repository = service.getRepository();
 
+        Integer seq = 0;
         if (StringUtils.isNotEmpty(form.getClickKey()) && !form.getClickKey().equals("nonClickKey") && !form.getGroupKind().equals("TALK")) {
             final ResultCustomInfoSearchRequest search = new ResultCustomInfoSearchRequest();
             search.setClickKey(form.getClickKey());
@@ -207,13 +224,13 @@ public class ResultCustomInfoApiController extends ApiBaseController {
             if (!CollectionUtils.isEmpty(seqCheck)) {
                 repository.update(form, seqCheck.get(0));
             } else {
-                repository.insert(form);
+                seq = repository.insert(form);
             }
         } else {
-            repository.insert(form);
+            seq = repository.insert(form);
         }
 
-        return ResponseEntity.created(URI.create("api/v1/admin/application/maindb/resultcustominfo_add")).body(create());
+        return ResponseEntity.created(URI.create("api/v1/admin/application/maindb/resultcustominfo_add")).body(seq);
     }
 
     @GetMapping(value = "file-resource", params = {"token"})

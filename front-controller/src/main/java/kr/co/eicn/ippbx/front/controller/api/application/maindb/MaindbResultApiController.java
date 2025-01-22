@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.application.maindb;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
+import kr.co.eicn.ippbx.front.service.api.atcenter.AtCenterService;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbResultApiInterface;
@@ -35,6 +36,7 @@ public class MaindbResultApiController extends BaseController {
 
     private final MaindbResultApiInterface apiInterface;
     private final CounselApiInterface counselApiInterface;
+    private final AtCenterService atCenterService;
 
     @GetMapping("customdb_group")
     public List<SearchMaindbGroupResponse> customdb_group() throws IOException, ResultFailException {
@@ -61,7 +63,13 @@ public class MaindbResultApiController extends BaseController {
             }
         }
 
-        apiInterface.post(form);
+        Integer seq = apiInterface.post(form);
+
+        form.getCustomResult().setChgYn("I");
+        form.getCustomResult().setCnsltId(seq.toString());
+
+        // todo:: 확인 필요
+        atCenterService.updateResultEvent(form.getCustomResult());
     }
 
     @PutMapping("{seq}")
@@ -72,11 +80,24 @@ public class MaindbResultApiController extends BaseController {
             }
         }
         apiInterface.put(seq, form);
+
+        form.getCustomResult().setChgYn("U");
+        form.getCustomResult().setCnsltId(seq.toString());
+
+        // todo:: 확인 필요
+        atCenterService.updateResultEvent(form.getCustomResult());
     }
 
     //삭제
     @DeleteMapping("{seq}")
-    public void deleteData(@PathVariable Integer seq) throws IOException, ResultFailException {
+    public void deleteData(@PathVariable Integer seq, @Valid @RequestBody ResultCustomInfoFormRequest form) throws IOException, ResultFailException {
+        // todo:: form 데이터 받기 필요 현재 작업 안되어 있음
         apiInterface.deleteData(seq);
+
+        form.getCustomResult().setChgYn("D");
+        form.getCustomResult().setCnsltId(seq.toString());
+
+        // todo:: 확인 필요
+        atCenterService.updateResultEvent(form.getCustomResult());
     }
 }

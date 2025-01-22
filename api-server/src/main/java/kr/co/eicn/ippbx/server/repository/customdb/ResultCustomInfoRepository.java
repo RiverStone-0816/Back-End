@@ -76,8 +76,13 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         MAINDB_CUSTOM_INFO_TABLE = new CommonMaindbCustomInfo(companyId);
         MAINDB_MULTICHANNEL_INFO_TABLE = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
 
-        addField(TABLE);
-        addField(MAINDB_CUSTOM_INFO_TABLE);
+        addField(TABLE.SEQ, TABLE.COMPANY_ID, TABLE.RESULT_DATE, TABLE.UPDATE_DATE, TABLE.UNIQUEID, TABLE.HANGUP_CAUSE, TABLE.HANGUP_MSG,
+                TABLE.BILLSEC, TABLE.CLICK_KEY, TABLE.CUSTOM_NUMBER, TABLE.GROUP_ID, TABLE.USERID, TABLE.USERID_ORG, TABLE.USERID_TR,
+                TABLE.GROUP_KIND, TABLE.RS_STRING_1, TABLE.RS_STRING_2, TABLE.RS_STRING_3, TABLE.RS_CODE_1, TABLE.RS_CODE_2, TABLE.RS_CODE_3,
+                CommonRoutines.fnDecStringText(TABLE.RS_STRING_4, "eicn_atcenter").as(TABLE.RS_STRING_4),
+                CommonRoutines.fnDecStringText(TABLE.RS_STRING_5, "eicn_atcenter").as(TABLE.RS_STRING_5),
+                TABLE.RS_STRING_6
+        );
         addField(MAINDB_GROUP.GROUP_TREE_NAME);
 
         addOrderingField(TABLE.RESULT_DATE.desc());
@@ -87,7 +92,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
 
         return query
-                .join(MAINDB_CUSTOM_INFO_TABLE).on(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
+                .leftJoin(MAINDB_CUSTOM_INFO_TABLE).on(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
                 .join(MAINDB_GROUP).on(MAINDB_GROUP.SEQ.eq(TABLE.GROUP_ID))
                 .where();
     }
@@ -171,6 +176,13 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         }
 
         conditions.add(TABLE.GROUP_KIND.ne("PHONE_TMP"));
+
+        if (StringUtils.isNotBlank(search.getName()))
+            conditions.add(TABLE.RS_STRING_4.eq(getEncString(search.getName())));
+        if (StringUtils.isNotBlank(search.getPhone()))
+            conditions.add(TABLE.RS_STRING_5.eq(getEncString(search.getPhone())));
+        if (StringUtils.isNotBlank(search.getCompanyNo()))
+            conditions.add(TABLE.RS_STRING_6.eq(getEncString(search.getCompanyNo())));
 
         if (search.getSeq() != null)
             conditions.add(TABLE.GROUP_ID.eq(search.getSeq()));
@@ -280,8 +292,15 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                     final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
                     maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
                     query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else
-                    query.set((Field<String>) tableField, (String) invoked);
+                } else {
+                    if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 4
+                            || fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 5)
+                    {
+                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
+                    } else {
+                        query.set((Field<String>) tableField, (String) invoked);
+                    }
+                }
             }
         }
         query
@@ -306,7 +325,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         }
     }
 
-    public void insert(ResultCustomInfoFormRequest form) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public Integer insert(ResultCustomInfoFormRequest form) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         final InsertSetMoreStep<ResultCustomInfoRecord> query = dsl.insertInto(TABLE)
                 .set(TABLE.RESULT_TYPE, form.getResultType())
@@ -319,7 +338,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .set(TABLE.GROUP_ID, form.getGroupId())
                 .set(TABLE.CUSTOM_ID, form.getCustomId())
                 .set(TABLE.GROUP_TYPE, form.getMaindbType())
-                .set(TABLE.USERID, g.getUser().getId())
+                .set(TABLE.USERID, g.getUser().getId()) // todo:: 접수자 회원번호 저장 필요?!?!?!?
                 .set(TABLE.USERID_ORG, g.getUser().getId())
                 .set(TABLE.USERID_TR, form.getUserIdTr())
                 .set(TABLE.COMPANY_ID, getCompanyId())
@@ -353,12 +372,17 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                     final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
                     maindbCustomInfoService.uploadImgWithFileStore((String) invoked, null);
                     query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else
-                    query.set((Field<String>) tableField, (String) invoked);
+                } else {
+                    if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 4
+                            || fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) == 5)
+                    {
+                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
+                    } else {
+                        query.set((Field<String>) tableField, (String) invoked);
+                    }
+                }
             }
         }
-
-        query.execute();
 
         if (StringUtils.isNotEmpty(form.getUserIdTr())) {
             todoListRepository.insertTransferData(form.getSeq(), form.getUserIdTr(), form.getCustomNumber());
@@ -371,6 +395,11 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         if (Objects.nonNull(form.getVocGroup())) {
             vocCustomListRepository.insertByVocGroup(form);
         }
+
+        ResultCustomInfoRecord record = query.returning(TABLE.SEQ)
+                .fetchOne();
+
+        return record != null ? record.getValue(TABLE.SEQ) : 0;
     }
 
     public Set<String> getMultiChannelInfo(String type,String data) {

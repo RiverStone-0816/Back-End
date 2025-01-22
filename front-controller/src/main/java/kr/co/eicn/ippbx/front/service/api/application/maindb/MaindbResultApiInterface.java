@@ -92,8 +92,8 @@ public class MaindbResultApiInterface extends ApiServerInterface {
         return getList(subUrl + userId +"/"+ phone, null, ResultCustomInfoEntity.class).getData();
     }
 
-    public void post(ResultCustomInfoFormRequest form) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, ResultFailException {
-        post(subUrl, form);
+    public Integer post(ResultCustomInfoFormRequest form) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, ResultFailException {
+        return post(subUrl, form, Integer.class);
     }
 
     public void put(Integer seq, ResultCustomInfoFormRequest form) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException, ResultFailException {
