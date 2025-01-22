@@ -218,7 +218,7 @@ while read oldrev newrev refname; do
 done
 
 # 오래된 로그 삭제 (30일 이상 된 파일)
-find /opt/git_pushlog/ -type f -name "*.log" -mtime +30 -exec rm {} \;
+find /opt/git_pushlog/ -type f -name "*.log" -mtime +30 -exec rm {} \
 
 
 ```
